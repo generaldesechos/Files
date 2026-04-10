@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>General desEchos v3.1</title>
+    <title>General desEchos v3.2</title>
     <style>
         /* --- SYSTEM CORE --- */
         body {
@@ -44,6 +44,9 @@
             border: 5px outset #ff6666; border-radius: 50%; cursor: pointer; margin: 0 auto 15px auto;
             box-shadow: 0 5px 0 #440000; touch-action: none; display: block;
         }
+        .fx-row { display: flex; justify-content: space-between; gap: 10px; margin-top: 10px; }
+        .fx-btn { background: #444; color: #00ff00; border: 3px outset #666; padding: 10px; font-size: 10px; font-family: monospace; width: 50%; cursor: pointer; }
+        .fx-btn.active { background: #00ff00; color: #000; border-style: inset; }
 
         /* --- 4-CHANNEL MIXER UI --- */
         .mixer-container { background: #a0a0a0; border: 6px outset #ccc; max-width: 95%; margin: 0 auto 30px auto; padding: 15px; color: #000; }
@@ -95,7 +98,7 @@
     <section class="intro-box">
         <div class="bolt tl"></div><div class="bolt tr"></div><div class="bolt bl"></div><div class="bolt br"></div>
         <h2 style="margin:0; font-size:1rem;">SYSTEM BRIEFING</h2>
-        <p style="font-size:0.8rem; margin:5px 0 0 0;">Welcome to <strong>General desEchos</strong>. Hold the red button for the SE-G1 siren. Use the Mixer below to blend tracks or upload your own.</p>
+        <p style="font-size:0.8rem; margin:5px 0 0 0;">Welcome to <strong>General desEchos</strong>. Fire the SE-G1 siren or use the Mixer to blend tracks. Upload your own audio per channel.</p>
     </section>
 
     <section class="seg1-unit">
@@ -108,6 +111,10 @@
             <div class="knob-container">ECHO FBK<input type="range" id="echoKnob" min="0" max="0.9" step="0.1" value="0.5"></div>
         </div>
         <div id="fireBtn" class="fire-button"></div>
+        <div class="fx-row">
+            <button id="delayToggle" class="fx-btn">ECHO UNIT</button>
+            <button id="modeToggle" class="fx-btn">LFO: SQUARE</button>
+        </div>
     </section>
 
     <section class="mixer-container">
@@ -128,12 +135,12 @@
         <div class="machine-part">
             <div class="bolt tl"></div><div class="bolt tr"></div>
             <div class="display-screen"><img src="https://picsum.photos/id/101/400/300" alt="Audio Part 1"></div>
-            <audio controls id="static-1"><source src="audio1.mp3" type="audio/mpeg"></audio>
+            <audio controls><source src="audio1.mp3" type="audio/mpeg"></audio>
         </div>
         <div class="machine-part">
             <div class="bolt tl"></div><div class="bolt tr"></div>
             <div class="display-screen"><img src="https://picsum.photos/id/102/400/300" alt="Audio Part 2"></div>
-            <audio controls id="static-2"><source src="audio2.mp3" type="audio/mpeg"></audio>
+            <audio controls><source src="audio2.mp3" type="audio/mpeg"></audio>
         </div>
     </div>
 
@@ -150,12 +157,11 @@
 
 <script>
     let audioCtx, analyser, sirenOsc, sirenLfo, sirenLfoG, sirenG, delay, feedback, filter1, filter2;
-    let isPlaying = false;
-    let filterIdx = 0;
+    let isPlaying = false, isSirenEcho = false, lfoType = 'square', filterIdx = 0;
     const freqs = [0, 100, 250, 500, 1000, 2000, 4000, 8000];
     const channels = [];
 
-    // Setup Mixer Channels
+    // Mixer Setup
     const mixerUI = document.getElementById('mixerUI');
     for(let i=0; i<4; i++) {
         const strip = document.createElement('div');
@@ -177,20 +183,18 @@
         audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         analyser = audioCtx.createAnalyser();
 
-        // Echo/Filter Setup
         delay = audioCtx.createDelay(2.0); feedback = audioCtx.createGain(); feedback.gain.value = 0.5;
         delay.connect(feedback); feedback.connect(delay); delay.connect(analyser);
         filter1 = audioCtx.createBiquadFilter(); filter2 = audioCtx.createBiquadFilter();
         filter1.type = filter2.type = 'highpass'; filter1.connect(filter2); filter2.connect(analyser);
 
-        // Siren
         sirenOsc = audioCtx.createOscillator(); sirenLfo = audioCtx.createOscillator();
-        sirenLfoG = audioCtx.createGain(); sirenG = audioCtx.createGain(); sirenG.gain.value = 0;
+        sirenLfoG = audioCtx.createGain(); sirenG = audioCtx.createGain(); 
+        sirenOsc.type = 'square'; sirenLfo.type = lfoType; sirenG.gain.value = 0;
         sirenLfo.connect(sirenLfoG); sirenLfoG.connect(sirenOsc.frequency);
         sirenOsc.connect(sirenG); sirenG.connect(analyser);
         sirenOsc.start(); sirenLfo.start();
 
-        // Connect Mixer Tracks
         channels.forEach((ch, i) => {
             const node = audioCtx.createMediaElementSource(document.getElementById(`mix-aud-${i}`));
             ch.gain = audioCtx.createGain(); ch.echoG = audioCtx.createGain(); ch.fltrG = audioCtx.createGain();
@@ -246,7 +250,7 @@
         btn.style.background = isPlaying ? "#600" : "#040";
     }
 
-    // Siren Triggers
+    // Siren Logic
     const fireBtn = document.getElementById('fireBtn');
     fireBtn.onmousedown = fireBtn.ontouchstart = (e) => { 
         if(e) e.preventDefault(); initAudio(); 
@@ -254,7 +258,19 @@
     };
     window.onmouseup = window.ontouchend = () => { if(sirenG) sirenG.gain.setTargetAtTime(0, audioCtx.currentTime, 0.1); };
 
-    // Siren Knobs
+    document.getElementById('delayToggle').onclick = () => {
+        initAudio();
+        isSirenEcho = !isSirenEcho;
+        document.getElementById('delayToggle').classList.toggle('active');
+        if(isSirenEcho) sirenG.connect(delay); else sirenG.disconnect(delay);
+    };
+
+    document.getElementById('modeToggle').onclick = () => {
+        lfoType = (lfoType === 'square') ? 'sine' : 'square';
+        if(sirenLfo) sirenLfo.type = lfoType;
+        document.getElementById('modeToggle').innerText = "LFO: " + lfoType.toUpperCase();
+    };
+
     document.getElementById('pitchKnob').oninput = (e) => sirenOsc.frequency.setTargetAtTime(e.target.value, audioCtx.currentTime, 0.05);
     document.getElementById('rateKnob').oninput = (e) => sirenLfo.frequency.setTargetAtTime(e.target.value, audioCtx.currentTime, 0.05);
     document.getElementById('depthKnob').oninput = (e) => sirenLfoG.gain.setTargetAtTime(e.target.value, audioCtx.currentTime, 0.05);
