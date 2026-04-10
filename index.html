@@ -3,303 +3,222 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>THE AUDIO CONTRAPTION v1.0</title>
+    <title>AUDIO CONTRAPTION v1.0</title>
     <style>
-        /* --- CORE SYSTEM STYLES --- */
+        /* --- SYSTEM CORE --- */
         body {
             background-color: #004488;
             background-image: 
                 linear-gradient(rgba(255,255,255,.07) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(255,255,255,.07) 1px, transparent 1px);
-            background-size: 40px 40px;
+            background-size: 30px 30px;
             color: #ffffff;
             font-family: "Courier New", monospace;
             margin: 0;
-            padding: 40px 40px 150px 40px; /* Extra bottom padding for footer */
-            line-height: 1.4;
+            padding: 20px 15px 120px 15px; /* Padding for mobile */
+            overflow-x: hidden;
         }
 
         header {
-            border: 6px double #ffcc00;
+            border: 4px double #ffcc00;
             background: #222;
-            padding: 20px;
+            padding: 15px;
             text-align: center;
-            box-shadow: 10px 10px 0px #000;
-            margin-bottom: 50px;
+            box-shadow: 6px 6px 0px #000;
+            margin-bottom: 30px;
         }
 
         h1 {
             color: #ffcc00;
             margin: 0;
-            text-shadow: 2px 2px #884400;
-            font-size: 2.5em;
+            font-size: 1.5rem; /* Responsive sizing */
+            text-transform: uppercase;
         }
 
-        /* --- THE MACHINE MODULES (AUDIO/IMAGES) --- */
+        /* --- THE MACHINE GRID (Responsive) --- */
         .machine-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 30px;
-            justify-content: center;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
         }
 
         .machine-part {
             background: #c0c0c0;
-            border: 5px outset #eee;
+            border: 4px outset #eee;
             color: #000;
-            width: 320px;
             padding: 15px;
-            box-shadow: 8px 8px 0px rgba(0,0,0,0.5);
+            box-shadow: 6px 6px 0px rgba(0,0,0,0.5);
             position: relative;
         }
 
         .label-plate {
             background: #800000;
             color: white;
-            padding: 2px 10px;
-            font-size: 11px;
+            padding: 2px 8px;
+            font-size: 10px;
             border: 2px inset #550000;
             display: inline-block;
             margin-bottom: 10px;
-            font-weight: bold;
         }
 
         .display-screen {
             background: #112211;
-            border: 4px inset #808080;
-            padding: 5px;
+            border: 3px inset #808080;
+            padding: 4px;
             margin-bottom: 10px;
         }
 
         .display-screen img {
             width: 100%;
-            height: 180px;
+            height: auto;
+            aspect-ratio: 4/3;
             object-fit: cover;
-            filter: contrast(1.2) sepia(0.2);
+            display: block;
         }
 
         audio {
             width: 100%;
-            filter: invert(100%) hue-rotate(180deg) brightness(1.2);
+            filter: invert(100%) contrast(1.2);
         }
 
-        /* --- BLOG SECTION --- */
+        /* --- BLOG LOG (Mobile Optimized) --- */
         .blog-log {
             background: #fdf5e6;
             border: 1px solid #d2b48c;
-            max-width: 800px;
-            margin: 60px auto;
-            padding: 40px;
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 25px 20px 25px 45px; /* Offset for the red line */
             color: #332211;
-            box-shadow: 15px 15px 0px rgba(0,0,0,0.3);
+            box-shadow: 8px 8px 0px rgba(0,0,0,0.2);
             position: relative;
             font-family: "Georgia", serif;
+            font-size: 0.95rem;
         }
 
         .blog-log::before {
             content: "";
             position: absolute;
-            top: 0; left: 35px;
+            top: 0; left: 30px;
             width: 2px; height: 100%;
             background: rgba(255, 0, 0, 0.2);
         }
 
         .blog-img-wrapper {
             background: #fff;
-            padding: 10px;
+            padding: 8px;
             border: 1px solid #ccc;
-            box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
-            transform: rotate(1.5deg);
-            margin: 25px auto;
-            width: 70%;
-            position: relative;
+            transform: rotate(1deg);
+            margin: 20px 0;
+            width: 90%;
         }
 
-        .tape {
-            position: absolute;
-            top: -15px; left: 50%;
-            transform: translateX(-50%);
-            width: 100px; height: 30px;
-            background: rgba(255, 255, 200, 0.6);
-            border: 1px solid rgba(0,0,0,0.05);
+        .blog-img {
+            width: 100%;
+            height: auto;
         }
 
-        /* --- THE SYSTEM FOOTER --- */
+        /* --- ORIGINAL STATUS FOOTER --- */
         footer {
             position: fixed;
             bottom: 0; left: 0;
             width: 100%;
-            background: #a0a0a0;
-            border-top: 5px outset #fff;
-            padding: 10px 20px;
+            background: #c0c0c0;
+            border-top: 4px outset #ffffff;
             display: flex;
             align-items: center;
+            padding: 8px 15px;
             box-sizing: border-box;
-            z-index: 9999;
-            height: 100px;
+            z-index: 1000;
+            font-family: "Courier New", monospace;
+            height: 60px;
         }
 
-        .footer-left {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-            flex-grow: 1;
+        .power-light {
+            width: 10px; height: 10px;
+            background: #00ff00;
+            border-radius: 50%;
+            box-shadow: 0 0 5px #00ff00;
+            margin-right: 10px;
+            flex-shrink: 0;
+            animation: blink 1.5s infinite;
         }
 
         .status-terminal {
             background: #000;
             color: #00ff00;
-            border: 3px inset #808080;
-            padding: 5px;
-            font-size: 12px;
+            border: 2px inset #808080;
+            padding: 4px 10px;
+            flex-grow: 1;
             overflow: hidden;
             white-space: nowrap;
+            font-size: 11px;
         }
 
-        /* --- INTEGRATED VU METER --- */
-        .vu-container {
-            width: 160px;
-            height: 80px;
-            background: #ffffcc;
-            border: 4px inset #666;
-            position: relative;
-            margin-left: 20px;
-            overflow: hidden;
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
         }
 
-        .vu-scale {
-            position: absolute;
-            width: 100%; height: 100%;
-            background: radial-gradient(circle at 50% 100%, transparent 60px, #000 60px, #000 62px, transparent 62px);
-        }
-
-        .vu-danger {
-            position: absolute;
-            right: 0; top: 0;
-            width: 40px; height: 100%;
-            background: rgba(255, 0, 0, 0.3);
-            clip-path: polygon(100% 0, 0% 100%, 100% 100%);
-        }
-
-        .vu-needle {
-            position: absolute;
-            bottom: 0; left: 50%;
-            width: 2px; height: 70px;
-            background: #cc0000;
-            transform-origin: bottom center;
-            transform: rotate(-70deg);
-            transition: transform 0.1s ease-out;
-            z-index: 10;
-        }
-
-        .vu-label {
-            position: absolute;
-            top: 5px; width: 100%;
-            text-align: center;
-            font-size: 9px;
-            font-weight: bold;
-            color: #000;
-        }
-
-        /* Decorative Bolts */
+        /* Bolts for corners */
         .bolt {
-            position: absolute; width: 10px; height: 10px;
-            background: #777; border-radius: 50%; border: 1px solid #333;
+            position: absolute; width: 8px; height: 8px;
+            background: #888; border-radius: 50%; border: 1px solid #444;
         }
-        .tl { top: 5px; left: 5px; } .tr { top: 5px; right: 5px; }
-        .bl { bottom: 5px; left: 5px; } .br { bottom: 5px; right: 5px; }
+        .tl { top: 4px; left: 4px; } .tr { top: 4px; right: 4px; }
+        .bl { bottom: 4px; left: 4px; } .br { bottom: 4px; right: 4px; }
     </style>
 </head>
 <body>
 
 <header>
-    <h1>⚙️ ACOUSTIC_CONTRAPTION_v1.0 ⚙️</h1>
-    <p>ENGINEERING DEPT. | PROJECT #99-B</p>
+    <h1>⚙️ SOUND-O-MATIC v1.0</h1>
 </header>
 
 <main>
     <div class="machine-grid">
         <div class="machine-part">
             <div class="bolt tl"></div><div class="bolt tr"></div><div class="bolt bl"></div><div class="bolt br"></div>
-            <div class="label-plate">SONIC_CORE_01</div>
+            <div class="label-plate">MODULE_001</div>
             <div class="display-screen">
-                <img src="https://picsum.photos/id/1/300/200" alt="Part 1">
+                <img src="https://picsum.photos/id/10/400/300" alt="Audio Visual">
             </div>
             <audio controls>
-                <source src="your-audio-1.mp3" type="audio/mpeg">
+                <source src="song1.mp3" type="audio/mpeg">
             </audio>
         </div>
 
         <div class="machine-part">
             <div class="bolt tl"></div><div class="bolt tr"></div><div class="bolt bl"></div><div class="bolt br"></div>
-            <div class="label-plate">SONIC_CORE_02</div>
+            <div class="label-plate">MODULE_002</div>
             <div class="display-screen">
-                <img src="https://picsum.photos/id/2/300/200" alt="Part 2">
+                <img src="https://picsum.photos/id/20/400/300" alt="Audio Visual">
             </div>
             <audio controls>
-                <source src="your-audio-2.mp3" type="audio/mpeg">
+                <source src="song2.mp3" type="audio/mpeg">
             </audio>
         </div>
     </div>
 
     <article class="blog-log">
-        <div class="bolt tl"></div><div class="bolt tr"></div>
-        <h3 style="margin-top:0;">RESEARCH_LOG: DAY 42</h3>
-        <p>Successful synchronization of the brass gears with the low-end frequencies. The <strong>VU Meter</strong> in the main console is finally responding to mechanical friction (scroll-velocity).</p>
+        <h3 style="margin: 0 0 10px 0; font-size: 1.1rem;">ENGINEERING LOG: #404</h3>
+        <p>System migration to mobile format complete. The blueprint grid has been scaled for smaller viewports. <strong>The Incredible Machine</strong> aesthetic remains intact.</p>
         
         <div class="blog-img-wrapper">
-            <div class="tape"></div>
-            <img src="https://picsum.photos/id/48/600/400" class="blog-img" alt="Research">
+            <img src="https://picsum.photos/id/30/500/300" alt="Log Photo" class="blog-img">
         </div>
-        
-        <p>Testing suggests that rapid navigation of the document increases pressure on the steam valves. Proceed with caution.</p>
-        <div style="color: #aa0000; font-weight: bold; border: 2px solid #aa0000; display: inline-block; padding: 5px; transform: rotate(-5deg);">TOP SECRET</div>
+
+        <p>The status bar below monitors real-time system stability. Signal remains green.</p>
     </article>
 </main>
 
 <footer>
-    <div class="footer-left">
-        <div style="font-weight: bold; font-size: 12px;">SYSTEM DIAGNOSTICS:</div>
-        <div class="status-terminal">
-            <marquee scrollamount="5">>>> ENGINE_STATUS: ONLINE ... LUBRICATION: OPTIMAL ... POWER_DRAW: 4.2kW ... SCROLLING DETECTED ... NEEDLE CALIBRATED ...</marquee>
-        </div>
-    </div>
-
-    <div class="vu-container">
-        <div class="vu-label">SCROLL VELOCITY</div>
-        <div class="vu-scale"></div>
-        <div class="vu-danger"></div>
-        <div class="vu-needle" id="needle"></div>
-        <div style="position: absolute; bottom: -5px; left: 50%; width: 12px; height: 12px; background: #333; border-radius: 50%; transform: translateX(-50%);"></div>
+    <div class="power-light"></div>
+    <div class="status-terminal">
+        <marquee scrollamount="4">SYSTEM RUNNING... MOBILE OPTIMIZATION ACTIVE... SIGNAL STRENGTH: 100%... WELCOME TO THE MACHINE...</marquee>
     </div>
 </footer>
-
-<script>
-    const needle = document.getElementById('needle');
-    let lastScrollY = window.scrollY;
-    let velocity = 0;
-
-    function update() {
-        const currentScroll = window.scrollY;
-        const delta = Math.abs(currentScroll - lastScrollY);
-        
-        // Target rotation based on speed
-        // Mapping speed to a range of -70deg (rest) to 60deg (max)
-        const targetRotation = -70 + Math.min(delta * 1.5, 130);
-        
-        // Smoothly interpolate current needle position
-        velocity += (targetRotation - velocity) * 0.1;
-        
-        // Slow decay
-        velocity *= 0.95;
-
-        needle.style.transform = `rotate(${velocity}deg)`;
-        
-        lastScrollY = currentScroll;
-        requestAnimationFrame(update);
-    }
-    update();
-</script>
 
 </body>
 </html>
