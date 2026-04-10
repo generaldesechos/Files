@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>General desEchos v1.2</title>
+    <title>General desEchos v1.0</title>
     <style>
-        /* --- SYSTEM CORE --- */
+        /* --- CORE STYLE --- */
         body {
             background-color: #004488;
             background-image: linear-gradient(rgba(255,255,255,.07) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.07) 1px, transparent 1px);
@@ -24,145 +24,129 @@
             padding: 15px;
             text-align: center;
             box-shadow: 6px 6px 0px #000;
-            margin: 0 15px 20px 15px;
+            margin: 0 15px 30px 15px;
         }
 
-        /* --- UI BOXES --- */
-        .intro-box, .siren-box, .machine-part, .blog-log {
-            position: relative;
-            box-shadow: 8px 8px 0px rgba(0,0,0,0.4);
+        h1 {
+            color: #ffcc00;
+            margin: 0;
+            font-size: 1.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
 
-        .intro-box {
-            background: #e6be8a;
-            border: 2px solid #8b4513;
-            color: #221100;
-            max-width: 90%;
-            margin: 0 auto 30px auto;
-            padding: 15px;
-        }
-
-        /* --- SIREN CONTROL UNIT --- */
-        .siren-box {
+        /* --- SE-G1 UNIT CHASSIS --- */
+        .seg1-unit {
             background: #c0c0c0;
-            border: 5px outset #eee;
-            color: #000;
-            max-width: 90%;
-            margin: 0 auto 30px auto;
-            padding: 25px;
+            border: 6px outset #eee;
+            color: #222;
+            max-width: 340px;
+            margin: 0 auto;
+            padding: 20px;
+            box-shadow: 12px 12px 0px rgba(0,0,0,0.5);
+            position: relative;
+        }
+
+        .unit-label {
+            background: #333;
+            color: #ffcc00;
+            padding: 5px;
             text-align: center;
+            font-weight: bold;
+            border: 2px inset #666;
+            margin-bottom: 20px;
+            font-size: 14px;
         }
 
-        .controls-row {
-            display: flex;
-            justify-content: center;
+        /* --- CONTROLS --- */
+        .control-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
             gap: 15px;
-            align-items: center;
-            margin-bottom: 15px;
-            flex-wrap: wrap;
+            margin-bottom: 20px;
         }
 
-        .siren-button {
-            width: 90px;
-            height: 90px;
-            background: radial-gradient(circle, #ff0000, #aa0000);
-            border: 6px outset #ff6666;
+        .knob-container {
+            text-align: center;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        input[type=range] {
+            width: 100%;
+            cursor: pointer;
+            accent-color: #880000;
+        }
+
+        .trigger-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .fire-button {
+            width: 80px;
+            height: 80px;
+            background: radial-gradient(circle, #ff0000, #880000);
+            border: 5px outset #ff6666;
             border-radius: 50%;
             cursor: pointer;
-            box-shadow: 0 6px 0 #550000;
-            touch-action: none;
+            box-shadow: 0 5px 0 #440000;
         }
 
-        .siren-button:active {
+        .fire-button:active {
             transform: translateY(3px);
-            box-shadow: 0 3px 0 #550000;
+            box-shadow: 0 2px 0 #440000;
             border-style: inset;
         }
 
-        .fx-btns {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .toggle-btn {
+        .fx-btn {
             background: #444;
             color: #00ff00;
-            border: 4px outset #666;
-            padding: 8px;
+            border: 3px outset #666;
+            padding: 10px;
+            font-size: 10px;
             font-family: "Courier New", monospace;
-            font-size: 11px;
-            font-weight: bold;
+            width: 100%;
             cursor: pointer;
-            min-width: 100px;
         }
 
-        .toggle-btn.active {
+        .fx-btn.active {
             background: #00ff00;
             color: #000;
             border-style: inset;
         }
 
-        /* --- MACHINE GRID & LOG --- */
-        .machine-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; max-width: 95%; margin: 0 auto; padding: 0 15px; }
-        .machine-part { background: #c0c0c0; border: 4px outset #eee; color: #000; padding: 15px; }
-        .display-screen { background: #112211; border: 3px inset #808080; padding: 4px; margin-bottom: 10px; }
-        .display-screen img { width: 100%; height: auto; aspect-ratio: 4/3; object-fit: cover; display: block; }
-        audio { width: 100%; filter: invert(100%) contrast(1.2); }
-        .blog-log { background: #fdf5e6; border: 1px solid #d2b48c; max-width: 600px; margin: 40px auto; padding: 25px 20px 25px 45px; color: #332211; font-family: "Georgia", serif; }
-        .blog-log::before { content: ""; position: absolute; top: 0; left: 30px; width: 2px; height: 100%; background: rgba(255, 0, 0, 0.2); }
-
-        /* --- REVERTED GRAY LED VU FOOTER --- */
+        /* --- FOOTER --- */
         footer {
             position: fixed;
             bottom: 0; left: 0;
             width: 100vw;
-            background: #c0c0c0; /* Reverted to Original Gray */
-            border-top: 5px outset #fff; /* Original 3D border */
+            background: #c0c0c0;
+            border-top: 5px outset #fff;
             padding: 10px 15px;
             box-sizing: border-box;
             z-index: 9999;
-            height: 90px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
+            height: 100px;
         }
 
         .vu-meter {
             display: flex;
             gap: 3px;
-            height: 22px;
-            width: 100%;
-            background: #000; /* Dark background for the LED tray */
+            height: 25px;
+            background: #000;
             padding: 4px;
             border: 3px inset #808080;
-            box-sizing: border-box;
-            margin-top: 5px;
         }
 
-        .led {
-            flex: 1;
-            background: #222; /* Dim state */
-            border-radius: 1px;
-            transition: background 0.05s;
-        }
-
-        /* LED Colors */
+        .led { flex: 1; background: #222; transition: background 0.05s; }
         .led.green.on { background: #33ff33; box-shadow: 0 0 8px #00ff00; }
         .led.yellow.on { background: #ffff33; box-shadow: 0 0 8px #ffff00; }
         .led.red.on { background: #ff3333; box-shadow: 0 0 8px #ff0000; }
 
-        .status-text {
-            color: #000; /* Black text on Gray footer */
-            font-size: 11px;
-            font-weight: bold;
-            text-transform: uppercase;
-            overflow: hidden;
-            white-space: nowrap;
-        }
-
         .bolt { position: absolute; width: 8px; height: 8px; background: #888; border-radius: 50%; border: 1px solid #444; }
-        .tl { top: 4px; left: 4px; } .tr { top: 4px; right: 4px; } .bl { bottom: 4px; left: 4px; } .br { bottom: 4px; right: 4px; }
+        .tl { top: 6px; left: 6px; } .tr { top: 6px; right: 6px; } .bl { bottom: 6px; left: 6px; } .br { bottom: 6px; right: 6px; }
     </style>
 </head>
 <body>
@@ -172,163 +156,144 @@
 </header>
 
 <main>
-    <section class="intro-box">
+    <section class="seg1-unit">
         <div class="bolt tl"></div><div class="bolt tr"></div><div class="bolt bl"></div><div class="bolt br"></div>
-        <h2 style="margin:0; font-size:1rem;">SYSTEM BRIEFING</h2>
-        <p style="font-size:0.8rem; margin:5px 0 0 0;">System restored to <strong>Industrial Gray</strong> specification. Integrated <strong>LED ARRAY</strong> and <strong>REVERB_UNIT</strong> online.</p>
-    </section>
+        <div class="unit-label">GENERAL desECHOS // SE-G1 MOD</div>
 
-    <section class="siren-box">
-        <div class="bolt tl"></div><div class="bolt tr"></div><div class="bolt bl"></div><div class="bolt br"></div>
-        <div class="controls-row">
-            <div id="sirenTrigger" class="siren-button"></div>
-            <div class="fx-btns">
-                <button id="delayToggle" class="toggle-btn">ECHO: OFF</button>
-                <button id="reverbToggle" class="toggle-btn">REVERB: OFF</button>
+        <div class="control-grid">
+            <div class="knob-container">
+                PITCH
+                <input type="range" id="pitchKnob" min="100" max="1200" value="440">
+            </div>
+            <div class="knob-container">
+                LFO RATE
+                <input type="range" id="rateKnob" min="1" max="30" value="10">
+            </div>
+            <div class="knob-container">
+                LFO DEPTH
+                <input type="range" id="depthKnob" min="0" max="1200" value="600">
+            </div>
+            <div class="knob-container">
+                ECHO F.BACK
+                <input type="range" id="echoKnob" min="0" max="0.9" step="0.1" value="0.5">
             </div>
         </div>
-        <div style="font-size: 9px; font-weight:bold;">HOLD RED BUTTON TO TEST SIGNAL</div>
+
+        <div class="trigger-section">
+            <div id="fireBtn" class="fire-button"></div>
+            <div style="display:flex; gap:10px; width:100%;">
+                <button id="delayToggle" class="fx-btn">ECHO UNIT</button>
+                <button id="modeToggle" class="fx-btn">LFO: SQUARE</button>
+            </div>
+        </div>
     </section>
-
-    <div class="machine-grid">
-        <div class="machine-part">
-            <div class="bolt tl"></div><div class="bolt tr"></div>
-            <div class="display-screen"><img src="https://picsum.photos/id/101/400/300" alt="Part 1"></div>
-            <audio controls><source src="song1.mp3" type="audio/mpeg"></audio>
-        </div>
-        <div class="machine-part">
-            <div class="bolt tl"></div><div class="bolt tr"></div>
-            <div class="display-screen"><img src="https://picsum.photos/id/102/400/300" alt="Part 2"></div>
-            <audio controls><source src="song2.mp3" type="audio/mpeg"></audio>
-        </div>
-    </div>
-
-    <article class="blog-log">
-        <h3 style="margin-top:0; font-size:1rem;">LOG #409</h3>
-        <p>Restored original chassis color (Gray). Visual LED diagnostics confirmed functional via siren trigger.</p>
-    </article>
 </main>
 
 <footer>
-    <div class="status-text" id="statusTerm">STATUS: READY... WAIT_FOR_INPUT...</div>
-    <div class="vu-meter" id="ledContainer">
-        </div>
+    <div style="color:#000; font-size:10px; font-weight:bold; margin-bottom:5px; text-transform: uppercase;">Signal Monitor : General desEchos Output</div>
+    <div class="vu-meter" id="vu"></div>
 </footer>
 
 <script>
-    let audioCtx, mainOsc, lfo, lfoGain, gainNode, delayNode, feedbackNode, reverbNode, analyser;
-    let isEchoOn = false, isReverbOn = false;
+    let audioCtx, osc, lfo, lfoGain, mainGain, delay, feedback, analyser;
+    let isEcho = false;
+    let lfoType = 'square';
 
-    // Build LED segments
-    const ledContainer = document.getElementById('ledContainer');
+    const fireBtn = document.getElementById('fireBtn');
+    const delayToggle = document.getElementById('delayToggle');
+    const modeToggle = document.getElementById('modeToggle');
+    const vuContainer = document.getElementById('vu');
     const leds = [];
-    const numLeds = 24;
-    for(let i=0; i<numLeds; i++) {
-        const d = document.createElement('div');
-        d.className = 'led ' + (i < 14 ? 'green' : i < 20 ? 'yellow' : 'red');
-        ledContainer.appendChild(d);
-        leds.push(d);
+
+    // Create VU LEDs
+    for(let i=0; i<24; i++) {
+        const led = document.createElement('div');
+        led.className = 'led ' + (i < 14 ? 'green' : i < 20 ? 'yellow' : 'red');
+        vuContainer.appendChild(led);
+        leds.push(led);
     }
 
-    function initAudio() {
+    function init() {
+        if (audioCtx) return;
         audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         
-        mainOsc = audioCtx.createOscillator();
+        osc = audioCtx.createOscillator();
         lfo = audioCtx.createOscillator();
         lfoGain = audioCtx.createGain();
-        gainNode = audioCtx.createGain();
+        mainGain = audioCtx.createGain();
         analyser = audioCtx.createAnalyser();
-        analyser.fftSize = 64;
-
-        // Effects
-        delayNode = audioCtx.createDelay();
-        delayNode.delayTime.value = 0.4;
-        feedbackNode = audioCtx.createGain();
-        feedbackNode.gain.value = 0.5;
         
-        // Reverb
-        reverbNode = audioCtx.createConvolver();
-        const rate = audioCtx.sampleRate, length = rate * 2, decay = 2;
-        const buffer = audioCtx.createBuffer(2, length, rate);
-        for (let i = 0; i < 2; i++) {
-            let channel = buffer.getChannelData(i);
-            for (let j = 0; j < length; j++) channel[j] = (Math.random() * 2 - 1) * Math.pow(1 - j / length, decay);
-        }
-        reverbNode.buffer = buffer;
-
-        mainOsc.type = 'square';
-        lfoGain.gain.value = 400;
-        gainNode.gain.value = 0;
-
+        // Delay Hardware
+        delay = audioCtx.createDelay(2.0);
+        feedback = audioCtx.createGain();
+        delay.delayTime.value = 0.35;
+        feedback.gain.value = document.getElementById('echoKnob').value;
+        
+        osc.type = 'square'; 
+        lfo.type = lfoType;
+        mainGain.gain.value = 0;
+        
+        // Signal Flow
         lfo.connect(lfoGain);
-        lfoGain.connect(mainOsc.frequency);
-        mainOsc.connect(gainNode);
+        lfoGain.connect(osc.frequency);
+        osc.connect(mainGain);
+        mainGain.connect(analyser);
+        analyser.connect(audioCtx.destination);
         
-        gainNode.connect(analyser);
-        gainNode.connect(audioCtx.destination);
-        
-        delayNode.connect(feedbackNode);
-        feedbackNode.connect(delayNode);
+        // Echo Feedback Loop
+        delay.connect(feedback);
+        feedback.connect(delay);
 
-        mainOsc.start();
+        osc.start();
         lfo.start();
-        updateLEDs();
+        drawVU();
     }
 
-    function updateLEDs() {
-        if(!analyser) return;
+    function drawVU() {
         const data = new Uint8Array(analyser.frequencyBinCount);
         analyser.getByteFrequencyData(data);
-        const avg = data.reduce((a, b) => a + b) / data.length;
-        // Sensitivity scaling
-        const level = Math.floor((avg / 160) * numLeds);
-
-        leds.forEach((led, i) => {
-            led.classList.toggle('on', i < level);
-        });
-        requestAnimationFrame(updateLEDs);
+        const volume = data.reduce((a,b) => a+b) / data.length;
+        const litLeds = Math.floor((volume / 160) * leds.length);
+        leds.forEach((led, i) => led.classList.toggle('on', i < litLeds));
+        requestAnimationFrame(drawVU);
     }
 
-    function toggleFX(type) {
-        if(!audioCtx) initAudio();
-        if(type === 'echo') {
-            isEchoOn = !isEchoOn;
-            isEchoOn ? gainNode.connect(delayNode).connect(audioCtx.destination) : gainNode.disconnect(delayNode);
-            document.getElementById('delayToggle').classList.toggle('active', isEchoOn);
-            document.getElementById('delayToggle').innerText = "ECHO: " + (isEchoOn ? "ON" : "OFF");
-        } else {
-            isReverbOn = !isReverbOn;
-            isReverbOn ? gainNode.connect(reverbNode).connect(audioCtx.destination) : gainNode.disconnect(reverbNode);
-            document.getElementById('reverbToggle').classList.toggle('active', isReverbOn);
-            document.getElementById('reverbToggle').innerText = "REVERB: " + (isReverbOn ? "ON" : "OFF");
-        }
-    }
-
-    function handleSiren(e, active) {
-        if(!audioCtx) initAudio();
+    // Controls
+    fireBtn.addEventListener('mousedown', () => {
+        init();
         if(audioCtx.state === 'suspended') audioCtx.resume();
-        gainNode.gain.setTargetAtTime(active ? 0.4 : 0, audioCtx.currentTime, 0.05);
-        document.getElementById('statusTerm').innerText = active ? "STATUS: BROADCASTING... PEAK_SIGNAL_MONITOR_ON" : "STATUS: READY... WAIT_FOR_INPUT...";
-        if(active) updateParams(e);
-    }
+        mainGain.gain.setTargetAtTime(0.5, audioCtx.currentTime, 0.02);
+    });
 
-    function updateParams(e) {
-        if(!audioCtx || gainNode.gain.value < 0.01) return;
-        const x = (e.clientX || (e.touches ? e.touches[0].clientX : 0)) / window.innerWidth;
-        const y = (e.clientY || (e.touches ? e.touches[0].clientY : 0)) / window.innerHeight;
-        mainOsc.frequency.setTargetAtTime(1500 - (y * 1300), audioCtx.currentTime, 0.1);
-        lfo.frequency.setTargetAtTime(x * 25, audioCtx.currentTime, 0.1);
-    }
+    window.addEventListener('mouseup', () => {
+        if(mainGain) mainGain.gain.setTargetAtTime(0, audioCtx.currentTime, 0.1);
+    });
 
-    const trigger = document.getElementById('sirenTrigger');
-    trigger.addEventListener('mousedown', (e) => handleSiren(e, true));
-    trigger.addEventListener('touchstart', (e) => { e.preventDefault(); handleSiren(e, true); });
-    window.addEventListener('mouseup', () => handleSiren(null, false));
-    window.addEventListener('touchend', () => handleSiren(null, false));
-    window.addEventListener('mousemove', updateParams);
-    window.addEventListener('touchmove', (e) => updateParams(e));
-    document.getElementById('delayToggle').addEventListener('click', () => toggleFX('echo'));
-    document.getElementById('reverbToggle').addEventListener('click', () => toggleFX('reverb'));
+    fireBtn.addEventListener('touchstart', (e) => { e.preventDefault(); init(); mainGain.gain.setTargetAtTime(0.5, audioCtx.currentTime, 0.02); });
+    window.addEventListener('touchend', () => { if(mainGain) mainGain.gain.setTargetAtTime(0, audioCtx.currentTime, 0.1); });
+
+    document.getElementById('pitchKnob').oninput = (e) => { if(osc) osc.frequency.setTargetAtTime(e.target.value, audioCtx.currentTime, 0.05); };
+    document.getElementById('rateKnob').oninput = (e) => { if(lfo) lfo.frequency.setTargetAtTime(e.target.value, audioCtx.currentTime, 0.05); };
+    document.getElementById('depthKnob').oninput = (e) => { if(lfoGain) lfoGain.gain.setTargetAtTime(e.target.value, audioCtx.currentTime, 0.05); };
+    document.getElementById('echoKnob').oninput = (e) => { if(feedback) feedback.gain.value = e.target.value; };
+
+    delayToggle.onclick = () => {
+        init();
+        isEcho = !isEcho;
+        delayToggle.classList.toggle('active');
+        if(isEcho) {
+            mainGain.connect(delay);
+            delay.connect(audioCtx.destination);
+        } else {
+            mainGain.disconnect(delay);
+        }
+    };
+
+    modeToggle.onclick = () => {
+        lfoType = (lfoType === 'square') ? 'sine' : 'square';
+        if(lfo) lfo.type = lfoType;
+        modeToggle.innerText = "LFO: " + lfoType.toUpperCase();
+    };
 </script>
 
 </body>
