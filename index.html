@@ -47,9 +47,6 @@
 
         .unit-label { background: #111; color: #ffcc00; padding: 4px; text-align: center; font-weight: bold; border: 1px solid #444; margin-bottom: 15px; font-size: 10px; letter-spacing: 1px; }
 
-        /* --- INTRO BOX --- */
-        .intro-box { background: #e6be8a; border: 2px solid #8b4513; color: #221100; padding: 15px; font-size: 0.8rem; }
-
         /* --- SIREN UNIT --- */
         .seg1-unit { background: #b08d57; border: 5px outset #d4af37; color: #222; padding: 20px; }
         .fire-button {
@@ -58,20 +55,8 @@
             box-shadow: 0 4px 0 #440000; touch-action: none; display: block;
         }
 
-        /* --- SPACE DELAY UNIT --- */
+        /* --- DELAY UNIT --- */
         .delay-unit { background: #c0c0c0; border: 5px outset #eee; color: #333; padding: 20px; }
-        .switch { position: relative; display: inline-block; width: 80px; height: 34px; }
-        .switch input { opacity: 0; width: 0; height: 0; }
-        .slider {
-            position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
-            background-color: #444; transition: .4s; border: 2px solid #222;
-        }
-        .slider:before {
-            position: absolute; content: ""; height: 40px; width: 14px; left: 31px; bottom: -5px;
-            background-color: #888; border: 2px solid #222; transition: .4s; box-shadow: 0 4px 4px rgba(0,0,0,0.4);
-        }
-        input:checked + .slider { background-color: #00ff00; }
-        input:checked + .slider:before { transform: rotate(10deg); background-color: #aaa; }
 
         /* --- MIXER UNIT --- */
         .mixer-container { background: #333; border: 5px outset #555; padding: 15px; color: #fff; }
@@ -92,11 +77,7 @@
         .dial-hand { width: 3px; height: 22px; background: red; position: absolute; top: 8px; left: 28.5px; transform-origin: center 22px; }
         .freq-text { color: #ffcc00; font-size: 14px; font-weight: bold; }
 
-        /* --- BLOG LOG --- */
-        .blog-log { background: #fdf5e6; border: 1px solid #d2b48c; padding: 25px 20px 25px 45px; color: #332211; font-family: "Georgia", serif; position: relative;}
-        .blog-log::before { content: ""; position: absolute; top: 0; left: 30px; width: 2px; height: 100%; background: rgba(255, 0, 0, 0.2); }
-
-        /* --- INPUTS --- */
+        /* --- CONTROLS --- */
         .control-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         .knob-label { font-size: 9px; font-weight: bold; text-align: center; display: block; margin-bottom: 2px; text-transform: uppercase; }
         input[type=range] { width: 100%; cursor: pointer; accent-color: #800; }
@@ -106,21 +87,38 @@
         footer { 
             position: fixed; bottom: 0; left: 0; width: 100%; 
             background: #c0c0c0; border-top: 2px solid #ffffff; 
-            outline: 1px solid #808080; padding: 10px; box-sizing: border-box; 
-            z-index: 10000; height: 95px; box-shadow: inset 1px 1px 0px #fff;
+            outline: 1px solid #808080; padding: 8px 15px; box-sizing: border-box; 
+            z-index: 10000; height: 100px; box-shadow: inset 1px 1px 0px #fff;
         }
-        .footer-label { color: #000; font-size: 10px; font-weight: bold; margin-bottom: 6px; font-family: sans-serif; text-transform: uppercase; }
+        .footer-flex { display: flex; align-items: center; gap: 15px; height: 100%; }
+        .footer-main-area { flex-grow: 1; }
+        .footer-label { color: #000; font-size: 10px; font-weight: bold; margin-bottom: 4px; font-family: sans-serif; text-transform: uppercase; }
+        
         .vu-meter { 
-            display: flex; gap: 2px; height: 22px; background: #000; padding: 3px; 
+            display: flex; gap: 2px; height: 25px; background: #000; padding: 3px; 
             border-top: 2px solid #808080; border-left: 2px solid #808080;
             border-bottom: 2px solid #fff; border-right: 2px solid #fff;
         }
-        .led { flex: 1; background: #222; border: 1px solid #111; }
-        .led.on-g { background: #0f0; box-shadow: 0 0 5px #0f0; } 
-        .led.on-y { background: #ff0; box-shadow: 0 0 5px #ff0; } 
-        .led.on-r { background: #f00; box-shadow: 0 0 5px #f00; }
+        .led { flex: 1; background: #1a1a1a; border-right: 1px solid #333; }
+        .led.on-g { background: #0f0; box-shadow: 0 0 8px #0f0; } 
+        .led.on-y { background: #ff0; box-shadow: 0 0 8px #ff0; } 
+        .led.on-r { background: #f00; box-shadow: 0 0 10px #f00; }
 
-        @media (min-width: 600px) { .mixer-grid { grid-template-columns: repeat(4, 1fr); } .big-knob-panel { grid-column: span 4; } }
+        /* --- RED VU TOGGLE --- */
+        .vu-toggle-container { text-align: center; min-width: 60px; }
+        .vu-toggle-label { color: #000; font-size: 8px; font-weight: bold; display: block; margin-bottom: 5px; font-family: sans-serif; }
+        .red-switch {
+            appearance: none; width: 40px; height: 20px; background: #440000;
+            border: 2px solid #808080; cursor: pointer; position: relative;
+            outline: none; transition: background 0.2s;
+        }
+        .red-switch:checked { background: #ff0000; box-shadow: 0 0 5px #ff0000; }
+        .red-switch::after {
+            content: ''; position: absolute; top: 2px; left: 2px; width: 12px; height: 12px;
+            background: #c0c0c0; border: 2px outset #fff; transition: 0.2s;
+        }
+        .red-switch:checked::after { left: 22px; }
+
     </style>
 </head>
 <body>
@@ -128,12 +126,6 @@
 <header><h1>General desEchos</h1></header>
 
 <div class="stack-container">
-    <section class="rack-unit intro-box">
-        <div class="bolt tl"></div><div class="bolt tr"></div><div class="bolt bl"></div><div class="bolt br"></div>
-        <h2 style="margin:0 0 5px 0; font-size:1rem; text-transform: uppercase;">System Briefing</h2>
-        <p style="margin:0;">Master DUB Station. Ensure "START MIXER ENGINE" is pressed to activate VU monitoring.</p>
-    </section>
-
     <section class="rack-unit seg1-unit">
         <div class="bolt tl"></div><div class="bolt tr"></div><div class="bolt bl"></div><div class="bolt br"></div>
         <div class="unit-label">SIREN GENERATOR // SE-G1</div>
@@ -145,21 +137,6 @@
         </div>
         <div style="text-align:center; margin-top:15px;">
             <div id="fireBtn" class="fire-button"></div>
-            <button id="modeToggle" style="margin-top:10px; font-size:9px; padding:5px; background:#333; color:#fff; cursor:pointer;">LFO: SQUARE</button>
-        </div>
-    </section>
-
-    <section class="rack-unit delay-unit">
-        <div class="bolt tl"></div><div class="bolt tr"></div><div class="bolt bl"></div><div class="bolt br"></div>
-        <div class="unit-label">DIGITAL SPACE DELAY // E-X2</div>
-        <div class="control-grid">
-            <div><span class="knob-label">FEEDBACK</span><input type="range" id="echoKnob" min="0" max="0.95" step="0.05" value="0.5"></div>
-            <div><span class="knob-label">TIME</span><input type="range" id="timeKnob" min="0.05" max="2.0" step="0.05" value="0.4"></div>
-        </div>
-        <div style="display:flex; align-items:center; justify-content:center; gap:10px; margin-top:15px;">
-            <span style="font-size:10px; color:#000; font-weight:bold;">OFF</span>
-            <label class="switch"><input type="checkbox" id="delayToggle"><span class="slider"></span></label>
-            <span style="font-size:10px; color:#000; font-weight:bold;">ON</span>
         </div>
     </section>
 
@@ -169,7 +146,6 @@
         <div class="mixer-grid" id="mixerUI"></div>
         
         <div class="big-knob-panel">
-            <div style="font-size:10px; color:#fff;">KING TUBBY HP FILTER</div>
             <div class="rotary-dial" onclick="rotateFilter()">
                 <div id="dialHand" class="dial-hand"></div>
             </div>
@@ -181,13 +157,21 @@
 </div>
 
 <footer>
-    <div class="footer-label">SIGNAL MONITOR</div>
-    <div class="vu-meter" id="vu"></div>
+    <div class="footer-flex">
+        <div class="footer-main-area">
+            <div class="footer-label">SIGNAL MONITOR // PEAK LEVEL</div>
+            <div class="vu-meter" id="vu"></div>
+        </div>
+        <div class="vu-toggle-container">
+            <span class="vu-toggle-label">VU ON</span>
+            <input type="checkbox" id="vuMasterToggle" class="red-switch" checked>
+        </div>
+    </div>
 </footer>
 
 <script>
     let audioCtx, analyser, sirenOsc, sirenLfo, sirenLfoG, sirenG, delay, feedback, filter1, filter2;
-    let isPlaying = false, isSirenEcho = false, lfoType = 'square', filterIdx = 0, vuStarted = false;
+    let isPlaying = false, isSirenEcho = false, lfoType = 'square', filterIdx = 0;
     const freqs = [0, 100, 250, 500, 1000, 2000, 4000, 8000];
     const channels = [];
 
@@ -265,27 +249,6 @@
         }
     }
 
-    function rotateFilter() {
-        initAudio(); audioCtx.resume();
-        filterIdx = (filterIdx + 1) % freqs.length;
-        const f = freqs[filterIdx];
-        document.getElementById('dialHand').style.transform = `rotate(${filterIdx * 45}deg)`;
-        document.getElementById('freqLabel').innerText = f === 0 ? "OFF" : f + "Hz";
-        filter1.frequency.setTargetAtTime(f, audioCtx.currentTime, 0.05);
-        filter2.frequency.setTargetAtTime(f, audioCtx.currentTime, 0.05);
-    }
-
-    function loadUserFile(i, input) {
-        const file = input.files[0];
-        const box = document.getElementById(`up-box-${i}`);
-        if(file) {
-            box.innerText = file.name.substring(0, 6) + "..";
-            document.getElementById(`mix-aud-${i}`).src = URL.createObjectURL(file);
-        }
-    }
-
-    function setVol(i, v) { if(channels[i].gain) channels[i].gain.gain.value = v; }
-
     function toggleAll() {
         initAudio(); audioCtx.resume();
         isPlaying = !isPlaying;
@@ -294,28 +257,35 @@
             const aud = document.getElementById(`mix-aud-${i}`);
             isPlaying ? aud.play() : aud.pause();
         });
-        if (isPlaying && !vuStarted) { startVU(); vuStarted = true; }
+        startVU();
     }
 
     function startVU() {
         const vu = document.getElementById('vu'); vu.innerHTML = '';
         const leds = [];
-        for(let i=0; i<24; i++) {
+        const numLeds = 20;
+        for(let i=0; i<numLeds; i++) {
             const l = document.createElement('div'); l.className = 'led'; vu.appendChild(l); leds.push(l);
         }
         function draw() {
             if(!analyser) return requestAnimationFrame(draw);
             const data = new Uint8Array(analyser.frequencyBinCount);
             analyser.getByteFrequencyData(data);
-            let sum = 0;
-            for(let i=0; i<data.length; i++) sum += data[i];
-            const vol = sum / data.length;
-            const lit = Math.min(24, Math.floor((vol / 60) * 24)); 
+            
+            const isVuOn = document.getElementById('vuMasterToggle').checked;
+            let vol = 0;
+            if (isVuOn) {
+                let sum = 0;
+                for(let i=0; i<data.length; i++) sum += data[i];
+                vol = sum / data.length;
+            }
+
+            const lit = Math.min(numLeds, Math.floor((vol / 55) * numLeds)); 
             leds.forEach((l, i) => {
                 l.className = 'led';
                 if(i < lit) {
-                    if(i < 14) l.classList.add('on-g');
-                    else if(i < 20) l.classList.add('on-y');
+                    if(i < 12) l.classList.add('on-g');
+                    else if(i < 17) l.classList.add('on-y');
                     else l.classList.add('on-r');
                 }
             });
@@ -324,33 +294,16 @@
         draw();
     }
 
-    // Siren Handlers
+    // Standard audio handlers...
+    function rotateFilter() { initAudio(); audioCtx.resume(); filterIdx = (filterIdx + 1) % freqs.length; const f = freqs[filterIdx]; document.getElementById('dialHand').style.transform = `rotate(${filterIdx * 45}deg)`; document.getElementById('freqLabel').innerText = f === 0 ? "OFF" : f + "Hz"; filter1.frequency.setTargetAtTime(f, audioCtx.currentTime, 0.05); filter2.frequency.setTargetAtTime(f, audioCtx.currentTime, 0.05); }
+    function loadUserFile(i, input) { const file = input.files[0]; if(file) { document.getElementById(`mix-aud-${i}`).src = URL.createObjectURL(file); } }
+    function setVol(i, v) { if(channels[i].gain) channels[i].gain.gain.value = v; }
     const fireBtn = document.getElementById('fireBtn');
-    fireBtn.onmousedown = fireBtn.ontouchstart = (e) => { 
-        if(e) e.preventDefault(); initAudio(); 
-        audioCtx.resume().then(() => {
-            sirenG.gain.setTargetAtTime(document.getElementById('volKnob').value, audioCtx.currentTime, 0.02);
-        });
-    };
+    fireBtn.onmousedown = fireBtn.ontouchstart = (e) => { if(e) e.preventDefault(); initAudio(); audioCtx.resume().then(() => { sirenG.gain.setTargetAtTime(document.getElementById('volKnob').value, audioCtx.currentTime, 0.02); }); };
     window.onmouseup = window.ontouchend = () => { if(sirenG) sirenG.gain.setTargetAtTime(0, audioCtx.currentTime, 0.1); };
-
-    document.getElementById('delayToggle').onchange = (e) => {
-        initAudio(); audioCtx.resume();
-        isSirenEcho = e.target.checked;
-        if(isSirenEcho) sirenG.connect(delay); else try { sirenG.disconnect(delay); } catch(e){}
-    };
-
-    document.getElementById('modeToggle').onclick = () => {
-        lfoType = (lfoType === 'square') ? 'sine' : 'square';
-        if(sirenLfo) sirenLfo.type = lfoType;
-        document.getElementById('modeToggle').innerText = "LFO: " + lfoType.toUpperCase();
-    };
-
     document.getElementById('pitchKnob').oninput = (e) => { if(sirenOsc) sirenOsc.frequency.setTargetAtTime(e.target.value, audioCtx.currentTime, 0.05); };
     document.getElementById('rateKnob').oninput = (e) => { if(sirenLfo) sirenLfo.frequency.setTargetAtTime(e.target.value, audioCtx.currentTime, 0.05); };
     document.getElementById('depthKnob').oninput = (e) => { if(sirenLfoG) sirenLfoG.gain.setTargetAtTime(e.target.value, audioCtx.currentTime, 0.05); };
-    document.getElementById('echoKnob').oninput = (e) => { if(feedback) feedback.gain.value = e.target.value; };
-    document.getElementById('timeKnob').oninput = (e) => { if(delay) delay.delayTime.setTargetAtTime(e.target.value, audioCtx.currentTime, 0.1); };
 </script>
 </body>
 </html>
