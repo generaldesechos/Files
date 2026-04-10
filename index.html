@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>General desEchos v2.0 - Dub Station</title>
+    <title>General desEchos v2.1</title>
     <style>
         /* --- SYSTEM CORE --- */
         body {
@@ -13,309 +13,310 @@
             color: #ffffff;
             font-family: "Courier New", monospace;
             margin: 0;
-            padding: 20px 0 140px 0;
+            padding: 10px 0 120px 0;
             overflow-x: hidden;
-            touch-action: pan-y;
         }
 
         header {
             border: 4px double #ffffff;
             background: #222;
-            padding: 15px;
-            text-align: center;
-            box-shadow: 6px 6px 0px #000;
-            margin: 0 15px 30px 15px;
-        }
-
-        h1 { color: #ffffff; margin: 0; font-size: 1.8rem; text-transform: uppercase; letter-spacing: 2px; }
-
-        .bolt { position: absolute; width: 8px; height: 8px; background: #888; border-radius: 50%; border: 1px solid #444; }
-        .tl { top: 6px; left: 6px; } .tr { top: 6px; right: 6px; } .bl { bottom: 6px; left: 6px; } .br { bottom: 6px; right: 6px; }
-
-        /* --- MIXER SECTION --- */
-        .mixer-console {
-            background: #a0a0a0;
-            border: 8px outset #ccc;
-            max-width: 900px;
-            margin: 0 auto 30px auto;
-            padding: 20px;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px;
-            box-shadow: 10px 10px 0px rgba(0,0,0,0.5);
-            position: relative;
-        }
-
-        .channel-strip {
-            background: #888;
-            border: 2px inset #666;
             padding: 10px;
             text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            box-shadow: 4px 4px 0px #000;
+            margin: 10px;
         }
 
-        .fader-track { height: 150px; width: 30px; background: #222; position: relative; margin: 10px 0; border: 2px solid #444; }
-        .fader-handle { width: 40px; height: 20px; background: #ddd; border: 2px outset #fff; cursor: pointer; position: absolute; left: -7px; }
+        h1 { font-size: 1.4rem; text-transform: uppercase; letter-spacing: 2px; margin: 0; }
 
-        .send-btn {
-            width: 100%; margin: 3px 0; padding: 5px; font-size: 10px; font-weight: bold;
-            cursor: pointer; border: 3px outset #aaa; background: #555; color: #fff;
-        }
-        .send-btn.active-echo { background: #00ff00; color: #000; }
-        .send-btn.active-filter { background: #ffcc00; color: #000; }
+        .bolt { position: absolute; width: 6px; height: 6px; background: #888; border-radius: 50%; border: 1px solid #444; }
+        .tl { top: 5px; left: 5px; } .tr { top: 5px; right: 5px; } .bl { bottom: 5px; left: 5px; } .br { bottom: 5px; right: 5px; }
 
-        /* --- BIG KNOB UI --- */
-        .filter-unit {
-            background: #222; color: #fff; padding: 20px; border: 6px outset #444;
-            text-align: center; grid-column: span 1; display: flex; flex-direction: column; align-items: center;
-        }
-        .rotary-container {
-            width: 120px; height: 120px; background: #333; border-radius: 50%;
-            border: 4px solid #555; position: relative; margin: 15px auto;
-            cursor: pointer; transition: transform 0.2s;
-        }
-        .knob-indicator {
-            width: 4px; height: 30px; background: #ff0000; position: absolute;
-            top: 10px; left: 58px; transform-origin: center 50px;
-        }
-        .frequency-label { font-size: 12px; color: #ffcc00; margin-top: 10px; font-weight: bold; }
-
-        /* --- MASTER CONTROLS --- */
-        .master-section {
-            text-align: center; padding: 20px; background: #333; border: 4px inset #555; margin-top: 10px;
-        }
-        .master-fire {
-            padding: 15px 40px; font-size: 1.2rem; background: #880000; color: white;
-            border: 4px outset #ff0000; cursor: pointer; font-family: "Courier New", monospace;
-        }
-        .master-fire.playing { background: #008800; border-color: #00ff00; }
-
-        /* --- SIREN & PREVIOUS BOXES --- */
+        /* --- SIREN UNIT (RESTORED) --- */
         .seg1-unit {
-            background: #c0c0c0; border: 6px outset #eee; color: #222;
-            max-width: 340px; margin: 0 auto 30px auto; padding: 20px; position: relative;
+            background: #c0c0c0; border: 5px outset #eee; color: #222;
+            max-width: 360px; margin: 15px auto; padding: 15px; position: relative;
         }
+        .unit-label { background: #333; color: #ffcc00; padding: 4px; text-align: center; font-weight: bold; font-size: 11px; margin-bottom: 10px; }
+        .control-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
+        .knob-container { text-align: center; font-size: 9px; font-weight: bold; }
+        input[type=range] { width: 100%; accent-color: #800; }
+
         .fire-button {
-            width: 60px; height: 60px; background: radial-gradient(circle, #ff0000, #880000);
-            border: 5px outset #ff6666; border-radius: 50%; cursor: pointer; margin: 0 auto 15px auto; display: block;
+            width: 70px; height: 70px; background: radial-gradient(circle, #ff0000, #880000);
+            border: 4px outset #ff6666; border-radius: 50%; cursor: pointer; margin: 0 auto 10px auto; display: block;
         }
+
+        /* --- MIXER SECTION --- */
+        .mixer-container {
+            max-width: 500px; margin: 20px auto; background: #999; border: 6px outset #bbb; padding: 10px; position: relative;
+        }
+        .mixer-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 10px; /* 2x2 on mobile */
+        }
+        .channel-strip {
+            background: #777; border: 2px inset #555; padding: 8px; text-align: center;
+        }
+        .fader-box { height: 100px; padding: 10px 0; }
+        .vert-fader { appearance: slider-vertical; width: 25px; height: 80px; }
+
+        .send-row { display: flex; gap: 4px; margin-top: 5px; }
+        .s-btn { flex: 1; font-size: 8px; padding: 4px 0; border: 2px outset #aaa; background: #444; color: #fff; cursor: pointer; }
+        .s-btn.active-e { background: #00ff00; color: #000; }
+        .s-btn.active-f { background: #ffcc00; color: #000; }
+
+        /* --- BIG KNOB (KING TUBBY STYLE) --- */
+        .big-knob-panel {
+            grid-column: span 2; background: #222; border: 4px inset #444; padding: 10px; margin-top: 10px; text-align: center;
+        }
+        .rotary-dial {
+            width: 80px; height: 80px; background: #333; border-radius: 50%; border: 3px solid #666;
+            margin: 10px auto; position: relative; cursor: pointer;
+        }
+        .dial-hand { width: 3px; height: 25px; background: red; position: absolute; top: 15px; left: 38.5px; transform-origin: center 25px; }
+        .freq-text { color: #ffcc00; font-size: 14px; font-weight: bold; }
+
+        /* --- MASTER TRANSPORT --- */
+        .transport { grid-column: span 2; margin-top: 10px; }
+        .play-all { width: 100%; padding: 12px; background: #006600; color: white; border: 4px outset #00aa00; font-weight: bold; }
 
         footer {
             position: fixed; bottom: 0; left: 0; width: 100vw; background: #c0c0c0;
-            border-top: 5px outset #fff; padding: 10px 15px; box-sizing: border-box; z-index: 9999; height: 100px;
+            border-top: 5px outset #fff; padding: 10px; box-sizing: border-box; height: 90px;
         }
-        .vu-meter { display: flex; gap: 3px; height: 25px; background: #000; padding: 4px; border: 3px inset #808080; }
+        .vu-meter { display: flex; gap: 2px; height: 20px; background: #000; padding: 3px; border: 2px inset #808080; }
         .led { flex: 1; background: #222; }
-        .led.green.on { background: #33ff33; box-shadow: 0 0 8px #00ff00; }
-        .led.yellow.on { background: #ffff33; box-shadow: 0 0 8px #ffff00; }
-        .led.red.on { background: #ff3333; box-shadow: 0 0 8px #ff0000; }
+        .led.on-g { background: #0f0; box-shadow: 0 0 5px #0f0; }
+        .led.on-y { background: #ff0; box-shadow: 0 0 5px #ff0; }
+        .led.on-r { background: #f00; box-shadow: 0 0 5px #f00; }
+
+        @media (min-width: 600px) {
+            .mixer-grid { grid-template-columns: 1fr 1fr 1fr 1fr; }
+            .big-knob-panel { grid-column: span 4; }
+            .transport { grid-column: span 4; }
+        }
     </style>
 </head>
 <body>
 
-<header>
-    <h1>General desEchos v2.0</h1>
-</header>
+<header><h1>General desEchos v2.1</h1></header>
 
 <main>
-    <section class="mixer-console">
-        <div class="bolt tl"></div><div class="bolt tr"></div><div class="bolt bl"></div><div class="bolt br"></div>
-        
-        <div class="channel-strip">
-            <span style="font-size:10px; font-weight:bold;">CH 1</span>
-            <div class="fader-track"><input type="range" class="fader-handle" orient="vertical" min="0" max="1" step="0.01" value="0.7" oninput="updateVol(0, this.value)"></div>
-            <button class="send-btn" onclick="toggleSend(0, 'echo', this)">ECHO</button>
-            <button class="send-btn" onclick="toggleSend(0, 'filter', this)">FILTER</button>
-            <audio id="audio0" loop><source src="audio1.mp3" type="audio/mpeg"></audio>
-        </div>
-
-        <div class="channel-strip">
-            <span style="font-size:10px; font-weight:bold;">CH 2</span>
-            <div class="fader-track"><input type="range" class="fader-handle" orient="vertical" min="0" max="1" step="0.01" value="0.7" oninput="updateVol(1, this.value)"></div>
-            <button class="send-btn" onclick="toggleSend(1, 'echo', this)">ECHO</button>
-            <button class="send-btn" onclick="toggleSend(1, 'filter', this)">FILTER</button>
-            <audio id="audio1" loop><source src="audio2.mp3" type="audio/mpeg"></audio>
-        </div>
-
-        <div class="channel-strip">
-            <span style="font-size:10px; font-weight:bold;">CH 3</span>
-            <div class="fader-track"><input type="range" class="fader-handle" orient="vertical" min="0" max="1" step="0.01" value="0.7" oninput="updateVol(2, this.value)"></div>
-            <button class="send-btn" onclick="toggleSend(2, 'echo', this)">ECHO</button>
-            <button class="send-btn" onclick="toggleSend(2, 'filter', this)">FILTER</button>
-            <audio id="audio2" loop><source src="audio3.mp3" type="audio/mpeg"></audio>
-        </div>
-
-        <div class="channel-strip">
-            <span style="font-size:10px; font-weight:bold;">CH 4</span>
-            <div class="fader-track"><input type="range" class="fader-handle" orient="vertical" min="0" max="1" step="0.01" value="0.7" oninput="updateVol(3, this.value)"></div>
-            <button class="send-btn" onclick="toggleSend(3, 'echo', this)">ECHO</button>
-            <button class="send-btn" onclick="toggleSend(3, 'filter', this)">FILTER</button>
-            <audio id="audio3" loop><source src="audio4.mp3" type="audio/mpeg"></audio>
-        </div>
-
-        <div class="filter-unit">
-            <span style="font-size:10px; font-weight:bold; letter-spacing:1px;">ALTEC TYPE 9067</span>
-            <div class="rotary-container" id="bigKnob" onclick="rotateKnob()">
-                <div class="knob-indicator" id="knobPointer"></div>
-            </div>
-            <div class="frequency-label" id="freqDisplay">OFF (0 Hz)</div>
-            <div style="font-size:8px; margin-top:5px;">HIGH PASS SELECTOR</div>
-        </div>
-
-        <div class="master-section" style="grid-column: 1 / -1;">
-            <button id="masterPlay" class="master-fire" onclick="toggleAllAudio()">START ENGINE</button>
-            <div style="font-size:9px; margin-top:10px; color:#aaa;">MASTER SYNC PROTOCOL v2.0</div>
-        </div>
-    </section>
-
     <section class="seg1-unit">
         <div class="bolt tl"></div><div class="bolt tr"></div><div class="bolt bl"></div><div class="bolt br"></div>
-        <div style="background:#333; color:#fc0; text-align:center; font-size:10px; padding:5px; margin-bottom:10px;">SE-G1 SIREN MODULE</div>
+        <div class="unit-label">SE-G1 SIREN // TACTICAL AUDIO</div>
+        <div class="control-grid">
+            <div class="knob-container">PITCH<input type="range" id="pKnob" min="100" max="1500" value="440"></div>
+            <div class="knob-container">LFO RATE<input type="range" id="rKnob" min="1" max="40" value="12"></div>
+            <div class="knob-container">LFO DEPTH<input type="range" id="dKnob" min="0" max="1500" value="600"></div>
+            <div class="knob-container">ECHO FBK<input type="range" id="eKnob" min="0" max="0.9" step="0.1" value="0.5"></div>
+        </div>
         <div id="fireBtn" class="fire-button"></div>
-        <input type="range" id="pitchKnob" min="100" max="1500" value="440" style="width:100%;">
+    </section>
+
+    <section class="mixer-container">
+        <div class="bolt tl"></div><div class="bolt tr"></div><div class="bolt bl"></div><div class="bolt br"></div>
+        <div class="mixer-grid">
+            <div class="channel-strip">
+                <div style="font-size:10px;">CH 1</div>
+                <div class="fader-box"><input type="range" class="vert-fader" min="0" max="1" step="0.01" value="0.7" oninput="updateVol(0, this.value)"></div>
+                <div class="send-row">
+                    <button class="s-btn" onclick="toggleS(0,'e',this)">ECHO</button>
+                    <button class="s-btn" onclick="toggleS(0,'f',this)">FLTR</button>
+                </div>
+                <audio id="aud0" loop><source src="audio1.mp3"></audio>
+            </div>
+            <div class="channel-strip">
+                <div style="font-size:10px;">CH 2</div>
+                <div class="fader-box"><input type="range" class="vert-fader" min="0" max="1" step="0.01" value="0.7" oninput="updateVol(1, this.value)"></div>
+                <div class="send-row">
+                    <button class="s-btn" onclick="toggleS(1,'e',this)">ECHO</button>
+                    <button class="s-btn" onclick="toggleS(1,'f',this)">FLTR</button>
+                </div>
+                <audio id="aud1" loop><source src="audio2.mp3"></audio>
+            </div>
+            <div class="channel-strip">
+                <div style="font-size:10px;">CH 3</div>
+                <div class="fader-box"><input type="range" class="vert-fader" min="0" max="1" step="0.01" value="0.7" oninput="updateVol(2, this.value)"></div>
+                <div class="send-row">
+                    <button class="s-btn" onclick="toggleS(2,'e',this)">ECHO</button>
+                    <button class="s-btn" onclick="toggleS(2,'f',this)">FLTR</button>
+                </div>
+                <audio id="aud2" loop><source src="audio3.mp3"></audio>
+            </div>
+            <div class="channel-strip">
+                <div style="font-size:10px;">CH 4</div>
+                <div class="fader-box"><input type="range" class="vert-fader" min="0" max="1" step="0.01" value="0.7" oninput="updateVol(3, this.value)"></div>
+                <div class="send-row">
+                    <button class="s-btn" onclick="toggleS(3,'e',this)">ECHO</button>
+                    <button class="s-btn" onclick="toggleS(3,'f',this)">FLTR</button>
+                </div>
+                <audio id="aud3" loop><source src="audio4.mp3"></audio>
+            </div>
+
+            <div class="big-knob-panel">
+                <div style="font-size:10px;">KING TUBBY FILTER</div>
+                <div class="rotary-dial" onclick="rotateBigKnob()">
+                    <div id="dialHand" class="dial-hand"></div>
+                </div>
+                <div id="freqLabel" class="freq-text">OFF</div>
+            </div>
+
+            <div class="transport">
+                <button id="mPlay" class="play-all" onclick="masterToggle()">START ALL TRACKS</button>
+            </div>
+        </div>
     </section>
 </main>
 
 <footer>
-    <div style="color:#000; font-size:10px; font-weight:bold; margin-bottom:5px; text-transform: uppercase;">Signal Monitor</div>
+    <div style="color:#000; font-size:9px; font-weight:bold; margin-bottom:5px;">SIGNAL MONITOR</div>
     <div class="vu-meter" id="vu"></div>
 </footer>
 
 <script>
-    let audioCtx, analyser;
+    let audioCtx, osc, lfo, lfoG, sirenG, delay, feedback, filter1, filter2, analyser;
     let isPlaying = false;
-
-    // Filter frequencies (12 positions similar to Altec)
-    const filterFreqs = [0, 70, 100, 150, 250, 500, 800, 1000, 2000, 3000, 5000, 8000];
-    let currentFilterIdx = 0;
-
-    // Effect Nodes
-    let delayNode, feedbackNode, filterNode1, filterNode2;
-
-    // Channel Data
+    let currentFreqIdx = 0;
+    const freqs = [0, 70, 100, 150, 250, 500, 800, 1000, 2000, 3000, 5000, 8000];
+    
     const channels = [
-        { id: 'audio0', gain: null, echoOn: false, filterOn: false, source: null, echoBus: null, filterBus: null },
-        { id: 'audio1', gain: null, echoOn: false, filterOn: false, source: null, echoBus: null, filterBus: null },
-        { id: 'audio2', gain: null, echoOn: false, filterOn: false, source: null, echoBus: null, filterBus: null },
-        { id: 'audio3', gain: null, echoOn: false, filterOn: false, source: null, echoBus: null, filterBus: null }
+        { id: 'aud0', gain: null, echoG: null, fltrG: null, eOn: false, fOn: false },
+        { id: 'aud1', gain: null, echoG: null, fltrG: null, eOn: false, fOn: false },
+        { id: 'aud2', gain: null, echoG: null, fltrG: null, eOn: false, fOn: false },
+        { id: 'aud3', gain: null, echoG: null, fltrG: null, eOn: false, fOn: false }
     ];
 
-    function initAudio() {
+    function setupAudio() {
         if (audioCtx) return;
         audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         analyser = audioCtx.createAnalyser();
 
-        // Setup Echo
-        delayNode = audioCtx.createDelay(2.0);
-        delayNode.delayTime.value = 0.4;
-        feedbackNode = audioCtx.createGain();
-        feedbackNode.gain.value = 0.5;
-        delayNode.connect(feedbackNode);
-        feedbackNode.connect(delayNode);
-        delayNode.connect(analyser);
+        // Echo Unit
+        delay = audioCtx.createDelay(2.0);
+        delay.delayTime.value = 0.35;
+        feedback = audioCtx.createGain();
+        feedback.gain.value = 0.5;
+        delay.connect(feedback);
+        feedback.connect(delay);
+        delay.connect(analyser);
 
-        // Setup Dual High Pass (The "Big Knob" Filter)
-        filterNode1 = audioCtx.createBiquadFilter();
-        filterNode2 = audioCtx.createBiquadFilter();
-        filterNode1.type = filterNode2.type = 'highpass';
-        filterNode1.Q.value = 1.5; // Resonant peak
-        filterNode1.connect(filterNode2);
-        filterNode2.connect(analyser);
+        // Big Knob Filter
+        filter1 = audioCtx.createBiquadFilter();
+        filter2 = audioCtx.createBiquadFilter();
+        filter1.type = filter2.type = 'highpass';
+        filter1.Q.value = 1.2;
+        filter1.connect(filter2);
+        filter2.connect(analyser);
 
-        analyser.connect(audioCtx.destination);
+        // Siren Routing
+        osc = audioCtx.createOscillator();
+        lfo = audioCtx.createOscillator();
+        lfoG = audioCtx.createGain();
+        sirenG = audioCtx.createGain();
+        osc.type = 'square';
+        sirenG.gain.value = 0;
+        lfo.connect(lfoG);
+        lfoG.connect(osc.frequency);
+        osc.connect(sirenG);
+        sirenG.connect(analyser);
+        osc.start(); lfo.start();
 
-        // Setup Channels
-        channels.forEach((ch, index) => {
+        // Mixer Channels
+        channels.forEach((ch, i) => {
             const el = document.getElementById(ch.id);
-            ch.source = audioCtx.createMediaElementSource(el);
+            const src = audioCtx.createMediaElementSource(el);
             ch.gain = audioCtx.createGain();
-            ch.echoBus = audioCtx.createGain();
-            ch.filterBus = audioCtx.createGain();
-            
-            ch.echoBus.gain.value = 0;
-            ch.filterBus.gain.value = 0;
+            ch.echoG = audioCtx.createGain();
+            ch.fltrG = audioCtx.createGain();
+            ch.echoG.gain.value = 0;
+            ch.fltrG.gain.value = 0;
 
-            ch.source.connect(ch.gain);
-            ch.gain.connect(analyser); // Direct to Master
-            
-            ch.gain.connect(ch.echoBus);
-            ch.echoBus.connect(delayNode);
-
-            ch.gain.connect(ch.filterBus);
-            ch.filterBus.connect(filterNode1);
+            src.connect(ch.gain);
+            ch.gain.connect(analyser); // Dry
+            ch.gain.connect(ch.echoG);
+            ch.echoG.connect(delay); // To Echo
+            ch.gain.connect(ch.fltrG);
+            ch.fltrG.connect(filter1); // To Filter
         });
 
-        startVUMeter();
+        analyser.connect(audioCtx.destination);
+        startVU();
     }
 
-    function toggleAllAudio() {
-        initAudio();
-        const btn = document.getElementById('masterPlay');
-        if (!isPlaying) {
+    // Siren Logic
+    const fireBtn = document.getElementById('fireBtn');
+    const startS = (e) => { if(e) e.preventDefault(); setupAudio(); sirenG.gain.setTargetAtTime(0.5, audioCtx.currentTime, 0.02); };
+    const stopS = () => { if(sirenG) sirenG.gain.setTargetAtTime(0, audioCtx.currentTime, 0.1); };
+    fireBtn.onmousedown = fireBtn.ontouchstart = startS;
+    window.onmouseup = window.ontouchend = stopS;
+
+    // Siren Knob updates
+    document.getElementById('pKnob').oninput = (e) => osc.frequency.setTargetAtTime(e.target.value, audioCtx.currentTime, 0.05);
+    document.getElementById('rKnob').oninput = (e) => lfo.frequency.setTargetAtTime(e.target.value, audioCtx.currentTime, 0.05);
+    document.getElementById('dKnob').oninput = (e) => lfoG.gain.setTargetAtTime(e.target.value, audioCtx.currentTime, 0.05);
+    document.getElementById('eKnob').oninput = (e) => feedback.gain.value = e.target.value;
+
+    // Mixer Logic
+    function updateVol(i, v) { if(channels[i].gain) channels[i].gain.gain.value = v; }
+    
+    function toggleS(i, type, btn) {
+        setupAudio();
+        if(type === 'e') {
+            channels[i].eOn = !channels[i].eOn;
+            channels[i].echoG.gain.value = channels[i].eOn ? 0.7 : 0;
+            btn.classList.toggle('active-e');
+        } else {
+            channels[i].fOn = !channels[i].fOn;
+            channels[i].fltrG.gain.value = channels[i].fOn ? 1 : 0;
+            btn.classList.toggle('active-f');
+        }
+    }
+
+    function rotateBigKnob() {
+        setupAudio();
+        currentFreqIdx = (currentFreqIdx + 1) % freqs.length;
+        const f = freqs[currentFreqIdx];
+        document.getElementById('dialHand').style.transform = `rotate(${currentFreqIdx * 30}deg)`;
+        document.getElementById('freqLabel').innerText = f === 0 ? "OFF" : f + "Hz";
+        filter1.frequency.setTargetAtTime(f, audioCtx.currentTime, 0.05);
+        filter2.frequency.setTargetAtTime(f, audioCtx.currentTime, 0.05);
+    }
+
+    function masterToggle() {
+        setupAudio();
+        const btn = document.getElementById('mPlay');
+        if(!isPlaying) {
             channels.forEach(ch => document.getElementById(ch.id).play());
-            btn.innerText = "HALT ENGINE";
-            btn.classList.add('playing');
+            btn.innerText = "STOP ALL"; btn.style.background = "#800";
             isPlaying = true;
         } else {
             channels.forEach(ch => document.getElementById(ch.id).pause());
-            btn.innerText = "START ENGINE";
-            btn.classList.remove('playing');
+            btn.innerText = "START ALL TRACKS"; btn.style.background = "#060";
             isPlaying = false;
         }
     }
 
-    function updateVol(idx, val) {
-        if (channels[idx].gain) channels[idx].gain.gain.value = val;
-    }
-
-    function toggleSend(idx, type, btn) {
-        initAudio();
-        if (type === 'echo') {
-            channels[idx].echoOn = !channels[idx].echoOn;
-            channels[idx].echoBus.gain.value = channels[idx].echoOn ? 0.8 : 0;
-            btn.classList.toggle('active-echo');
-        } else {
-            channels[idx].filterOn = !channels[idx].filterOn;
-            channels[idx].filterBus.gain.value = channels[idx].filterOn ? 1 : 0;
-            btn.classList.toggle('active-filter');
-            // When filter is on, we reduce direct signal for the "Dub" feel
-            channels[idx].gain.gain.setTargetAtTime(channels[idx].filterOn ? 0.2 : 0.7, audioCtx.currentTime, 0.1);
-        }
-    }
-
-    function rotateKnob() {
-        initAudio();
-        currentFilterIdx = (currentFilterIdx + 1) % filterFreqs.length;
-        const freq = filterFreqs[currentFilterIdx];
-        const angle = (currentFilterIdx * 30); // 12 positions = 360/12
-
-        document.getElementById('knobPointer').style.transform = `rotate(${angle}deg)`;
-        document.getElementById('freqDisplay').innerText = freq === 0 ? "OFF (0 Hz)" : freq + " Hz";
-
-        // Update Filters
-        filterNode1.frequency.setTargetAtTime(freq, audioCtx.currentTime, 0.05);
-        filterNode2.frequency.setTargetAtTime(freq, audioCtx.currentTime, 0.05);
-    }
-
-    // VU Meter Logic
-    function startVUMeter() {
-        const vuContainer = document.getElementById('vu');
+    function startVU() {
+        const v = document.getElementById('vu');
         const leds = [];
         for(let i=0; i<24; i++) {
-            const led = document.createElement('div');
-            led.className = 'led ' + (i < 14 ? 'green' : i < 20 ? 'yellow' : 'red');
-            vuContainer.appendChild(led);
-            leds.push(led);
+            const l = document.createElement('div');
+            l.className = 'led';
+            v.appendChild(l); leds.push(l);
         }
-
         function draw() {
             const data = new Uint8Array(analyser.frequencyBinCount);
             analyser.getByteFrequencyData(data);
-            const volume = data.reduce((a,b) => a+b) / data.length;
-            const litLeds = Math.floor((volume / 140) * leds.length);
-            leds.forEach((led, i) => led.classList.toggle('on', i < litLeds));
+            const vol = data.reduce((a,b) => a+b) / data.length;
+            const lit = Math.floor((vol / 140) * 24);
+            leds.forEach((l, i) => {
+                l.className = 'led';
+                if(i < lit) {
+                    if(i < 14) l.classList.add('on-g');
+                    else if(i < 20) l.classList.add('on-y');
+                    else l.classList.add('on-r');
+                }
+            });
             requestAnimationFrame(draw);
         }
         draw();
