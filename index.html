@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>General desEchos v1.0</title>
     <style>
-        /* --- CORE STYLE --- */
+        /* --- SYSTEM CORE --- */
         body {
             background-color: #004488;
             background-image: linear-gradient(rgba(255,255,255,.07) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.07) 1px, transparent 1px);
@@ -19,7 +19,7 @@
         }
 
         header {
-            border: 4px double #ffcc00;
+            border: 4px double #ffffff; /* White border */
             background: #222;
             padding: 15px;
             text-align: center;
@@ -28,119 +28,87 @@
         }
 
         h1 {
-            color: #ffcc00;
+            color: #ffffff; /* White Header Color */
             margin: 0;
             font-size: 1.8rem;
             text-transform: uppercase;
             letter-spacing: 2px;
         }
 
-        /* --- SE-G1 UNIT CHASSIS --- */
+        /* --- UI COMPONENTS --- */
+        .intro-box, .seg1-unit, .machine-part, .blog-log {
+            position: relative;
+            box-shadow: 8px 8px 0px rgba(0,0,0,0.4);
+            margin-bottom: 30px;
+        }
+
+        .intro-box {
+            background: #e6be8a;
+            border: 2px solid #8b4513;
+            color: #221100;
+            max-width: 90%;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 15px;
+        }
+
+        /* --- SE-G1 SIREN UNIT --- */
         .seg1-unit {
             background: #c0c0c0;
             border: 6px outset #eee;
             color: #222;
             max-width: 340px;
-            margin: 0 auto;
+            margin-left: auto;
+            margin-right: auto;
             padding: 20px;
-            box-shadow: 12px 12px 0px rgba(0,0,0,0.5);
-            position: relative;
         }
 
         .unit-label {
-            background: #333;
-            color: #ffcc00;
-            padding: 5px;
-            text-align: center;
-            font-weight: bold;
-            border: 2px inset #666;
-            margin-bottom: 20px;
-            font-size: 14px;
+            background: #333; color: #ffcc00; padding: 5px; text-align: center;
+            font-weight: bold; border: 2px inset #666; margin-bottom: 20px; font-size: 12px;
         }
 
-        /* --- CONTROLS --- */
-        .control-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-
-        .knob-container {
-            text-align: center;
-            font-size: 10px;
-            font-weight: bold;
-        }
-
-        input[type=range] {
-            width: 100%;
-            cursor: pointer;
-            accent-color: #880000;
-        }
-
-        .trigger-section {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 15px;
-        }
+        .control-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
+        .knob-container { text-align: center; font-size: 9px; font-weight: bold; }
+        input[type=range] { width: 100%; cursor: pointer; accent-color: #880000; }
 
         .fire-button {
-            width: 80px;
-            height: 80px;
-            background: radial-gradient(circle, #ff0000, #880000);
-            border: 5px outset #ff6666;
-            border-radius: 50%;
-            cursor: pointer;
-            box-shadow: 0 5px 0 #440000;
+            width: 70px; height: 70px; background: radial-gradient(circle, #ff0000, #880000);
+            border: 5px outset #ff6666; border-radius: 50%; cursor: pointer; margin: 0 auto 15px auto;
+            box-shadow: 0 5px 0 #440000; touch-action: none;
         }
-
-        .fire-button:active {
-            transform: translateY(3px);
-            box-shadow: 0 2px 0 #440000;
-            border-style: inset;
-        }
+        .fire-button:active { transform: translateY(3px); box-shadow: 0 2px 0 #440000; border-style: inset; }
 
         .fx-btn {
-            background: #444;
-            color: #00ff00;
-            border: 3px outset #666;
-            padding: 10px;
-            font-size: 10px;
-            font-family: "Courier New", monospace;
-            width: 100%;
-            cursor: pointer;
+            background: #444; color: #00ff00; border: 3px outset #666; padding: 10px;
+            font-size: 10px; font-family: "Courier New", monospace; width: 48%; cursor: pointer;
         }
+        .fx-btn.active { background: #00ff00; color: #000; border-style: inset; }
 
-        .fx-btn.active {
-            background: #00ff00;
-            color: #000;
-            border-style: inset;
+        /* --- CONTENT GRID --- */
+        .machine-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px; max-width: 95%; margin: 0 auto; padding: 0 15px; box-sizing: border-box;
         }
+        .machine-part { background: #c0c0c0; border: 4px outset #eee; color: #000; padding: 15px; }
+        .display-screen { background: #112211; border: 3px inset #808080; padding: 4px; margin-bottom: 10px; }
+        .display-screen img { width: 100%; height: auto; aspect-ratio: 4/3; object-fit: cover; display: block; }
+        audio { width: 100%; filter: invert(100%) contrast(1.2); }
 
-        /* --- FOOTER --- */
+        /* --- BLOG LOG --- */
+        .blog-log {
+            background: #fdf5e6; border: 1px solid #d2b48c; max-width: 600px;
+            margin: 40px auto; padding: 25px 20px 25px 45px; color: #332211; font-family: "Georgia", serif;
+        }
+        .blog-log::before { content: ""; position: absolute; top: 0; left: 30px; width: 2px; height: 100%; background: rgba(255, 0, 0, 0.2); }
+
+        /* --- FOOTER & VU --- */
         footer {
-            position: fixed;
-            bottom: 0; left: 0;
-            width: 100vw;
-            background: #c0c0c0;
-            border-top: 5px outset #fff;
-            padding: 10px 15px;
-            box-sizing: border-box;
-            z-index: 9999;
-            height: 100px;
+            position: fixed; bottom: 0; left: 0; width: 100vw; background: #c0c0c0;
+            border-top: 5px outset #fff; padding: 10px 15px; box-sizing: border-box; z-index: 9999; height: 100px;
         }
-
-        .vu-meter {
-            display: flex;
-            gap: 3px;
-            height: 25px;
-            background: #000;
-            padding: 4px;
-            border: 3px inset #808080;
-        }
-
-        .led { flex: 1; background: #222; transition: background 0.05s; }
+        .vu-meter { display: flex; gap: 3px; height: 25px; background: #000; padding: 4px; border: 3px inset #808080; }
+        .led { flex: 1; background: #222; }
         .led.green.on { background: #33ff33; box-shadow: 0 0 8px #00ff00; }
         .led.yellow.on { background: #ffff33; box-shadow: 0 0 8px #ffff00; }
         .led.red.on { background: #ff3333; box-shadow: 0 0 8px #ff0000; }
@@ -156,56 +124,58 @@
 </header>
 
 <main>
+    <section class="intro-box">
+        <div class="bolt tl"></div><div class="bolt tr"></div><div class="bolt bl"></div><div class="bolt br"></div>
+        <h2 style="margin:0; font-size:1rem;">SYSTEM BRIEFING</h2>
+        <p style="font-size:0.8rem; margin:5px 0 0 0;">Welcome to the <strong>General desEchos</strong> audio interface. Calibrate the SE-G1 module below for signal testing. Documentation logs are stored at the bottom of the feed.</p>
+    </section>
+
     <section class="seg1-unit">
         <div class="bolt tl"></div><div class="bolt tr"></div><div class="bolt bl"></div><div class="bolt br"></div>
-        <div class="unit-label">GENERAL desECHOS // SE-G1 MOD</div>
-
+        <div class="unit-label">GENERAL desECHOS // SE-G1 UNIT</div>
         <div class="control-grid">
-            <div class="knob-container">
-                PITCH
-                <input type="range" id="pitchKnob" min="100" max="1200" value="440">
-            </div>
-            <div class="knob-container">
-                LFO RATE
-                <input type="range" id="rateKnob" min="1" max="30" value="10">
-            </div>
-            <div class="knob-container">
-                LFO DEPTH
-                <input type="range" id="depthKnob" min="0" max="1200" value="600">
-            </div>
-            <div class="knob-container">
-                ECHO F.BACK
-                <input type="range" id="echoKnob" min="0" max="0.9" step="0.1" value="0.5">
-            </div>
+            <div class="knob-container">PITCH<input type="range" id="pitchKnob" min="100" max="1200" value="440"></div>
+            <div class="knob-container">LFO RATE<input type="range" id="rateKnob" min="1" max="30" value="10"></div>
+            <div class="knob-container">LFO DEPTH<input type="range" id="depthKnob" min="0" max="1200" value="600"></div>
+            <div class="knob-container">ECHO FBK<input type="range" id="echoKnob" min="0" max="0.9" step="0.1" value="0.5"></div>
         </div>
-
-        <div class="trigger-section">
-            <div id="fireBtn" class="fire-button"></div>
-            <div style="display:flex; gap:10px; width:100%;">
-                <button id="delayToggle" class="fx-btn">ECHO UNIT</button>
-                <button id="modeToggle" class="fx-btn">LFO: SQUARE</button>
-            </div>
+        <div id="fireBtn" class="fire-button"></div>
+        <div style="display:flex; justify-content: space-between;">
+            <button id="delayToggle" class="fx-btn">ECHO UNIT</button>
+            <button id="modeToggle" class="fx-btn">LFO: SQUARE</button>
         </div>
     </section>
+
+    <div class="machine-grid">
+        <div class="machine-part">
+            <div class="bolt tl"></div><div class="bolt tr"></div>
+            <div class="display-screen"><img src="https://picsum.photos/id/101/400/300" alt="Waveform 1"></div>
+            <audio controls><source src="audio1.mp3" type="audio/mpeg"></audio>
+        </div>
+        <div class="machine-part">
+            <div class="bolt tl"></div><div class="bolt tr"></div>
+            <div class="display-screen"><img src="https://picsum.photos/id/102/400/300" alt="Waveform 2"></div>
+            <audio controls><source src="audio2.mp3" type="audio/mpeg"></audio>
+        </div>
+    </div>
+
+    <article class="blog-log">
+        <h3 style="margin-top:0; font-size:1rem;">LOG #410: HARDWARE RESET</h3>
+        <p>Aesthetic recalibration complete. Header color shifted to white for high-contrast visibility. SE-G1 LFO circuitry stabilized. Ready for field operations.</p>
+    </article>
 </main>
 
 <footer>
-    <div style="color:#000; font-size:10px; font-weight:bold; margin-bottom:5px; text-transform: uppercase;">Signal Monitor : General desEchos Output</div>
+    <div style="color:#000; font-size:10px; font-weight:bold; margin-bottom:5px; text-transform: uppercase;">Signal Monitor : General desEchos</div>
     <div class="vu-meter" id="vu"></div>
 </footer>
 
 <script>
     let audioCtx, osc, lfo, lfoGain, mainGain, delay, feedback, analyser;
-    let isEcho = false;
-    let lfoType = 'square';
-
-    const fireBtn = document.getElementById('fireBtn');
-    const delayToggle = document.getElementById('delayToggle');
-    const modeToggle = document.getElementById('modeToggle');
+    let isEcho = false; let lfoType = 'square';
     const vuContainer = document.getElementById('vu');
     const leds = [];
 
-    // Create VU LEDs
     for(let i=0; i<24; i++) {
         const led = document.createElement('div');
         led.className = 'led ' + (i < 14 ? 'green' : i < 20 ? 'yellow' : 'red');
@@ -216,37 +186,21 @@
     function init() {
         if (audioCtx) return;
         audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        
         osc = audioCtx.createOscillator();
         lfo = audioCtx.createOscillator();
         lfoGain = audioCtx.createGain();
         mainGain = audioCtx.createGain();
         analyser = audioCtx.createAnalyser();
-        
-        // Delay Hardware
         delay = audioCtx.createDelay(2.0);
         feedback = audioCtx.createGain();
-        delay.delayTime.value = 0.35;
-        feedback.gain.value = document.getElementById('echoKnob').value;
         
-        osc.type = 'square'; 
-        lfo.type = lfoType;
-        mainGain.gain.value = 0;
+        osc.type = 'square'; lfo.type = lfoType; mainGain.gain.value = 0;
+        delay.delayTime.value = 0.35; feedback.gain.value = document.getElementById('echoKnob').value;
         
-        // Signal Flow
-        lfo.connect(lfoGain);
-        lfoGain.connect(osc.frequency);
-        osc.connect(mainGain);
-        mainGain.connect(analyser);
-        analyser.connect(audioCtx.destination);
-        
-        // Echo Feedback Loop
-        delay.connect(feedback);
-        feedback.connect(delay);
-
-        osc.start();
-        lfo.start();
-        drawVU();
+        lfo.connect(lfoGain); lfoGain.connect(osc.frequency);
+        osc.connect(mainGain); mainGain.connect(analyser); analyser.connect(audioCtx.destination);
+        delay.connect(feedback); feedback.connect(delay);
+        osc.start(); lfo.start(); drawVU();
     }
 
     function drawVU() {
@@ -258,17 +212,9 @@
         requestAnimationFrame(drawVU);
     }
 
-    // Controls
-    fireBtn.addEventListener('mousedown', () => {
-        init();
-        if(audioCtx.state === 'suspended') audioCtx.resume();
-        mainGain.gain.setTargetAtTime(0.5, audioCtx.currentTime, 0.02);
-    });
-
-    window.addEventListener('mouseup', () => {
-        if(mainGain) mainGain.gain.setTargetAtTime(0, audioCtx.currentTime, 0.1);
-    });
-
+    const fireBtn = document.getElementById('fireBtn');
+    fireBtn.addEventListener('mousedown', () => { init(); if(audioCtx.state === 'suspended') audioCtx.resume(); mainGain.gain.setTargetAtTime(0.5, audioCtx.currentTime, 0.02); });
+    window.addEventListener('mouseup', () => { if(mainGain) mainGain.gain.setTargetAtTime(0, audioCtx.currentTime, 0.1); });
     fireBtn.addEventListener('touchstart', (e) => { e.preventDefault(); init(); mainGain.gain.setTargetAtTime(0.5, audioCtx.currentTime, 0.02); });
     window.addEventListener('touchend', () => { if(mainGain) mainGain.gain.setTargetAtTime(0, audioCtx.currentTime, 0.1); });
 
@@ -277,22 +223,16 @@
     document.getElementById('depthKnob').oninput = (e) => { if(lfoGain) lfoGain.gain.setTargetAtTime(e.target.value, audioCtx.currentTime, 0.05); };
     document.getElementById('echoKnob').oninput = (e) => { if(feedback) feedback.gain.value = e.target.value; };
 
-    delayToggle.onclick = () => {
-        init();
-        isEcho = !isEcho;
-        delayToggle.classList.toggle('active');
-        if(isEcho) {
-            mainGain.connect(delay);
-            delay.connect(audioCtx.destination);
-        } else {
-            mainGain.disconnect(delay);
-        }
+    document.getElementById('delayToggle').onclick = () => {
+        init(); isEcho = !isEcho;
+        document.getElementById('delayToggle').classList.toggle('active');
+        isEcho ? mainGain.connect(delay).connect(audioCtx.destination) : mainGain.disconnect(delay);
     };
 
-    modeToggle.onclick = () => {
+    document.getElementById('modeToggle').onclick = () => {
         lfoType = (lfoType === 'square') ? 'sine' : 'square';
         if(lfo) lfo.type = lfoType;
-        modeToggle.innerText = "LFO: " + lfoType.toUpperCase();
+        document.getElementById('modeToggle').innerText = "LFO: " + lfoType.toUpperCase();
     };
 </script>
 
