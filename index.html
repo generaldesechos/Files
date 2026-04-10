@@ -15,8 +15,9 @@
             color: #ffffff;
             font-family: "Courier New", monospace;
             margin: 0;
-            padding: 20px 15px 120px 15px; /* Padding for mobile */
+            padding: 20px 0 120px 0; /* Padding top/bottom, 0 sides for full-width control */
             overflow-x: hidden;
+            width: 100%;
         }
 
         header {
@@ -25,23 +26,51 @@
             padding: 15px;
             text-align: center;
             box-shadow: 6px 6px 0px #000;
-            margin-bottom: 30px;
+            margin: 0 15px 20px 15px;
         }
 
         h1 {
             color: #ffcc00;
             margin: 0;
-            font-size: 1.5rem; /* Responsive sizing */
+            font-size: 1.5rem;
             text-transform: uppercase;
         }
 
-        /* --- THE MACHINE GRID (Responsive) --- */
+        /* --- INTRODUCTION BOX --- */
+        .intro-box {
+            background: #e6be8a;
+            border: 2px solid #8b4513;
+            color: #221100;
+            max-width: 90%;
+            margin: 0 auto 30px auto;
+            padding: 20px;
+            box-shadow: 8px 8px 0px rgba(0,0,0,0.4);
+            position: relative;
+        }
+
+        .intro-box::after {
+            content: "CONFIDENTIAL";
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            border: 2px solid #aa0000;
+            color: #aa0000;
+            padding: 3px;
+            font-weight: bold;
+            font-size: 10px;
+            transform: rotate(15deg);
+            opacity: 0.6;
+        }
+
+        /* --- THE MACHINE GRID --- */
         .machine-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 20px;
-            max-width: 1000px;
+            max-width: 95%;
             margin: 0 auto;
+            padding: 0 15px;
+            box-sizing: border-box;
         }
 
         .machine-part {
@@ -83,18 +112,17 @@
             filter: invert(100%) contrast(1.2);
         }
 
-        /* --- BLOG LOG (Mobile Optimized) --- */
+        /* --- BLOG LOG --- */
         .blog-log {
             background: #fdf5e6;
             border: 1px solid #d2b48c;
             max-width: 600px;
             margin: 40px auto;
-            padding: 25px 20px 25px 45px; /* Offset for the red line */
+            padding: 25px 20px 25px 45px;
             color: #332211;
             box-shadow: 8px 8px 0px rgba(0,0,0,0.2);
             position: relative;
             font-family: "Georgia", serif;
-            font-size: 0.95rem;
         }
 
         .blog-log::before {
@@ -105,42 +133,28 @@
             background: rgba(255, 0, 0, 0.2);
         }
 
-        .blog-img-wrapper {
-            background: #fff;
-            padding: 8px;
-            border: 1px solid #ccc;
-            transform: rotate(1deg);
-            margin: 20px 0;
-            width: 90%;
-        }
-
-        .blog-img {
-            width: 100%;
-            height: auto;
-        }
-
-        /* --- ORIGINAL STATUS FOOTER --- */
+        /* --- LANDSCAPE-OPTIMIZED FULL WIDTH FOOTER --- */
         footer {
             position: fixed;
-            bottom: 0; left: 0;
-            width: 100%;
+            bottom: 0; 
+            left: 0;
+            width: 100vw; /* Covers exact viewport width */
             background: #c0c0c0;
             border-top: 4px outset #ffffff;
             display: flex;
             align-items: center;
             padding: 8px 15px;
             box-sizing: border-box;
-            z-index: 1000;
-            font-family: "Courier New", monospace;
+            z-index: 9999;
             height: 60px;
         }
 
         .power-light {
-            width: 10px; height: 10px;
+            width: 12px; height: 12px;
             background: #00ff00;
             border-radius: 50%;
-            box-shadow: 0 0 5px #00ff00;
-            margin-right: 10px;
+            box-shadow: 0 0 8px #00ff00;
+            margin-right: 15px;
             flex-shrink: 0;
             animation: blink 1.5s infinite;
         }
@@ -148,20 +162,20 @@
         .status-terminal {
             background: #000;
             color: #00ff00;
-            border: 2px inset #808080;
-            padding: 4px 10px;
+            border: 3px inset #808080;
+            padding: 6px 10px;
             flex-grow: 1;
             overflow: hidden;
             white-space: nowrap;
-            font-size: 11px;
+            font-size: 12px;
         }
 
         @keyframes blink {
             0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
+            50% { opacity: 0.4; }
         }
 
-        /* Bolts for corners */
+        /* Bolts */
         .bolt {
             position: absolute; width: 8px; height: 8px;
             background: #888; border-radius: 50%; border: 1px solid #444;
@@ -177,46 +191,42 @@
 </header>
 
 <main>
+    <section class="intro-box">
+        <div class="bolt tl"></div><div class="bolt tr"></div><div class="bolt bl"></div><div class="bolt br"></div>
+        <h2>OPERATOR'S BRIEFING</h2>
+        <p>Interface calibration complete. System optimized for <strong>Landscape & Portrait</strong> viewing modes. All status indicators are now set to full-width coverage.</p>
+    </section>
+
     <div class="machine-grid">
         <div class="machine-part">
             <div class="bolt tl"></div><div class="bolt tr"></div><div class="bolt bl"></div><div class="bolt br"></div>
             <div class="label-plate">MODULE_001</div>
             <div class="display-screen">
-                <img src="https://picsum.photos/id/10/400/300" alt="Audio Visual">
+                <img src="https://picsum.photos/id/101/400/300" alt="Audio 1">
             </div>
-            <audio controls>
-                <source src="song1.mp3" type="audio/mpeg">
-            </audio>
+            <audio controls><source src="song1.mp3" type="audio/mpeg"></audio>
         </div>
 
         <div class="machine-part">
             <div class="bolt tl"></div><div class="bolt tr"></div><div class="bolt bl"></div><div class="bolt br"></div>
             <div class="label-plate">MODULE_002</div>
             <div class="display-screen">
-                <img src="https://picsum.photos/id/20/400/300" alt="Audio Visual">
+                <img src="https://picsum.photos/id/102/400/300" alt="Audio 2">
             </div>
-            <audio controls>
-                <source src="song2.mp3" type="audio/mpeg">
-            </audio>
+            <audio controls><source src="song2.mp3" type="audio/mpeg"></audio>
         </div>
     </div>
 
     <article class="blog-log">
-        <h3 style="margin: 0 0 10px 0; font-size: 1.1rem;">ENGINEERING LOG: #404</h3>
-        <p>System migration to mobile format complete. The blueprint grid has been scaled for smaller viewports. <strong>The Incredible Machine</strong> aesthetic remains intact.</p>
-        
-        <div class="blog-img-wrapper">
-            <img src="https://picsum.photos/id/30/500/300" alt="Log Photo" class="blog-img">
-        </div>
-
-        <p>The status bar below monitors real-time system stability. Signal remains green.</p>
+        <h3>ENGINEERING LOG: #406</h3>
+        <p>Verified full-length coverage of the status bar in wide-screen configurations. No gaps detected in the peripheral vision sensors.</p>
     </article>
 </main>
 
 <footer>
     <div class="power-light"></div>
     <div class="status-terminal">
-        <marquee scrollamount="4">SYSTEM RUNNING... MOBILE OPTIMIZATION ACTIVE... SIGNAL STRENGTH: 100%... WELCOME TO THE MACHINE...</marquee>
+        <marquee scrollamount="5">>>> ENGINE STATUS: FULL WIDTH ... LANDSCAPE MODE: ACTIVATED ... ALL SYSTEMS NOMINAL ... WELCOME TO THE MACHINE ...</marquee>
     </div>
 </footer>
 
