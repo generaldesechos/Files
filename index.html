@@ -126,6 +126,112 @@
     <audio controls>
         <source src="your-audio-file.mp3" type="audio/mpeg">
     </audio>
+
+        <style>
+    /* BLOG SECTION CONTAINER */
+    .blog-log {
+        background: #fdf5e6; /* Old Paper Color */
+        border: 1px solid #d2b48c;
+        max-width: 700px;
+        margin: 50px auto;
+        padding: 40px;
+        color: #332211;
+        box-shadow: 15px 15px 0px rgba(0,0,0,0.3);
+        position: relative;
+        font-family: "Georgia", serif; /* Typewriter-esque feel */
+        line-height: 1.6;
+    }
+
+    /* RED MARGIN LINE */
+    .blog-log::before {
+        content: "";
+        position: absolute;
+        top: 0; left: 30px;
+        width: 2px; height: 100%;
+        background: rgba(255, 0, 0, 0.2);
+    }
+
+    .blog-header {
+        border-bottom: 2px solid #332211;
+        margin-bottom: 20px;
+    }
+
+    .blog-date {
+        font-family: "Courier New", monospace;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+
+    /* THE "TAPED" PICTURE EFFECT */
+    .blog-img-wrapper {
+        background: #fff;
+        padding: 10px;
+        border: 1px solid #ccc;
+        box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+        transform: rotate(2deg);
+        margin: 20px auto;
+        width: 80%;
+        position: relative;
+    }
+
+    /* THE "TAPE" */
+    .tape {
+        position: absolute;
+        top: -15px; left: 50%;
+        transform: translateX(-50%);
+        width: 100px; height: 30px;
+        background: rgba(255, 255, 200, 0.5); /* Masking tape look */
+        border: 1px solid rgba(0,0,0,0.05);
+    }
+
+    .blog-img {
+        width: 100%;
+        height: auto;
+        display: block;
+        filter: grayscale(0.2) contrast(1.1);
+    }
+
+    .stamped {
+        color: #aa0000;
+        border: 3px solid #aa0000;
+        display: inline-block;
+        padding: 5px 10px;
+        font-weight: bold;
+        text-transform: uppercase;
+        transform: rotate(-15deg);
+        opacity: 0.8;
+        margin-top: 10px;
+    }
+</style>
+
+<article class="blog-log">
+    <div class="blog-header">
+        <span class="blog-date">Log Date: October 14, 1994</span>
+        <h2>Subject: The Acoustic Gearbox Experiment</h2>
+    </div>
+
+    <p>
+        Today's calibration of the <strong>Sound-O-Matic</strong> exceeded all expectations. 
+        By piping the audio signal through a series of brass pulleys and steam-vented 
+        sub-woofers, we've achieved a resonance frequency that actually moves 
+        small objects across the workbench.
+    </p>
+
+    <div class="blog-img-wrapper">
+        <div class="tape"></div>
+        <img src="https://via.placeholder.com/600x400/555/eee?text=Experimental+Apparatus+Photo" alt="Research Photo" class="blog-img">
+        <p style="font-size: 0.8em; text-align: center; color: #666;">Fig 1.2: The prototype assembly in a state of vibration.</p>
+    </div>
+
+    <p>
+        We encountered a slight issue with the <em>Bellows-System</em> leaking air, 
+        which added a high-pitched whistling to the track. However, the lead engineer 
+        decided to keep it in—calling it "Lo-Fi Industrial Aesthetic." 
+    </p>
+
+    <div class="stamped">Classified: Top Secret</div>
+</article>
+
 </div>
 
 </body>
