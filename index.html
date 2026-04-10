@@ -2,22 +2,20 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AUDIO CONTRAPTION v1.0</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>DUB SIREN v1.0</title>
     <style>
         /* --- SYSTEM CORE --- */
         body {
             background-color: #004488;
-            background-image: 
-                linear-gradient(rgba(255,255,255,.07) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255,255,255,.07) 1px, transparent 1px);
+            background-image: linear-gradient(rgba(255,255,255,.07) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.07) 1px, transparent 1px);
             background-size: 30px 30px;
             color: #ffffff;
             font-family: "Courier New", monospace;
             margin: 0;
-            padding: 20px 0 120px 0; /* Padding top/bottom, 0 sides for full-width control */
+            padding: 20px 0 120px 0;
             overflow-x: hidden;
-            width: 100%;
+            touch-action: none; /* Prevents scrolling while using siren */
         }
 
         header {
@@ -29,116 +27,60 @@
             margin: 0 15px 20px 15px;
         }
 
-        h1 {
-            color: #ffcc00;
-            margin: 0;
-            font-size: 1.5rem;
-            text-transform: uppercase;
-        }
-
-        /* --- INTRODUCTION BOX --- */
-        .intro-box {
-            background: #e6be8a;
-            border: 2px solid #8b4513;
-            color: #221100;
+        /* --- THE SIREN CONTROL PAD --- */
+        .siren-box {
+            background: #c0c0c0;
+            border: 5px outset #eee;
+            color: #000;
             max-width: 90%;
             margin: 0 auto 30px auto;
-            padding: 20px;
-            box-shadow: 8px 8px 0px rgba(0,0,0,0.4);
+            padding: 30px;
+            text-align: center;
+            box-shadow: 10px 10px 0px rgba(0,0,0,0.5);
             position: relative;
         }
 
-        .intro-box::after {
-            content: "CONFIDENTIAL";
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            border: 2px solid #aa0000;
-            color: #aa0000;
-            padding: 3px;
-            font-weight: bold;
-            font-size: 10px;
-            transform: rotate(15deg);
-            opacity: 0.6;
+        .siren-button {
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle, #ff0000, #aa0000);
+            border: 8px outset #ff6666;
+            border-radius: 50%;
+            display: inline-block;
+            cursor: pointer;
+            user-select: none;
+            box-shadow: 0 10px 0 #550000;
+            active: transform translateY(5px);
         }
 
-        /* --- THE MACHINE GRID --- */
-        .machine-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-            max-width: 95%;
-            margin: 0 auto;
-            padding: 0 15px;
-            box-sizing: border-box;
-        }
-
-        .machine-part {
-            background: #c0c0c0;
-            border: 4px outset #eee;
-            color: #000;
-            padding: 15px;
-            box-shadow: 6px 6px 0px rgba(0,0,0,0.5);
-            position: relative;
+        .siren-button:active {
+            transform: translateY(5px);
+            box-shadow: 0 5px 0 #550000;
+            border-style: inset;
         }
 
         .label-plate {
-            background: #800000;
-            color: white;
-            padding: 2px 8px;
-            font-size: 10px;
-            border: 2px inset #550000;
+            background: #222;
+            color: #00ff00;
+            padding: 5px 15px;
             display: inline-block;
-            margin-bottom: 10px;
+            margin-bottom: 20px;
+            border: 2px inset #555;
+            font-size: 12px;
         }
 
-        .display-screen {
-            background: #112211;
-            border: 3px inset #808080;
-            padding: 4px;
-            margin-bottom: 10px;
+        .instructions {
+            font-size: 10px;
+            margin-top: 15px;
+            color: #333;
+            font-weight: bold;
         }
 
-        .display-screen img {
-            width: 100%;
-            height: auto;
-            aspect-ratio: 4/3;
-            object-fit: cover;
-            display: block;
-        }
-
-        audio {
-            width: 100%;
-            filter: invert(100%) contrast(1.2);
-        }
-
-        /* --- BLOG LOG --- */
-        .blog-log {
-            background: #fdf5e6;
-            border: 1px solid #d2b48c;
-            max-width: 600px;
-            margin: 40px auto;
-            padding: 25px 20px 25px 45px;
-            color: #332211;
-            box-shadow: 8px 8px 0px rgba(0,0,0,0.2);
-            position: relative;
-            font-family: "Georgia", serif;
-        }
-
-        .blog-log::before {
-            content: "";
-            position: absolute;
-            top: 0; left: 30px;
-            width: 2px; height: 100%;
-            background: rgba(255, 0, 0, 0.2);
-        }
-
-        /* --- LANDSCAPE-OPTIMIZED FULL WIDTH FOOTER --- */
+        /* --- FOOTER --- */
         footer {
             position: fixed;
-            bottom: 0; 
-            left: 0;
-            width: 100vw; /* Covers exact viewport width */
+            bottom: 0; left: 0;
+            width: 100vw;
             background: #c0c0c0;
             border-top: 4px outset #ffffff;
             display: flex;
@@ -149,86 +91,119 @@
             height: 60px;
         }
 
-        .power-light {
-            width: 12px; height: 12px;
-            background: #00ff00;
-            border-radius: 50%;
-            box-shadow: 0 0 8px #00ff00;
-            margin-right: 15px;
-            flex-shrink: 0;
-            animation: blink 1.5s infinite;
-        }
-
         .status-terminal {
-            background: #000;
-            color: #00ff00;
-            border: 3px inset #808080;
-            padding: 6px 10px;
-            flex-grow: 1;
-            overflow: hidden;
-            white-space: nowrap;
-            font-size: 12px;
+            background: #000; color: #00ff00; border: 3px inset #808080;
+            padding: 6px 10px; flex-grow: 1; overflow: hidden;
+            white-space: nowrap; font-size: 12px;
         }
 
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.4; }
-        }
-
-        /* Bolts */
-        .bolt {
-            position: absolute; width: 8px; height: 8px;
-            background: #888; border-radius: 50%; border: 1px solid #444;
-        }
-        .tl { top: 4px; left: 4px; } .tr { top: 4px; right: 4px; }
-        .bl { bottom: 4px; left: 4px; } .br { bottom: 4px; right: 4px; }
+        .bolt { position: absolute; width: 10px; height: 10px; background: #888; border-radius: 50%; border: 1px solid #444; }
+        .tl { top: 5px; left: 5px; } .tr { top: 5px; right: 5px; } .bl { bottom: 5px; left: 5px; } .br { bottom: 5px; right: 5px; }
     </style>
 </head>
 <body>
 
 <header>
-    <h1>⚙️ SOUND-O-MATIC v1.0</h1>
+    <h1>⚙️ DUB_SIREN_UNIT v1.0</h1>
 </header>
 
 <main>
-    <section class="intro-box">
+    <section class="siren-box">
         <div class="bolt tl"></div><div class="bolt tr"></div><div class="bolt bl"></div><div class="bolt br"></div>
-        <h2>OPERATOR'S BRIEFING</h2>
-        <p>Interface calibration complete. System optimized for <strong>Landscape & Portrait</strong> viewing modes. All status indicators are now set to full-width coverage.</p>
+        <div class="label-plate">OSCILLATOR_01 : READY</div>
+        <br>
+        <div id="sirenTrigger" class="siren-button"></div>
+        <div class="instructions">
+            HOLD BUTTON TO ACTIVATE<br>
+            UP/DOWN = PITCH | LEFT/RIGHT = LFO SPEED
+        </div>
     </section>
-
-    <div class="machine-grid">
-        <div class="machine-part">
-            <div class="bolt tl"></div><div class="bolt tr"></div><div class="bolt bl"></div><div class="bolt br"></div>
-            <div class="label-plate">MODULE_001</div>
-            <div class="display-screen">
-                <img src="https://picsum.photos/id/101/400/300" alt="Audio 1">
-            </div>
-            <audio controls><source src="song1.mp3" type="audio/mpeg"></audio>
-        </div>
-
-        <div class="machine-part">
-            <div class="bolt tl"></div><div class="bolt tr"></div><div class="bolt bl"></div><div class="bolt br"></div>
-            <div class="label-plate">MODULE_002</div>
-            <div class="display-screen">
-                <img src="https://picsum.photos/id/102/400/300" alt="Audio 2">
-            </div>
-            <audio controls><source src="song2.mp3" type="audio/mpeg"></audio>
-        </div>
-    </div>
-
-    <article class="blog-log">
-        <h3>ENGINEERING LOG: #406</h3>
-        <p>Verified full-length coverage of the status bar in wide-screen configurations. No gaps detected in the peripheral vision sensors.</p>
-    </article>
 </main>
 
 <footer>
-    <div class="power-light"></div>
     <div class="status-terminal">
-        <marquee scrollamount="5">>>> ENGINE STATUS: FULL WIDTH ... LANDSCAPE MODE: ACTIVATED ... ALL SYSTEMS NOMINAL ... WELCOME TO THE MACHINE ...</marquee>
+        <marquee scrollamount="5" id="status-text">SYSTEM STANDBY... READY TO BLAST...</marquee>
     </div>
 </footer>
+
+<script>
+    let audioCtx;
+    let mainOsc;
+    let lfo;
+    let gainNode;
+
+    const trigger = document.getElementById('sirenTrigger');
+    const statusText = document.getElementById('status-text');
+
+    function initAudio() {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        
+        // Setup Nodes
+        mainOsc = audioCtx.createOscillator();
+        lfo = audioCtx.createOscillator();
+        const lfoGain = audioCtx.createGain();
+        gainNode = audioCtx.createGain();
+
+        // Settings
+        mainOsc.type = 'square'; // Classic Dub Siren sound
+        lfo.type = 'sine';
+        lfoGain.gain.value = 200; // Depth of the wobble
+        gainNode.gain.value = 0;
+
+        // Connections
+        lfo.connect(lfoGain);
+        lfoGain.connect(mainOsc.frequency); // LFO modulates the Pitch
+        mainOsc.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+
+        mainOsc.start();
+        lfo.start();
+    }
+
+    function startSiren(e) {
+        if (!audioCtx) initAudio();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        
+        gainNode.gain.setTargetAtTime(0.5, audioCtx.currentTime, 0.05);
+        statusText.innerText = ">>> WARNING: HIGH DECIBEL SIGNAL ACTIVE <<<";
+        updateSirenParams(e);
+    }
+
+    function stopSiren() {
+        if (gainNode) gainNode.gain.setTargetAtTime(0, audioCtx.currentTime, 0.05);
+        statusText.innerText = "SYSTEM STANDBY... READY TO BLAST...";
+    }
+
+    function updateSirenParams(e) {
+        if (!audioCtx || gainNode.gain.value === 0) return;
+
+        // Support both mouse and touch
+        const clientX = e.clientX || (e.touches ? e.touches[0].clientX : 0);
+        const clientY = e.clientY || (e.touches ? e.touches[0].clientY : 0);
+
+        const width = window.innerWidth;
+        const height = window.innerHeight;
+
+        // Y Axis = Base Pitch (200Hz to 1500Hz)
+        const pitch = 1500 - ((clientY / height) * 1300);
+        mainOsc.frequency.setTargetAtTime(pitch, audioCtx.currentTime, 0.1);
+
+        // X Axis = LFO Speed (0.5Hz to 20Hz)
+        const speed = (clientX / width) * 20;
+        lfo.frequency.setTargetAtTime(speed, audioCtx.currentTime, 0.1);
+    }
+
+    // Event Listeners
+    trigger.addEventListener('mousedown', startSiren);
+    trigger.addEventListener('touchstart', (e) => { e.preventDefault(); startSiren(e); });
+
+    window.addEventListener('mouseup', stopSiren);
+    window.addEventListener('touchend', stopSiren);
+
+    window.addEventListener('mousemove', updateSirenParams);
+    window.addEventListener('touchmove', (e) => { updateSirenParams(e); });
+
+</script>
 
 </body>
 </html>
