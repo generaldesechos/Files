@@ -47,6 +47,9 @@
 
         .unit-label { background: #111; color: #ffcc00; padding: 4px; text-align: center; font-weight: bold; border: 1px solid #444; margin-bottom: 15px; font-size: 10px; letter-spacing: 1px; }
 
+        /* --- INTRO BOX --- */
+        .intro-box { background: #e6be8a; border: 2px solid #8b4513; color: #221100; padding: 15px; font-size: 0.8rem; }
+
         /* --- SIREN UNIT --- */
         .seg1-unit { background: #b08d57; border: 5px outset #d4af37; color: #222; padding: 20px; }
         .fire-button {
@@ -73,6 +76,10 @@
         .rotary-dial { width: 60px; height: 60px; background: #333; border-radius: 50%; border: 3px solid #666; margin: 5px auto; position: relative; cursor: pointer; }
         .dial-hand { width: 3px; height: 22px; background: red; position: absolute; top: 8px; left: 28.5px; transform-origin: center 22px; }
         .freq-text { color: #ffcc00; font-size: 14px; font-weight: bold; }
+
+        /* --- BLOG LOG --- */
+        .blog-log { background: #fdf5e6; border: 1px solid #d2b48c; padding: 25px 20px 25px 45px; color: #332211; font-family: "Georgia", serif; position: relative; width: 100%; max-width: 550px; box-sizing: border-box;}
+        .blog-log::before { content: ""; position: absolute; top: 0; left: 30px; width: 2px; height: 100%; background: rgba(255, 0, 0, 0.2); }
 
         /* --- CONTROLS --- */
         .control-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
@@ -101,7 +108,6 @@
         .led.on-y { background: #ff0; box-shadow: 0 0 8px #ff0; } 
         .led.on-r { background: #f00; box-shadow: 0 0 10px #f00; }
 
-        /* --- RED VU TOGGLE --- */
         .vu-toggle-container { text-align: center; min-width: 60px; }
         .vu-toggle-label { color: #000; font-size: 8px; font-weight: bold; display: block; margin-bottom: 5px; font-family: sans-serif; }
         .red-switch {
@@ -116,6 +122,7 @@
         }
         .red-switch:checked::after { left: 22px; }
 
+        @media (min-width: 600px) { .mixer-grid { grid-template-columns: repeat(4, 1fr); } .big-knob-panel { grid-column: span 4; } }
     </style>
 </head>
 <body>
@@ -123,6 +130,12 @@
 <header><h1>General desEchos</h1></header>
 
 <div class="stack-container">
+    <section class="rack-unit intro-box">
+        <div class="bolt tl"></div><div class="bolt tr"></div><div class="bolt bl"></div><div class="bolt br"></div>
+        <h2 style="margin:0 0 5px 0; font-size:1rem; text-transform: uppercase;">System Briefing</h2>
+        <p style="margin:0;">Master DUB Station. Flip the RED TOGGLE in the footer to engage signal monitoring.</p>
+    </section>
+
     <section class="rack-unit seg1-unit">
         <div class="bolt tl"></div><div class="bolt tr"></div><div class="bolt bl"></div><div class="bolt br"></div>
         <div class="unit-label">SIREN GENERATOR // SE-G1</div>
@@ -151,6 +164,12 @@
 
         <button id="masterBtn" style="width:100%; padding:15px; margin-top:15px; background:#040; color:#fff; border:3px outset #080; font-family:monospace; font-weight:bold; cursor:pointer;" onclick="toggleAll()">START MIXER ENGINE</button>
     </section>
+
+    <section class="rack-unit blog-log">
+        <div class="bolt tl"></div><div class="bolt tr"></div><div class="bolt bl"></div><div class="bolt br"></div>
+        <h3 style="margin:0 0 10px 0; font-size:1rem;">LOG #411: SENDS RESTORED</h3>
+        <p style="margin:0; font-size:0.9rem;">Routing corrected. Individual Echo (E) and Filter (F) sends now available per channel. Hardware stack integrity 100%.</p>
+    </section>
 </div>
 
 <footer>
@@ -168,7 +187,7 @@
 
 <script>
     let audioCtx, analyser, sirenOsc, sirenLfo, sirenLfoG, sirenG, delay, feedback, filter1, filter2;
-    let isPlaying = false, isSirenEcho = false, lfoType = 'square', filterIdx = 0;
+    let isPlaying = false, filterIdx = 0;
     const freqs = [0, 100, 250, 500, 1000, 2000, 4000, 8000];
     const channels = [];
 
@@ -208,7 +227,7 @@
 
         sirenOsc = audioCtx.createOscillator(); sirenLfo = audioCtx.createOscillator();
         sirenLfoG = audioCtx.createGain(); sirenG = audioCtx.createGain(); 
-        sirenOsc.type = 'square'; sirenLfo.type = lfoType; sirenG.gain.value = 0;
+        sirenOsc.type = 'square'; sirenLfo.type = 'square'; sirenG.gain.value = 0;
         sirenLfo.connect(sirenLfoG); sirenLfoG.connect(sirenOsc.frequency);
         sirenOsc.connect(sirenG); sirenG.connect(analyser);
         sirenOsc.start(); sirenLfo.start();
@@ -231,29 +250,6 @@
         });
 
         analyser.connect(audioCtx.destination);
-    }
-
-    function toggleFX(i, type) {
-        initAudio(); audioCtx.resume();
-        if(type === 'e') {
-            channels[i].eOn = !channels[i].eOn;
-            channels[i].echoG.gain.value = channels[i].eOn ? 0.8 : 0;
-            document.getElementById(`e-${i}`).classList.toggle('active-e');
-        } else {
-            channels[i].fOn = !channels[i].fOn;
-            channels[i].fltrG.gain.value = channels[i].fOn ? 1 : 0;
-            document.getElementById(`f-${i}`).classList.toggle('active-f');
-        }
-    }
-
-    function toggleAll() {
-        initAudio(); audioCtx.resume();
-        isPlaying = !isPlaying;
-        document.getElementById('masterBtn').innerText = isPlaying ? "STOP ENGINE" : "START ENGINE";
-        channels.forEach((ch, i) => {
-            const aud = document.getElementById(`mix-aud-${i}`);
-            isPlaying ? aud.play() : aud.pause();
-        });
     }
 
     function startVULoop() {
@@ -291,10 +287,8 @@
         draw();
     }
 
-    // Initialize VU Loop on load
     window.onload = startVULoop;
 
-    // Red Toggle Logic: Must initialize audio context if it's the first interaction
     document.getElementById('vuMasterToggle').onchange = function() {
         if(this.checked) {
             initAudio();
@@ -302,9 +296,12 @@
         }
     };
 
+    function toggleFX(i, type) { initAudio(); audioCtx.resume(); if(type === 'e') { channels[i].eOn = !channels[i].eOn; channels[i].echoG.gain.value = channels[i].eOn ? 0.8 : 0; document.getElementById(`e-${i}`).classList.toggle('active-e'); } else { channels[i].fOn = !channels[i].fOn; channels[i].fltrG.gain.value = channels[i].fOn ? 1 : 0; document.getElementById(`f-${i}`).classList.toggle('active-f'); } }
+    function toggleAll() { initAudio(); audioCtx.resume(); isPlaying = !isPlaying; document.getElementById('masterBtn').innerText = isPlaying ? "STOP ENGINE" : "START ENGINE"; channels.forEach((ch, i) => { const aud = document.getElementById(`mix-aud-${i}`); isPlaying ? aud.play() : aud.pause(); }); }
     function rotateFilter() { initAudio(); audioCtx.resume(); filterIdx = (filterIdx + 1) % freqs.length; const f = freqs[filterIdx]; document.getElementById('dialHand').style.transform = `rotate(${filterIdx * 45}deg)`; document.getElementById('freqLabel').innerText = f === 0 ? "OFF" : f + "Hz"; filter1.frequency.setTargetAtTime(f, audioCtx.currentTime, 0.05); filter2.frequency.setTargetAtTime(f, audioCtx.currentTime, 0.05); }
     function loadUserFile(i, input) { const file = input.files[0]; if(file) { document.getElementById(`mix-aud-${i}`).src = URL.createObjectURL(file); } }
     function setVol(i, v) { if(channels[i].gain) channels[i].gain.gain.value = v; }
+    
     const fireBtn = document.getElementById('fireBtn');
     fireBtn.onmousedown = fireBtn.ontouchstart = (e) => { if(e) e.preventDefault(); initAudio(); audioCtx.resume().then(() => { sirenG.gain.setTargetAtTime(document.getElementById('volKnob').value, audioCtx.currentTime, 0.02); }); };
     window.onmouseup = window.ontouchend = () => { if(sirenG) sirenG.gain.setTargetAtTime(0, audioCtx.currentTime, 0.1); };
