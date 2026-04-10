@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>General desEchos v3.5</title>
+    <title>General desEchos v3.6</title>
     <style>
         /* --- SYSTEM CORE --- */
         body {
@@ -25,15 +25,19 @@
 
         h1 { color: #ffffff; margin: 0; font-size: 1.8rem; text-transform: uppercase; letter-spacing: 2px; }
 
-        .intro-box, .seg1-unit, .machine-part, .blog-log, .mixer-container {
+        .intro-box, .seg1-unit, .space-delay, .machine-part, .blog-log, .mixer-container {
             position: relative; box-shadow: 8px 8px 0px rgba(0,0,0,0.4); margin-bottom: 30px;
         }
 
         .intro-box { background: #e6be8a; border: 2px solid #8b4513; color: #221100; max-width: 90%; margin: 0 auto 30px auto; padding: 15px; }
 
-        /* --- SIREN --- */
-        .seg1-unit { background: #c0c0c0; border: 6px outset #eee; color: #222; max-width: 360px; margin: 0 auto 30px auto; padding: 20px; }
+        /* --- SIREN UNIT --- */
+        .seg1-unit { background: #c0c0c0; border: 6px outset #eee; color: #222; max-width: 360px; margin: 0 auto 20px auto; padding: 20px; }
         .unit-label { background: #333; color: #ffcc00; padding: 5px; text-align: center; font-weight: bold; border: 2px inset #666; margin-bottom: 20px; font-size: 12px; }
+        
+        /* --- SPACE DELAY UNIT --- */
+        .space-delay { background: #b0b0b0; border: 6px outset #999; color: #111; max-width: 360px; margin: 0 auto 30px auto; padding: 20px; }
+
         .control-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 15px; }
         .knob-container { text-align: center; font-size: 9px; font-weight: bold; }
         input[type=range] { width: 100%; cursor: pointer; accent-color: #880000; }
@@ -43,11 +47,23 @@
             border: 5px outset #ff6666; border-radius: 50%; cursor: pointer; margin: 0 auto 15px auto;
             box-shadow: 0 5px 0 #440000; touch-action: none; display: block;
         }
-        .fx-row { display: flex; justify-content: space-between; gap: 10px; margin-top: 10px; }
-        .fx-btn { background: #444; color: #00ff00; border: 3px outset #666; padding: 8px; font-size: 9px; font-family: monospace; width: 50%; cursor: pointer; }
-        .fx-btn.active { background: #00ff00; color: #000; border-style: inset; }
 
-        /* --- MIXER --- */
+        /* --- LONG TOGGLE SWITCH --- */
+        .toggle-wrap { text-align: center; margin-top: 10px; }
+        .long-switch {
+            width: 100px; height: 40px; background: #333; border: 3px inset #666;
+            margin: 5px auto; position: relative; cursor: pointer; border-radius: 4px;
+        }
+        .switch-handle {
+            width: 45px; height: 30px; background: #888; border: 3px outset #aaa;
+            position: absolute; top: 2px; left: 2px; transition: 0.2s;
+        }
+        .long-switch.active .switch-handle { left: 47px; background: #00ff00; }
+        .switch-label { font-size: 9px; font-weight: bold; margin-bottom: 2px; }
+
+        .fx-btn-small { background: #444; color: #0f0; border: 2px outset #666; padding: 5px; font-size: 9px; width: 100%; cursor: pointer; }
+
+        /* --- MIXER & REST --- */
         .mixer-container { background: #a0a0a0; border: 6px outset #ccc; max-width: 95%; margin: 0 auto 30px auto; padding: 15px; color: #000; }
         .mixer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         .channel-strip { background: #888; border: 2px inset #666; padding: 10px; text-align: center; display: flex; flex-direction: column; position: relative; }
@@ -58,15 +74,13 @@
         .s-btn { font-size: 8px; padding: 4px; margin: 2px; border: 2px outset #aaa; background: #444; color: #fff; cursor: pointer; }
         .s-btn.active-e { background: #00ff00; color: #000; }
         .s-btn.active-f { background: #ffcc00; color: #000; }
-        .upload-area { font-size: 8px; background: #111; color: #0f0; padding: 4px; margin-bottom: 5px; border: 1px solid #555; cursor: pointer; height: 25px; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+        .upload-area { font-size: 8px; background: #111; color: #0f0; padding: 4px; margin-bottom: 5px; border: 1px solid #555; cursor: pointer; height: 25px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
 
-        /* --- BIG KNOB --- */
         .big-knob-panel { grid-column: span 2; background: #1a1a1a; padding: 10px; margin-top: 10px; text-align: center; border: 4px inset #444; }
         .rotary-dial { width: 60px; height: 60px; background: #333; border-radius: 50%; border: 3px solid #666; margin: 5px auto; position: relative; cursor: pointer; }
         .dial-hand { width: 3px; height: 22px; background: red; position: absolute; top: 8px; left: 28.5px; transform-origin: center 22px; }
         .freq-text { color: #ffcc00; font-size: 14px; font-weight: bold; }
 
-        /* --- CONTENT --- */
         .machine-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; max-width: 95%; margin: 0 auto; padding: 0 15px; box-sizing: border-box; }
         .machine-part { background: #c0c0c0; border: 4px outset #eee; color: #000; padding: 15px; }
         .display-screen { background: #112211; border: 3px inset #808080; padding: 4px; margin-bottom: 10px; }
@@ -97,24 +111,34 @@
     <section class="intro-box">
         <div class="bolt tl"></div><div class="bolt tr"></div><div class="bolt bl"></div><div class="bolt br"></div>
         <h2 style="margin:0; font-size:1rem;">SYSTEM BRIEFING</h2>
-        <p style="font-size:0.8rem; margin:5px 0 0 0;">Upload your sounds. Use the SIREN sliders for Echo Time and Volume. Green LEDs show active Mixer channels.</p>
+        <p style="font-size:0.8rem; margin:5px 0 0 0;">Outboard <strong>SPACE DELAY</strong> unit connected. Use the long toggle to engage siren echo. LEDs reflect active mixer signal paths.</p>
     </section>
 
     <section class="seg1-unit">
         <div class="bolt tl"></div><div class="bolt tr"></div><div class="bolt bl"></div><div class="bolt br"></div>
-        <div class="unit-label">GENERAL desECHOS // SE-G1 UNIT</div>
+        <div class="unit-label">SE-G1 SIREN SOURCE</div>
         <div class="control-grid">
             <div class="knob-container">PITCH<input type="range" id="pitchKnob" min="100" max="1500" value="440"></div>
+            <div class="knob-container">SIREN VOL<input type="range" id="volKnob" min="0" max="1" step="0.05" value="0.5"></div>
             <div class="knob-container">LFO RATE<input type="range" id="rateKnob" min="1" max="40" value="12"></div>
             <div class="knob-container">LFO DEPTH<input type="range" id="depthKnob" min="0" max="1500" value="600"></div>
-            <div class="knob-container">ECHO FBK<input type="range" id="echoKnob" min="0" max="0.9" step="0.05" value="0.5"></div>
-            <div class="knob-container">ECHO TIME<input type="range" id="timeKnob" min="0.05" max="1.5" step="0.05" value="0.4"></div>
-            <div class="knob-container">SIREN VOL<input type="range" id="volKnob" min="0" max="1" step="0.05" value="0.5"></div>
         </div>
         <div id="fireBtn" class="fire-button"></div>
-        <div class="fx-row">
-            <button id="delayToggle" class="fx-btn">ECHO UNIT</button>
-            <button id="modeToggle" class="fx-btn">LFO: SQUARE</button>
+        <button id="modeToggle" class="fx-btn-small">LFO MODE: SQUARE</button>
+    </section>
+
+    <section class="space-delay">
+        <div class="bolt tl"></div><div class="bolt tr"></div><div class="bolt bl"></div><div class="bolt br"></div>
+        <div class="unit-label">SPACE DELAY // OUTBOARD FX</div>
+        <div class="control-grid">
+            <div class="knob-container">ECHO TIME<input type="range" id="timeKnob" min="0.05" max="1.5" step="0.05" value="0.4"></div>
+            <div class="knob-container">FEEDBACK<input type="range" id="echoKnob" min="0" max="0.9" step="0.05" value="0.5"></div>
+        </div>
+        <div class="toggle-wrap">
+            <div class="switch-label">SIREN ECHO (OFF / ON)</div>
+            <div id="delayToggle" class="long-switch">
+                <div class="switch-handle"></div>
+            </div>
         </div>
     </section>
 
@@ -147,7 +171,7 @@
 
     <article class="blog-log">
         <h3 style="margin-top:0; font-size:1rem;">LOG #411: COMMS ACTIVE</h3>
-        <p>Dynamic upload trackers initialized. Signal presence LEDs mapped to Mixer CH 1-4. Siren modulation expanded.</p>
+        <p>Space Delay unit hardwired. Audio context stabilization complete. Mixer green-lights synced to track playback.</p>
     </article>
 </main>
 
@@ -183,15 +207,12 @@
         audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         analyser = audioCtx.createAnalyser();
 
-        delay = audioCtx.createDelay(2.0);
-        delay.delayTime.value = 0.4;
-        feedback = audioCtx.createGain();
-        feedback.gain.value = 0.5;
+        delay = audioCtx.createDelay(2.0); delay.delayTime.value = 0.4;
+        feedback = audioCtx.createGain(); feedback.gain.value = 0.5;
         delay.connect(feedback); feedback.connect(delay); delay.connect(analyser);
 
         filter1 = audioCtx.createBiquadFilter(); filter2 = audioCtx.createBiquadFilter();
-        filter1.type = filter2.type = 'highpass';
-        filter1.connect(filter2); filter2.connect(analyser);
+        filter1.type = filter2.type = 'highpass'; filter1.connect(filter2); filter2.connect(analyser);
 
         sirenOsc = audioCtx.createOscillator(); sirenLfo = audioCtx.createOscillator();
         sirenLfoG = audioCtx.createGain(); sirenG = audioCtx.createGain(); 
@@ -205,20 +226,16 @@
                 const audEl = document.getElementById(`mix-aud-${i}`);
                 const node = audioCtx.createMediaElementSource(audEl);
                 ch.gain = audioCtx.createGain();
-                ch.echoG = audioCtx.createGain();
-                ch.fltrG = audioCtx.createGain();
+                ch.echoG = audioCtx.createGain(); ch.fltrG = audioCtx.createGain();
                 ch.echoG.gain.value = 0; ch.fltrG.gain.value = 0;
                 node.connect(ch.gain); ch.gain.connect(analyser); 
                 ch.gain.connect(ch.echoG); ch.echoG.connect(delay);
                 ch.gain.connect(ch.fltrG); ch.fltrG.connect(filter1);
                 ch.connected = true;
-
-                // Track LED state
                 audEl.onplay = () => document.getElementById(`led-${i}`).classList.add('active');
                 audEl.onpause = () => document.getElementById(`led-${i}`).classList.remove('active');
             }
         });
-
         analyser.connect(audioCtx.destination);
         startVU();
     }
@@ -230,14 +247,12 @@
             box.innerText = "LOAD: 0%";
             let p = 0;
             let interval = setInterval(() => {
-                p += 10;
-                box.innerText = "LOAD: " + p + "%";
+                p += 10; box.innerText = "LOAD: " + p + "%";
                 if(p >= 100) {
                     clearInterval(interval);
                     box.innerText = file.name.substring(0, 10) + "...";
-                    const url = URL.createObjectURL(file);
                     const aud = document.getElementById(`mix-aud-${i}`);
-                    aud.src = url;
+                    aud.src = URL.createObjectURL(file);
                     aud.load();
                 }
             }, 50);
@@ -291,49 +306,14 @@
     };
     window.onmouseup = window.ontouchend = () => { if(sirenG) sirenG.gain.setTargetAtTime(0, audioCtx.currentTime, 0.1); };
 
-    document.getElementById('delayToggle').onclick = () => {
+    // LONG TOGGLE LOGIC
+    document.getElementById('delayToggle').onclick = function() {
         initAudio(); audioCtx.resume();
         isSirenEcho = !isSirenEcho;
-        document.getElementById('delayToggle').classList.toggle('active');
+        this.classList.toggle('active');
         if(isSirenEcho) sirenG.connect(delay); else sirenG.disconnect(delay);
     };
 
     document.getElementById('modeToggle').onclick = () => {
         lfoType = (lfoType === 'square') ? 'sine' : 'square';
         if(sirenLfo) sirenLfo.type = lfoType;
-        document.getElementById('modeToggle').innerText = "LFO: " + lfoType.toUpperCase();
-    };
-
-    // Siren Control Updates
-    document.getElementById('pitchKnob').oninput = (e) => { if(sirenOsc) sirenOsc.frequency.setTargetAtTime(e.target.value, audioCtx.currentTime, 0.05); };
-    document.getElementById('rateKnob').oninput = (e) => { if(sirenLfo) sirenLfo.frequency.setTargetAtTime(e.target.value, audioCtx.currentTime, 0.05); };
-    document.getElementById('depthKnob').oninput = (e) => { if(sirenLfoG) sirenLfoG.gain.setTargetAtTime(e.target.value, audioCtx.currentTime, 0.05); };
-    document.getElementById('echoKnob').oninput = (e) => { if(feedback) feedback.gain.value = e.target.value; };
-    document.getElementById('timeKnob').oninput = (e) => { if(delay) delay.delayTime.setTargetAtTime(e.target.value, audioCtx.currentTime, 0.1); };
-
-    function startVU() {
-        const vu = document.getElementById('vu'); vu.innerHTML = '';
-        const leds = [];
-        for(let i=0; i<24; i++) {
-            const l = document.createElement('div'); l.className = 'led'; vu.appendChild(l); leds.push(l);
-        }
-        function draw() {
-            const data = new Uint8Array(analyser.frequencyBinCount);
-            analyser.getByteFrequencyData(data);
-            const vol = data.reduce((a,b) => a+b) / data.length;
-            const lit = Math.floor((vol / 140) * 24);
-            leds.forEach((l, i) => {
-                l.className = 'led';
-                if(i < lit) {
-                    if(i < 14) l.classList.add('on-g');
-                    else if(i < 20) l.classList.add('on-y');
-                    else l.classList.add('on-r');
-                }
-            });
-            requestAnimationFrame(draw);
-        }
-        draw();
-    }
-</script>
-</body>
-</html>
