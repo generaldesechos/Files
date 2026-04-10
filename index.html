@@ -55,9 +55,6 @@
             box-shadow: 0 4px 0 #440000; touch-action: none; display: block;
         }
 
-        /* --- DELAY UNIT --- */
-        .delay-unit { background: #c0c0c0; border: 5px outset #eee; color: #333; padding: 20px; }
-
         /* --- MIXER UNIT --- */
         .mixer-container { background: #333; border: 5px outset #555; padding: 15px; color: #fff; }
         .mixer-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
@@ -164,7 +161,7 @@
         </div>
         <div class="vu-toggle-container">
             <span class="vu-toggle-label">VU ON</span>
-            <input type="checkbox" id="vuMasterToggle" class="red-switch" checked>
+            <input type="checkbox" id="vuMasterToggle" class="red-switch">
         </div>
     </div>
 </footer>
@@ -257,24 +254,24 @@
             const aud = document.getElementById(`mix-aud-${i}`);
             isPlaying ? aud.play() : aud.pause();
         });
-        startVU();
     }
 
-    function startVU() {
-        const vu = document.getElementById('vu'); vu.innerHTML = '';
+    function startVULoop() {
+        const vu = document.getElementById('vu'); 
+        vu.innerHTML = '';
         const leds = [];
         const numLeds = 20;
         for(let i=0; i<numLeds; i++) {
             const l = document.createElement('div'); l.className = 'led'; vu.appendChild(l); leds.push(l);
         }
+
         function draw() {
-            if(!analyser) return requestAnimationFrame(draw);
-            const data = new Uint8Array(analyser.frequencyBinCount);
-            analyser.getByteFrequencyData(data);
-            
-            const isVuOn = document.getElementById('vuMasterToggle').checked;
             let vol = 0;
-            if (isVuOn) {
+            const isToggleOn = document.getElementById('vuMasterToggle').checked;
+
+            if (isToggleOn && analyser) {
+                const data = new Uint8Array(analyser.frequencyBinCount);
+                analyser.getByteFrequencyData(data);
                 let sum = 0;
                 for(let i=0; i<data.length; i++) sum += data[i];
                 vol = sum / data.length;
@@ -294,7 +291,17 @@
         draw();
     }
 
-    // Standard audio handlers...
+    // Initialize VU Loop on load
+    window.onload = startVULoop;
+
+    // Red Toggle Logic: Must initialize audio context if it's the first interaction
+    document.getElementById('vuMasterToggle').onchange = function() {
+        if(this.checked) {
+            initAudio();
+            if(audioCtx) audioCtx.resume();
+        }
+    };
+
     function rotateFilter() { initAudio(); audioCtx.resume(); filterIdx = (filterIdx + 1) % freqs.length; const f = freqs[filterIdx]; document.getElementById('dialHand').style.transform = `rotate(${filterIdx * 45}deg)`; document.getElementById('freqLabel').innerText = f === 0 ? "OFF" : f + "Hz"; filter1.frequency.setTargetAtTime(f, audioCtx.currentTime, 0.05); filter2.frequency.setTargetAtTime(f, audioCtx.currentTime, 0.05); }
     function loadUserFile(i, input) { const file = input.files[0]; if(file) { document.getElementById(`mix-aud-${i}`).src = URL.createObjectURL(file); } }
     function setVol(i, v) { if(channels[i].gain) channels[i].gain.gain.value = v; }
