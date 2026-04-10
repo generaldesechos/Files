@@ -101,12 +101,42 @@
         .knob-label { font-size: 9px; font-weight: bold; text-align: center; display: block; margin-bottom: 2px; text-transform: uppercase; }
         input[type=range] { width: 100%; cursor: pointer; accent-color: #800; }
         .vert-fader { appearance: slider-vertical; width: 18px; height: 80px; margin: 5px 0; }
-
         /* --- FOOTER --- */
-        footer { position: fixed; bottom: 0; left: 0; width: 100%; background: #222; border-top: 3px solid #ffcc00; padding: 10px; box-sizing: border-box; z-index: 10000; height: 90px; }
-        .vu-meter { display: flex; gap: 2px; height: 15px; background: #000; padding: 3px; border: 2px inset #444; }
-        .led { flex: 1; background: #111; }
-        .led.on-g { background: #0f0; } .led.on-y { background: #ff0; } .led.on-r { background: #f00; }
+        footer { 
+            position: fixed; 
+            bottom: 0; 
+            left: 0; 
+            width: 100%; 
+            background: #c0c0c0; /* Classic Windows Gray */
+            border-top: 2px solid #ffffff; /* Top highlight for 3D effect */
+            outline: 1px solid #808080; /* Shadow for 3D effect */
+            padding: 10px; 
+            box-sizing: border-box; 
+            z-index: 10000; 
+            height: 90px; 
+            box-shadow: inset 1px 1px 0px #fff; /* Secondary highlight */
+        }
+        
+        /* Matching the Signal Monitor label to the retro theme */
+        footer div[style*="color:#ffcc00"] {
+            color: #000 !important; /* Black text on gray background */
+            text-shadow: 1px 1px 0px #fff;
+            font-family: "MS Sans Serif", "Tahoma", sans-serif;
+            letter-spacing: 0px !important;
+        }
+
+        .vu-meter { 
+            display: flex; 
+            gap: 2px; 
+            height: 18px; 
+            background: #000; 
+            padding: 2px; 
+            border-top: 2px solid #808080;
+            border-left: 2px solid #808080;
+            border-bottom: 2px solid #ffffff;
+            border-right: 2px solid #ffffff;
+        }
+
 
         @media (min-width: 600px) { .mixer-grid { grid-template-columns: repeat(4, 1fr); } .big-knob-panel { grid-column: span 4; } }
     </style>
