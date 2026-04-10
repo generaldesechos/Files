@@ -101,42 +101,24 @@
         .knob-label { font-size: 9px; font-weight: bold; text-align: center; display: block; margin-bottom: 2px; text-transform: uppercase; }
         input[type=range] { width: 100%; cursor: pointer; accent-color: #800; }
         .vert-fader { appearance: slider-vertical; width: 18px; height: 80px; margin: 5px 0; }
-        /* --- FOOTER --- */
+
+        /* --- WIN95 FOOTER --- */
         footer { 
-            position: fixed; 
-            bottom: 0; 
-            left: 0; 
-            width: 100%; 
-            background: #c0c0c0; /* Classic Windows Gray */
-            border-top: 2px solid #ffffff; /* Top highlight for 3D effect */
-            outline: 1px solid #808080; /* Shadow for 3D effect */
-            padding: 10px; 
-            box-sizing: border-box; 
-            z-index: 10000; 
-            height: 90px; 
-            box-shadow: inset 1px 1px 0px #fff; /* Secondary highlight */
+            position: fixed; bottom: 0; left: 0; width: 100%; 
+            background: #c0c0c0; border-top: 2px solid #ffffff; 
+            outline: 1px solid #808080; padding: 10px; box-sizing: border-box; 
+            z-index: 10000; height: 95px; box-shadow: inset 1px 1px 0px #fff;
         }
-        
-        /* Matching the Signal Monitor label to the retro theme */
-        footer div[style*="color:#ffcc00"] {
-            color: #000 !important; /* Black text on gray background */
-            text-shadow: 1px 1px 0px #fff;
-            font-family: "MS Sans Serif", "Tahoma", sans-serif;
-            letter-spacing: 0px !important;
-        }
-
+        .footer-label { color: #000; font-size: 10px; font-weight: bold; margin-bottom: 6px; font-family: sans-serif; text-transform: uppercase; }
         .vu-meter { 
-            display: flex; 
-            gap: 2px; 
-            height: 18px; 
-            background: #000; 
-            padding: 2px; 
-            border-top: 2px solid #808080;
-            border-left: 2px solid #808080;
-            border-bottom: 2px solid #ffffff;
-            border-right: 2px solid #ffffff;
+            display: flex; gap: 2px; height: 22px; background: #000; padding: 3px; 
+            border-top: 2px solid #808080; border-left: 2px solid #808080;
+            border-bottom: 2px solid #fff; border-right: 2px solid #fff;
         }
-
+        .led { flex: 1; background: #222; border: 1px solid #111; }
+        .led.on-g { background: #0f0; box-shadow: 0 0 5px #0f0; } 
+        .led.on-y { background: #ff0; box-shadow: 0 0 5px #ff0; } 
+        .led.on-r { background: #f00; box-shadow: 0 0 5px #f00; }
 
         @media (min-width: 600px) { .mixer-grid { grid-template-columns: repeat(4, 1fr); } .big-knob-panel { grid-column: span 4; } }
     </style>
@@ -146,11 +128,10 @@
 <header><h1>General desEchos</h1></header>
 
 <div class="stack-container">
-    
     <section class="rack-unit intro-box">
         <div class="bolt tl"></div><div class="bolt tr"></div><div class="bolt bl"></div><div class="bolt br"></div>
         <h2 style="margin:0 0 5px 0; font-size:1rem; text-transform: uppercase;">System Briefing</h2>
-        <p style="margin:0;">Master DUB Station. All channels now feature <strong>E</strong> (Echo Send) and <strong>F</strong> (Filter Send) controls.</p>
+        <p style="margin:0;">Master DUB Station. Ensure "START MIXER ENGINE" is pressed to activate VU monitoring.</p>
     </section>
 
     <section class="rack-unit seg1-unit">
@@ -197,23 +178,16 @@
 
         <button id="masterBtn" style="width:100%; padding:15px; margin-top:15px; background:#040; color:#fff; border:3px outset #080; font-family:monospace; font-weight:bold; cursor:pointer;" onclick="toggleAll()">START MIXER ENGINE</button>
     </section>
-
-    <section class="rack-unit blog-log">
-        <div class="bolt tl"></div><div class="bolt tr"></div><div class="bolt bl"></div><div class="bolt br"></div>
-        <h3 style="margin:0 0 10px 0; font-size:1rem;">LOG #411: SENDS RESTORED</h3>
-        <p style="margin:0; font-size:0.9rem;">Routing corrected. Individual Echo (E) and Filter (F) sends now available per channel. Hardware stack integrity 100%.</p>
-    </section>
-
 </div>
 
 <footer>
-    <div style="color:#ffcc00; font-size:9px; font-weight:bold; margin-bottom:4px;">SIGNAL MONITOR</div>
+    <div class="footer-label">SIGNAL MONITOR</div>
     <div class="vu-meter" id="vu"></div>
 </footer>
 
 <script>
     let audioCtx, analyser, sirenOsc, sirenLfo, sirenLfoG, sirenG, delay, feedback, filter1, filter2;
-    let isPlaying = false, isSirenEcho = false, lfoType = 'square', filterIdx = 0;
+    let isPlaying = false, isSirenEcho = false, lfoType = 'square', filterIdx = 0, vuStarted = false;
     const freqs = [0, 100, 250, 500, 1000, 2000, 4000, 8000];
     const channels = [];
 
@@ -239,6 +213,7 @@
         if (audioCtx && audioCtx.state !== 'suspended') return;
         audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         analyser = audioCtx.createAnalyser();
+        analyser.fftSize = 256;
 
         delay = audioCtx.createDelay(2.0);
         delay.delayTime.value = 0.4;
@@ -275,7 +250,6 @@
         });
 
         analyser.connect(audioCtx.destination);
-        startVU();
     }
 
     function toggleFX(i, type) {
@@ -320,8 +294,37 @@
             const aud = document.getElementById(`mix-aud-${i}`);
             isPlaying ? aud.play() : aud.pause();
         });
+        if (isPlaying && !vuStarted) { startVU(); vuStarted = true; }
     }
 
+    function startVU() {
+        const vu = document.getElementById('vu'); vu.innerHTML = '';
+        const leds = [];
+        for(let i=0; i<24; i++) {
+            const l = document.createElement('div'); l.className = 'led'; vu.appendChild(l); leds.push(l);
+        }
+        function draw() {
+            if(!analyser) return requestAnimationFrame(draw);
+            const data = new Uint8Array(analyser.frequencyBinCount);
+            analyser.getByteFrequencyData(data);
+            let sum = 0;
+            for(let i=0; i<data.length; i++) sum += data[i];
+            const vol = sum / data.length;
+            const lit = Math.min(24, Math.floor((vol / 60) * 24)); 
+            leds.forEach((l, i) => {
+                l.className = 'led';
+                if(i < lit) {
+                    if(i < 14) l.classList.add('on-g');
+                    else if(i < 20) l.classList.add('on-y');
+                    else l.classList.add('on-r');
+                }
+            });
+            requestAnimationFrame(draw);
+        }
+        draw();
+    }
+
+    // Siren Handlers
     const fireBtn = document.getElementById('fireBtn');
     fireBtn.onmousedown = fireBtn.ontouchstart = (e) => { 
         if(e) e.preventDefault(); initAudio(); 
@@ -334,7 +337,7 @@
     document.getElementById('delayToggle').onchange = (e) => {
         initAudio(); audioCtx.resume();
         isSirenEcho = e.target.checked;
-        if(isSirenEcho) sirenG.connect(delay); else sirenG.disconnect(delay);
+        if(isSirenEcho) sirenG.connect(delay); else try { sirenG.disconnect(delay); } catch(e){}
     };
 
     document.getElementById('modeToggle').onclick = () => {
@@ -348,30 +351,6 @@
     document.getElementById('depthKnob').oninput = (e) => { if(sirenLfoG) sirenLfoG.gain.setTargetAtTime(e.target.value, audioCtx.currentTime, 0.05); };
     document.getElementById('echoKnob').oninput = (e) => { if(feedback) feedback.gain.value = e.target.value; };
     document.getElementById('timeKnob').oninput = (e) => { if(delay) delay.delayTime.setTargetAtTime(e.target.value, audioCtx.currentTime, 0.1); };
-
-    function startVU() {
-        const vu = document.getElementById('vu'); vu.innerHTML = '';
-        const leds = [];
-        for(let i=0; i<20; i++) {
-            const l = document.createElement('div'); l.className = 'led'; vu.appendChild(l); leds.push(l);
-        }
-        function draw() {
-            const data = new Uint8Array(analyser.frequencyBinCount);
-            analyser.getByteFrequencyData(data);
-            const vol = data.reduce((a,b) => a+b) / data.length;
-            const lit = Math.floor((vol / 120) * 20);
-            leds.forEach((l, i) => {
-                l.className = 'led';
-                if(i < lit) {
-                    if(i < 12) l.classList.add('on-g');
-                    else if(i < 17) l.classList.add('on-y');
-                    else l.classList.add('on-r');
-                }
-            });
-            requestAnimationFrame(draw);
-        }
-        draw();
-    }
 </script>
 </body>
 </html>
