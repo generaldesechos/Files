@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>General desEchos v3.2</title>
+    <title>General desEchos v3.3</title>
     <style>
         /* --- SYSTEM CORE --- */
         body {
@@ -13,7 +13,7 @@
             color: #ffffff;
             font-family: "Courier New", monospace;
             margin: 0;
-            padding: 20px 0 140px 0;
+            padding: 20px 0 120px 0; /* Space for footer */
             overflow-x: hidden;
             touch-action: pan-y;
         }
@@ -76,8 +76,12 @@
         .blog-log { background: #fdf5e6; border: 1px solid #d2b48c; max-width: 600px; margin: 40px auto; padding: 25px 20px 25px 45px; color: #332211; font-family: "Georgia", serif; }
         .blog-log::before { content: ""; position: absolute; top: 0; left: 30px; width: 2px; height: 100%; background: rgba(255, 0, 0, 0.2); }
 
-        /* --- FOOTER & VU --- */
-        footer { position: fixed; bottom: 0; left: 0; width: 100vw; background: #c0c0c0; border-top: 5px outset #fff; padding: 10px 15px; box-sizing: border-box; z-index: 9999; height: 100px; }
+        /* --- FIXED FOOTER --- */
+        footer { 
+            position: fixed; bottom: 0; left: 0; width: 100%; background: #c0c0c0; 
+            border-top: 5px outset #fff; padding: 10px 15px; box-sizing: border-box; 
+            z-index: 10000; height: 100px;
+        }
         .vu-meter { display: flex; gap: 3px; height: 25px; background: #000; padding: 4px; border: 3px inset #808080; }
         .led { flex: 1; background: #222; }
         .led.on-g { background: #33ff33; box-shadow: 0 0 8px #00ff00; }
@@ -128,7 +132,7 @@
             </div>
             <div id="freqLabel" class="freq-text">OFF</div>
         </div>
-        <button id="masterBtn" style="width:100%; padding:10px; margin-top:10px; background:#040; color:#fff; border:4px outset #080; font-family:monospace;" onclick="toggleAll()">START ALL TRACKS</button>
+        <button id="masterBtn" style="width:100%; padding:15px; margin-top:10px; background:#040; color:#fff; border:4px outset #080; font-family:monospace; font-weight:bold;" onclick="toggleAll()">START MIXER ENGINE</button>
     </section>
 
     <div class="machine-grid">
@@ -161,7 +165,6 @@
     const freqs = [0, 100, 250, 500, 1000, 2000, 4000, 8000];
     const channels = [];
 
-    // Mixer Setup
     const mixerUI = document.getElementById('mixerUI');
     for(let i=0; i<4; i++) {
         const strip = document.createElement('div');
@@ -179,7 +182,7 @@
     }
 
     function initAudio() {
-        if (audioCtx) return;
+        if (audioCtx && audioCtx.state !== 'suspended') return;
         audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         analyser = audioCtx.createAnalyser();
 
@@ -196,7 +199,8 @@
         sirenOsc.start(); sirenLfo.start();
 
         channels.forEach((ch, i) => {
-            const node = audioCtx.createMediaElementSource(document.getElementById(`mix-aud-${i}`));
+            const audEl = document.getElementById(`mix-aud-${i}`);
+            const node = audioCtx.createMediaElementSource(audEl);
             ch.gain = audioCtx.createGain(); ch.echoG = audioCtx.createGain(); ch.fltrG = audioCtx.createGain();
             ch.echoG.gain.value = 0; ch.fltrG.gain.value = 0;
             node.connect(ch.gain); ch.gain.connect(analyser); 
@@ -216,7 +220,7 @@
     function setVol(i, v) { if(channels[i].gain) channels[i].gain.gain.value = v; }
 
     function toggleFX(i, type) {
-        initAudio();
+        initAudio(); if(audioCtx.state === 'suspended') audioCtx.resume();
         if(type === 'e') {
             channels[i].eOn = !channels[i].eOn;
             channels[i].echoG.gain.value = channels[i].eOn ? 0.8 : 0;
@@ -229,7 +233,7 @@
     }
 
     function rotateFilter() {
-        initAudio();
+        initAudio(); if(audioCtx.state === 'suspended') audioCtx.resume();
         filterIdx = (filterIdx + 1) % freqs.length;
         const f = freqs[filterIdx];
         document.getElementById('dialHand').style.transform = `rotate(${filterIdx * 45}deg)`;
@@ -239,27 +243,29 @@
     }
 
     function toggleAll() {
-        initAudio();
+        initAudio(); audioCtx.resume();
         isPlaying = !isPlaying;
         const btn = document.getElementById('masterBtn');
         channels.forEach((ch, i) => {
             const aud = document.getElementById(`mix-aud-${i}`);
             isPlaying ? aud.play() : aud.pause();
         });
-        btn.innerText = isPlaying ? "STOP ENGINE" : "START ALL TRACKS";
+        btn.innerText = isPlaying ? "STOP MIXER ENGINE" : "START MIXER ENGINE";
         btn.style.background = isPlaying ? "#600" : "#040";
     }
 
-    // Siren Logic
     const fireBtn = document.getElementById('fireBtn');
     fireBtn.onmousedown = fireBtn.ontouchstart = (e) => { 
-        if(e) e.preventDefault(); initAudio(); 
-        sirenG.gain.setTargetAtTime(0.5, audioCtx.currentTime, 0.02); 
+        if(e) e.preventDefault(); 
+        initAudio(); 
+        audioCtx.resume().then(() => {
+            sirenG.gain.setTargetAtTime(0.5, audioCtx.currentTime, 0.02); 
+        });
     };
     window.onmouseup = window.ontouchend = () => { if(sirenG) sirenG.gain.setTargetAtTime(0, audioCtx.currentTime, 0.1); };
 
     document.getElementById('delayToggle').onclick = () => {
-        initAudio();
+        initAudio(); audioCtx.resume();
         isSirenEcho = !isSirenEcho;
         document.getElementById('delayToggle').classList.toggle('active');
         if(isSirenEcho) sirenG.connect(delay); else sirenG.disconnect(delay);
@@ -271,13 +277,14 @@
         document.getElementById('modeToggle').innerText = "LFO: " + lfoType.toUpperCase();
     };
 
-    document.getElementById('pitchKnob').oninput = (e) => sirenOsc.frequency.setTargetAtTime(e.target.value, audioCtx.currentTime, 0.05);
-    document.getElementById('rateKnob').oninput = (e) => sirenLfo.frequency.setTargetAtTime(e.target.value, audioCtx.currentTime, 0.05);
-    document.getElementById('depthKnob').oninput = (e) => sirenLfoG.gain.setTargetAtTime(e.target.value, audioCtx.currentTime, 0.05);
+    document.getElementById('pitchKnob').oninput = (e) => { if(sirenOsc) sirenOsc.frequency.setTargetAtTime(e.target.value, audioCtx.currentTime, 0.05); };
+    document.getElementById('rateKnob').oninput = (e) => { if(sirenLfo) sirenLfo.frequency.setTargetAtTime(e.target.value, audioCtx.currentTime, 0.05); };
+    document.getElementById('depthKnob').oninput = (e) => { if(sirenLfoG) sirenLfoG.gain.setTargetAtTime(e.target.value, audioCtx.currentTime, 0.05); };
     document.getElementById('echoKnob').oninput = (e) => { if(feedback) feedback.gain.value = e.target.value; };
 
     function startVU() {
         const vu = document.getElementById('vu');
+        vu.innerHTML = '';
         const leds = [];
         for(let i=0; i<24; i++) {
             const l = document.createElement('div'); l.className = 'led'; vu.appendChild(l); leds.push(l);
