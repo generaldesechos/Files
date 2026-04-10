@@ -6,6 +6,108 @@
     <meta charset="UTF-8">
     <title>DER GENERAL DESECHOS v1.0</title>
     <style>
+        /* VU METER HOUSING (Floating Module) */
+.vu-meter-module {
+    position: fixed;
+    top: 100px;
+    right: 20px;
+    width: 220px;
+    background: #c0c0c0; /* Gray Industrial Plastic */
+    border: 5px outset #eee;
+    padding: 10px;
+    box-shadow: 8px 8px 0px rgba(0,0,0,0.5);
+    z-index: 2000;
+    font-family: "Courier New", monospace;
+    color: #000;
+}
+
+/* The Label Plate */
+.vu-label {
+    background: #222;
+    color: #ffcc00;
+    text-align: center;
+    padding: 2px;
+    border: 2px inset #555;
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+/* THE METER FACE */
+.vu-face {
+    position: relative;
+    width: 200px;
+    height: 100px;
+    background: #ffff99; /* Aged yellow backlight */
+    border: 4px inset #808080;
+    border-radius: 100px 100px 0 0; /* Semi-circle */
+    overflow: hidden;
+}
+
+/* The Curved Scale (VGA-style) */
+.vu-scale {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        /* The Red "Danger" Zone */
+        conic-gradient(from -90deg at 50% 100%, 
+            transparent 0deg, 
+            transparent 135deg, 
+            rgba(255,0,0,0.6) 135deg, 
+            rgba(255,0,0,0.6) 180deg),
+        /* The Arc Line */
+        radial-gradient(circle at 50% 100%, 
+            transparent 110px, 
+            #000 110px, 
+            #000 113px, 
+            transparent 113px);
+}
+
+/* Scale Numbers */
+.vu-numbers {
+    position: absolute;
+    width: 100%;
+    bottom: 5px;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 15px;
+    font-size: 10px;
+    font-weight: bold;
+}
+
+/* THE NEEDLE */
+.vu-needle {
+    position: absolute;
+    bottom: 10px; /* Pivot Point */
+    left: 50%;
+    width: 2px;
+    height: 90px;
+    background: #000;
+    transform-origin: bottom center; /* Pivot at the bottom */
+    transform: rotate(-70deg); /* Default State (Off) */
+    
+    /* Smooth bounce physics */
+    transition: transform 0.15s cubic-bezier(0.23, 1, 0.32, 1); 
+    
+    z-index: 10;
+}
+
+/* The Pivot Bolt */
+.vu-pivot {
+    position: absolute;
+    bottom: -5px;
+    left: calc(50% - 8px);
+    width: 16px;
+    height: 16px;
+    background: #444;
+    border-radius: 50%;
+    border: 2px solid #000;
+    z-index: 11;
+}
+
         /* THE SYSTEM TRAY */
 footer {
     position: fixed;
@@ -168,6 +270,24 @@ footer {
     </style>
 </head>
 <body>
+<div class="vu-meter-module">
+    <div class="bolt tl"></div><div class="bolt tr"></div>
+    <div class="bolt bl"></div><div class="bolt br"></div>
+
+    <div class="vu-label">SCROLL_VELOCITY (VU)</div>
+    
+    <div class="vu-face">
+        <div class="vu-scale"></div>
+        <div class="vu-needle" id="vuNeedle"></div>
+        <div class="vu-numbers">
+            <span>0</span>
+            <span>3</span>
+            <span>5</span>
+            <span style="color:#aa0000;">10</span>
+        </div>
+    </div>
+    <div class="vu-pivot"></div>
+</div>
 
 <header>
     <h1>General desEchos</h1>
@@ -311,7 +431,57 @@ footer {
             <div class="gauge-fill"></div>
         </div>
     </div>
-</footer>
+</footer><script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const needle = document.getElementById('vuNeedle');
+        
+        let lastScrollY = window.scrollY;
+        let currentVelocity = 0;
+        let targetVelocity = 0;
+
+        // Needle rotational boundaries in degrees
+        const MIN_ROTATION = -70; // Left (Zero)
+        const MAX_ROTATION = 70;  // Right (Danger Zone)
+        const RANGE = MAX_ROTATION - MIN_ROTATION;
+
+        // How fast the needle decays when scrolling stops
+        const DECAY_RATE = 0.93; 
+
+        // Main animation loop
+        function updateVU() {
+            const currentScrollY = window.scrollY;
+            
+            // 1. Calculate the instantaneous speed (absolute difference)
+            let scrollDelta = Math.abs(currentScrollY - lastScrollY);
+            
+            // 2. Map scroll speed to target velocity (Max speed caps at ~150px/frame)
+            // Divide by 150 (max expected speed) to get a 0.0 to 1.0 factor
+            targetVelocity = Math.min(scrollDelta / 150, 1.0);
+            
+            // 3. Apply smooth movement toward target (creates the "bounce")
+            // This is "linear interpolation" (LERP)
+            currentVelocity += (targetVelocity - currentVelocity) * 0.3;
+
+            // 4. If target is higher, needle moves fast up. If lower, decay slowly.
+            currentVelocity *= DECAY_RATE;
+
+            // 5. Calculate final rotation degrees
+            let rotationAngle = MIN_ROTATION + (currentVelocity * RANGE);
+            
+            // 6. Apply rotation to the needle element
+            needle.style.transform = `rotate(${rotationAngle}deg)`;
+
+            // 7. Update state for next frame
+            lastScrollY = currentScrollY;
+            
+            requestAnimationFrame(updateVU);
+        }
+
+        // Fire the machine up
+        updateVU();
+    });
+</script>
+
 
 </body>
 </html>
