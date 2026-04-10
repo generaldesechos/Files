@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>General desEchos v3.7 - Dub Stack</title>
+    <title>General desEchos v3.9 - Master Stack</title>
     <style>
         /* --- SYSTEM CORE --- */
         body {
@@ -25,12 +25,11 @@
 
         h1 { color: #ffffff; margin: 0; font-size: 1.5rem; text-transform: uppercase; letter-spacing: 2px; }
 
-        /* --- STACK LAYOUT --- */
         .stack-container {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 10px; /* Tight stacking like a rack */
+            gap: 15px;
             max-width: 95%;
             margin: 0 auto;
         }
@@ -39,7 +38,7 @@
             position: relative;
             box-shadow: 0 10px 20px rgba(0,0,0,0.5);
             width: 100%;
-            max-width: 400px;
+            max-width: 550px;
             box-sizing: border-box;
         }
 
@@ -48,22 +47,20 @@
 
         .unit-label { background: #111; color: #ffcc00; padding: 4px; text-align: center; font-weight: bold; border: 1px solid #444; margin-bottom: 15px; font-size: 10px; letter-spacing: 1px; }
 
-        /* --- SIREN UNIT (GOLD/BROWN) --- */
+        /* --- INTRO BOX --- */
+        .intro-box { background: #e6be8a; border: 2px solid #8b4513; color: #221100; padding: 15px; font-size: 0.8rem; }
+
+        /* --- SIREN UNIT --- */
         .seg1-unit { background: #b08d57; border: 5px outset #d4af37; color: #222; padding: 20px; }
         .fire-button {
             width: 60px; height: 60px; background: radial-gradient(circle, #ff0000, #880000);
             border: 4px outset #ff6666; border-radius: 50%; cursor: pointer; margin: 0 auto;
-            box-shadow: 0 4px 0 #440000; touch-action: none;
+            box-shadow: 0 4px 0 #440000; touch-action: none; display: block;
         }
 
-        /* --- SPACE DELAY UNIT (SILVER) --- */
+        /* --- SPACE DELAY UNIT --- */
         .delay-unit { background: #c0c0c0; border: 5px outset #eee; color: #333; padding: 20px; }
-        
-        /* LONG TOGGLE SWITCH */
-        .toggle-container { display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 15px; }
-        .switch {
-            position: relative; display: inline-block; width: 80px; height: 34px;
-        }
+        .switch { position: relative; display: inline-block; width: 80px; height: 34px; }
         .switch input { opacity: 0; width: 0; height: 0; }
         .slider {
             position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
@@ -74,22 +71,36 @@
             background-color: #888; border: 2px solid #222; transition: .4s; box-shadow: 0 4px 4px rgba(0,0,0,0.4);
         }
         input:checked + .slider { background-color: #00ff00; }
-        input:checked + .slider:before { transform: translateY(-5px) rotate(10deg); background-color: #aaa; }
-        .switch-text { font-size: 10px; font-weight: bold; color: #000; }
+        input:checked + .slider:before { transform: rotate(10deg); background-color: #aaa; }
 
-        /* --- MIXER UNIT (BLACK/DARK GREY) --- */
-        .mixer-container { background: #333; border: 5px outset #555; padding: 15px; color: #fff; max-width: 600px; }
+        /* --- MIXER UNIT --- */
+        .mixer-container { background: #333; border: 5px outset #555; padding: 15px; color: #fff; }
         .mixer-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
         .channel-strip { background: #444; border: 2px inset #222; padding: 8px; text-align: center; }
-        .chan-led { width: 10px; height: 10px; background: #111; border-radius: 50%; margin: 0 auto 5px auto; }
+        .chan-led { width: 10px; height: 10px; background: #111; border-radius: 50%; margin: 0 auto 8px auto; }
         .chan-led.active { background: #0f0; box-shadow: 0 0 8px #0f0; }
-        .vert-fader { appearance: slider-vertical; width: 18px; height: 80px; margin: 10px 0; }
-        .upload-area { font-size: 8px; background: #000; color: #0f0; padding: 4px; border: 1px solid #333; height: 24px; overflow: hidden; display: flex; align-items: center; justify-content: center; cursor: pointer;}
+        
+        .s-btn { font-size: 8px; padding: 4px; margin: 2px; border: 2px outset #666; background: #222; color: #fff; cursor: pointer; width: 35px;}
+        .s-btn.active-e { background: #00ff00; color: #000; }
+        .s-btn.active-f { background: #ffcc00; color: #000; }
 
-        /* --- KNOBS & INPUTS --- */
+        .upload-area { font-size: 8px; background: #000; color: #0f0; padding: 4px; border: 1px solid #333; height: 22px; overflow: hidden; display: flex; align-items: center; justify-content: center; cursor: pointer; margin-bottom: 5px;}
+
+        /* --- KING TUBBY FILTER PANEL --- */
+        .big-knob-panel { grid-column: span 2; background: #1a1a1a; padding: 10px; margin-top: 10px; text-align: center; border: 4px inset #444; }
+        .rotary-dial { width: 60px; height: 60px; background: #333; border-radius: 50%; border: 3px solid #666; margin: 5px auto; position: relative; cursor: pointer; }
+        .dial-hand { width: 3px; height: 22px; background: red; position: absolute; top: 8px; left: 28.5px; transform-origin: center 22px; }
+        .freq-text { color: #ffcc00; font-size: 14px; font-weight: bold; }
+
+        /* --- BLOG LOG --- */
+        .blog-log { background: #fdf5e6; border: 1px solid #d2b48c; padding: 25px 20px 25px 45px; color: #332211; font-family: "Georgia", serif; position: relative;}
+        .blog-log::before { content: ""; position: absolute; top: 0; left: 30px; width: 2px; height: 100%; background: rgba(255, 0, 0, 0.2); }
+
+        /* --- INPUTS --- */
         .control-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .knob-label { font-size: 9px; font-weight: bold; text-align: center; display: block; margin-bottom: 2px; }
+        .knob-label { font-size: 9px; font-weight: bold; text-align: center; display: block; margin-bottom: 2px; text-transform: uppercase; }
         input[type=range] { width: 100%; cursor: pointer; accent-color: #800; }
+        .vert-fader { appearance: slider-vertical; width: 18px; height: 80px; margin: 5px 0; }
 
         /* --- FOOTER --- */
         footer { position: fixed; bottom: 0; left: 0; width: 100%; background: #222; border-top: 3px solid #ffcc00; padding: 10px; box-sizing: border-box; z-index: 10000; height: 90px; }
@@ -97,15 +108,21 @@
         .led { flex: 1; background: #111; }
         .led.on-g { background: #0f0; } .led.on-y { background: #ff0; } .led.on-r { background: #f00; }
 
-        @media (min-width: 600px) { .mixer-grid { grid-template-columns: repeat(4, 1fr); } .rack-unit { max-width: 550px; } }
+        @media (min-width: 600px) { .mixer-grid { grid-template-columns: repeat(4, 1fr); } .big-knob-panel { grid-column: span 4; } }
     </style>
 </head>
 <body>
 
-<header><h1>General desEchos v3.7</h1></header>
+<header><h1>General desEchos</h1></header>
 
 <div class="stack-container">
     
+    <section class="rack-unit intro-box">
+        <div class="bolt tl"></div><div class="bolt tr"></div><div class="bolt bl"></div><div class="bolt br"></div>
+        <h2 style="margin:0 0 5px 0; font-size:1rem; text-transform: uppercase;">System Briefing</h2>
+        <p style="margin:0;">Master DUB Station. All channels now feature <strong>E</strong> (Echo Send) and <strong>F</strong> (Filter Send) controls.</p>
+    </section>
+
     <section class="rack-unit seg1-unit">
         <div class="bolt tl"></div><div class="bolt tr"></div><div class="bolt bl"></div><div class="bolt br"></div>
         <div class="unit-label">SIREN GENERATOR // SE-G1</div>
@@ -128,21 +145,33 @@
             <div><span class="knob-label">FEEDBACK</span><input type="range" id="echoKnob" min="0" max="0.95" step="0.05" value="0.5"></div>
             <div><span class="knob-label">TIME</span><input type="range" id="timeKnob" min="0.05" max="2.0" step="0.05" value="0.4"></div>
         </div>
-        <div class="toggle-container">
-            <span class="switch-text">OFF</span>
-            <label class="switch">
-                <input type="checkbox" id="delayToggle">
-                <span class="slider"></span>
-            </label>
-            <span class="switch-text">ON</span>
+        <div style="display:flex; align-items:center; justify-content:center; gap:10px; margin-top:15px;">
+            <span style="font-size:10px; color:#000; font-weight:bold;">OFF</span>
+            <label class="switch"><input type="checkbox" id="delayToggle"><span class="slider"></span></label>
+            <span style="font-size:10px; color:#000; font-weight:bold;">ON</span>
         </div>
     </section>
 
     <section class="rack-unit mixer-container">
         <div class="bolt tl"></div><div class="bolt tr"></div><div class="bolt bl"></div><div class="bolt br"></div>
-        <div class="unit-label">4-CH DUB MIXER / SESSION RECORDER</div>
+        <div class="unit-label">4-CH DUB MIXER / FX SENDS</div>
         <div class="mixer-grid" id="mixerUI"></div>
-        <button id="masterBtn" style="width:100%; padding:12px; margin-top:15px; background:#040; color:#fff; border:3px outset #080; font-family:monospace; font-weight:bold; cursor:pointer;" onclick="toggleAll()">START MIXER ENGINE</button>
+        
+        <div class="big-knob-panel">
+            <div style="font-size:10px; color:#fff;">KING TUBBY HP FILTER</div>
+            <div class="rotary-dial" onclick="rotateFilter()">
+                <div id="dialHand" class="dial-hand"></div>
+            </div>
+            <div id="freqLabel" class="freq-text">OFF</div>
+        </div>
+
+        <button id="masterBtn" style="width:100%; padding:15px; margin-top:15px; background:#040; color:#fff; border:3px outset #080; font-family:monospace; font-weight:bold; cursor:pointer;" onclick="toggleAll()">START MIXER ENGINE</button>
+    </section>
+
+    <section class="rack-unit blog-log">
+        <div class="bolt tl"></div><div class="bolt tr"></div><div class="bolt bl"></div><div class="bolt br"></div>
+        <h3 style="margin:0 0 10px 0; font-size:1rem;">LOG #411: SENDS RESTORED</h3>
+        <p style="margin:0; font-size:0.9rem;">Routing corrected. Individual Echo (E) and Filter (F) sends now available per channel. Hardware stack integrity 100%.</p>
     </section>
 
 </div>
@@ -153,11 +182,11 @@
 </footer>
 
 <script>
-    let audioCtx, analyser, sirenOsc, sirenLfo, sirenLfoG, sirenG, delay, feedback;
-    let isPlaying = false, isSirenEcho = false, lfoType = 'square';
+    let audioCtx, analyser, sirenOsc, sirenLfo, sirenLfoG, sirenG, delay, feedback, filter1, filter2;
+    let isPlaying = false, isSirenEcho = false, lfoType = 'square', filterIdx = 0;
+    const freqs = [0, 100, 250, 500, 1000, 2000, 4000, 8000];
     const channels = [];
 
-    // Setup Mixer
     const mixerUI = document.getElementById('mixerUI');
     for(let i=0; i<4; i++) {
         const strip = document.createElement('div');
@@ -165,11 +194,15 @@
         strip.innerHTML = `
             <div id="led-${i}" class="chan-led"></div>
             <label class="upload-area" id="up-box-${i}">UPLOAD<input type="file" style="display:none" onchange="loadUserFile(${i}, this)"></label>
+            <div style="display:flex; justify-content:center; gap:2px;">
+                <button class="s-btn" id="e-${i}" onclick="toggleFX(${i},'e')">E</button>
+                <button class="s-btn" id="f-${i}" onclick="toggleFX(${i},'f')">F</button>
+            </div>
             <input type="range" class="vert-fader" min="0" max="1" step="0.01" value="0.7" oninput="setVol(${i}, this.value)">
             <audio id="mix-aud-${i}" loop src="audio${i+1}.mp3" crossorigin="anonymous"></audio>
         `;
         mixerUI.appendChild(strip);
-        channels.push({ gain:null, echoG:null, connected:false });
+        channels.push({ gain:null, echoG:null, fltrG:null, eOn:false, fOn:false, connected:false });
     }
 
     function initAudio() {
@@ -182,6 +215,10 @@
         feedback = audioCtx.createGain();
         feedback.gain.value = 0.5;
         delay.connect(feedback); feedback.connect(delay); delay.connect(analyser);
+
+        filter1 = audioCtx.createBiquadFilter(); filter2 = audioCtx.createBiquadFilter();
+        filter1.type = filter2.type = 'highpass';
+        filter1.connect(filter2); filter2.connect(analyser);
 
         sirenOsc = audioCtx.createOscillator(); sirenLfo = audioCtx.createOscillator();
         sirenLfoG = audioCtx.createGain(); sirenG = audioCtx.createGain(); 
@@ -196,12 +233,14 @@
                 const node = audioCtx.createMediaElementSource(audEl);
                 ch.gain = audioCtx.createGain();
                 ch.echoG = audioCtx.createGain();
-                ch.echoG.gain.value = 0.8; // Constant echo send for mixer
+                ch.fltrG = audioCtx.createGain();
+                ch.echoG.gain.value = 0; ch.fltrG.gain.value = 0;
                 node.connect(ch.gain); ch.gain.connect(analyser); 
                 ch.gain.connect(ch.echoG); ch.echoG.connect(delay);
+                ch.gain.connect(ch.fltrG); ch.fltrG.connect(filter1);
                 ch.connected = true;
-                audEl.addEventListener('play', () => document.getElementById(`led-${i}`).classList.add('active'));
-                audEl.addEventListener('pause', () => document.getElementById(`led-${i}`).classList.remove('active'));
+                audEl.onplay = () => document.getElementById(`led-${i}`).classList.add('active');
+                audEl.onpause = () => document.getElementById(`led-${i}`).classList.remove('active');
             }
         });
 
@@ -209,15 +248,35 @@
         startVU();
     }
 
+    function toggleFX(i, type) {
+        initAudio(); audioCtx.resume();
+        if(type === 'e') {
+            channels[i].eOn = !channels[i].eOn;
+            channels[i].echoG.gain.value = channels[i].eOn ? 0.8 : 0;
+            document.getElementById(`e-${i}`).classList.toggle('active-e');
+        } else {
+            channels[i].fOn = !channels[i].fOn;
+            channels[i].fltrG.gain.value = channels[i].fOn ? 1 : 0;
+            document.getElementById(`f-${i}`).classList.toggle('active-f');
+        }
+    }
+
+    function rotateFilter() {
+        initAudio(); audioCtx.resume();
+        filterIdx = (filterIdx + 1) % freqs.length;
+        const f = freqs[filterIdx];
+        document.getElementById('dialHand').style.transform = `rotate(${filterIdx * 45}deg)`;
+        document.getElementById('freqLabel').innerText = f === 0 ? "OFF" : f + "Hz";
+        filter1.frequency.setTargetAtTime(f, audioCtx.currentTime, 0.05);
+        filter2.frequency.setTargetAtTime(f, audioCtx.currentTime, 0.05);
+    }
+
     function loadUserFile(i, input) {
         const file = input.files[0];
         const box = document.getElementById(`up-box-${i}`);
         if(file) {
-            box.innerText = "...";
-            setTimeout(() => {
-                box.innerText = file.name.substring(0, 6) + "..";
-                document.getElementById(`mix-aud-${i}`).src = URL.createObjectURL(file);
-            }, 500);
+            box.innerText = file.name.substring(0, 6) + "..";
+            document.getElementById(`mix-aud-${i}`).src = URL.createObjectURL(file);
         }
     }
 
@@ -233,26 +292,27 @@
         });
     }
 
-    // SIREN FIRE
-    const onFire = (e) => { 
+    const fireBtn = document.getElementById('fireBtn');
+    fireBtn.onmousedown = fireBtn.ontouchstart = (e) => { 
         if(e) e.preventDefault(); initAudio(); 
         audioCtx.resume().then(() => {
             sirenG.gain.setTargetAtTime(document.getElementById('volKnob').value, audioCtx.currentTime, 0.02);
         });
     };
-    const offFire = () => { if(sirenG) sirenG.gain.setTargetAtTime(0, audioCtx.currentTime, 0.1); };
-    const fireBtn = document.getElementById('fireBtn');
-    fireBtn.onmousedown = fireBtn.ontouchstart = onFire;
-    window.onmouseup = window.ontouchend = offFire;
+    window.onmouseup = window.ontouchend = () => { if(sirenG) sirenG.gain.setTargetAtTime(0, audioCtx.currentTime, 0.1); };
 
-    // DELAY TOGGLE
     document.getElementById('delayToggle').onchange = (e) => {
         initAudio(); audioCtx.resume();
         isSirenEcho = e.target.checked;
         if(isSirenEcho) sirenG.connect(delay); else sirenG.disconnect(delay);
     };
 
-    // KNOBS
+    document.getElementById('modeToggle').onclick = () => {
+        lfoType = (lfoType === 'square') ? 'sine' : 'square';
+        if(sirenLfo) sirenLfo.type = lfoType;
+        document.getElementById('modeToggle').innerText = "LFO: " + lfoType.toUpperCase();
+    };
+
     document.getElementById('pitchKnob').oninput = (e) => { if(sirenOsc) sirenOsc.frequency.setTargetAtTime(e.target.value, audioCtx.currentTime, 0.05); };
     document.getElementById('rateKnob').oninput = (e) => { if(sirenLfo) sirenLfo.frequency.setTargetAtTime(e.target.value, audioCtx.currentTime, 0.05); };
     document.getElementById('depthKnob').oninput = (e) => { if(sirenLfoG) sirenLfoG.gain.setTargetAtTime(e.target.value, audioCtx.currentTime, 0.05); };
