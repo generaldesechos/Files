@@ -8,16 +8,14 @@
         /* --- SYSTEM CORE --- */
         body {
             background-color: #004488;
-            background-image: 
-                linear-gradient(rgba(255,255,255,.07) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255,255,255,.07) 1px, transparent 1px);
+            background-image: linear-gradient(rgba(255,255,255,.07) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.07) 1px, transparent 1px);
             background-size: 30px 30px;
             color: #ffffff;
             font-family: "Courier New", monospace;
             margin: 0;
-            padding: 20px 0 120px 0;
+            padding: 20px 0 140px 0;
             overflow-x: hidden;
-            touch-action: pan-y; /* Allows scrolling but prevents zoom interference */
+            touch-action: pan-y;
         }
 
         header {
@@ -28,8 +26,6 @@
             box-shadow: 6px 6px 0px #000;
             margin: 0 15px 20px 15px;
         }
-
-        h1 { color: #ffcc00; margin: 0; font-size: 1.5rem; text-transform: uppercase; }
 
         /* --- UI BOXES --- */
         .intro-box, .siren-box, .machine-part, .blog-log {
@@ -43,7 +39,7 @@
             color: #221100;
             max-width: 90%;
             margin: 0 auto 30px auto;
-            padding: 20px;
+            padding: 15px;
         }
 
         /* --- SIREN CONTROL UNIT --- */
@@ -60,20 +56,19 @@
         .controls-row {
             display: flex;
             justify-content: center;
-            gap: 20px;
+            gap: 15px;
             align-items: center;
             margin-bottom: 15px;
             flex-wrap: wrap;
         }
 
         .siren-button {
-            width: 100px;
-            height: 100px;
+            width: 90px;
+            height: 90px;
             background: radial-gradient(circle, #ff0000, #aa0000);
             border: 6px outset #ff6666;
             border-radius: 50%;
             cursor: pointer;
-            user-select: none;
             box-shadow: 0 6px 0 #550000;
             touch-action: none;
         }
@@ -84,14 +79,22 @@
             border-style: inset;
         }
 
+        .fx-btns {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
         .toggle-btn {
             background: #444;
             color: #00ff00;
             border: 4px outset #666;
-            padding: 10px;
+            padding: 8px;
             font-family: "Courier New", monospace;
+            font-size: 11px;
             font-weight: bold;
             cursor: pointer;
+            min-width: 100px;
         }
 
         .toggle-btn.active {
@@ -100,73 +103,61 @@
             border-style: inset;
         }
 
-        /* --- MACHINE GRID --- */
-        .machine-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-            max-width: 95%;
-            margin: 0 auto;
-            padding: 0 15px;
-            box-sizing: border-box;
-        }
-
-        .machine-part {
-            background: #c0c0c0;
-            border: 4px outset #eee;
-            color: #000;
-            padding: 15px;
-        }
-
-        .display-screen {
-            background: #112211;
-            border: 3px inset #808080;
-            padding: 4px;
-            margin-bottom: 10px;
-        }
-
+        /* --- MACHINE GRID & LOG --- */
+        .machine-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; max-width: 95%; margin: 0 auto; padding: 0 15px; }
+        .machine-part { background: #c0c0c0; border: 4px outset #eee; color: #000; padding: 15px; }
+        .display-screen { background: #112211; border: 3px inset #808080; padding: 4px; margin-bottom: 10px; }
         .display-screen img { width: 100%; height: auto; aspect-ratio: 4/3; object-fit: cover; display: block; }
-
         audio { width: 100%; filter: invert(100%) contrast(1.2); }
+        .blog-log { background: #fdf5e6; border: 1px solid #d2b48c; max-width: 600px; margin: 40px auto; padding: 25px 20px 25px 45px; color: #332211; font-family: "Georgia", serif; }
+        .blog-log::before { content: ""; position: absolute; top: 0; left: 30px; width: 2px; height: 100%; background: rgba(255, 0, 0, 0.2); }
 
-        /* --- BLOG LOG --- */
-        .blog-log {
-            background: #fdf5e6;
-            border: 1px solid #d2b48c;
-            max-width: 600px;
-            margin: 40px auto;
-            padding: 25px 20px 25px 45px;
-            color: #332211;
-            font-family: "Georgia", serif;
-        }
-
-        .blog-log::before {
-            content: "";
-            position: absolute;
-            top: 0; left: 30px;
-            width: 2px; height: 100%;
-            background: rgba(255, 0, 0, 0.2);
-        }
-
-        /* --- FULL WIDTH FOOTER --- */
+        /* --- LED VU FOOTER --- */
         footer {
             position: fixed;
             bottom: 0; left: 0;
             width: 100vw;
-            background: #c0c0c0;
-            border-top: 4px outset #ffffff;
-            display: flex;
-            align-items: center;
-            padding: 8px 15px;
+            background: #333;
+            border-top: 5px solid #222;
+            padding: 10px 15px;
             box-sizing: border-box;
             z-index: 9999;
-            height: 60px;
+            height: 90px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
-        .status-terminal {
-            background: #000; color: #00ff00; border: 3px inset #808080;
-            padding: 6px 10px; flex-grow: 1; overflow: hidden;
-            white-space: nowrap; font-size: 11px;
+        .vu-meter {
+            display: flex;
+            gap: 4px;
+            height: 20px;
+            width: 100%;
+            background: #111;
+            padding: 5px;
+            border: 2px inset #444;
+            box-sizing: border-box;
+            margin-top: 5px;
+        }
+
+        .led {
+            flex: 1;
+            background: #222; /* Off state */
+            border-radius: 1px;
+            transition: background 0.05s;
+        }
+
+        /* LED Colors */
+        .led.green.on { background: #00ff00; box-shadow: 0 0 5px #00ff00; }
+        .led.yellow.on { background: #ffff00; box-shadow: 0 0 5px #ffff00; }
+        .led.red.on { background: #ff0000; box-shadow: 0 0 5px #ff0000; }
+
+        .status-text {
+            color: #00ff00;
+            font-size: 10px;
+            text-transform: uppercase;
+            overflow: hidden;
+            white-space: nowrap;
         }
 
         .bolt { position: absolute; width: 8px; height: 8px; background: #888; border-radius: 50%; border: 1px solid #444; }
@@ -176,62 +167,67 @@
 <body>
 
 <header>
-    <h1>⚙️ AUDIO_CONTRAPTION_SYS v1.0</h1>
+    <h1>⚙️ AUDIO_CONTRAPTION_v1.2</h1>
 </header>
 
 <main>
     <section class="intro-box">
         <div class="bolt tl"></div><div class="bolt tr"></div><div class="bolt bl"></div><div class="bolt br"></div>
-        <h2 style="margin-top:0; font-size:1.1rem;">LAB_BRIEFING</h2>
-        <p>System initialized. Use the <strong>Dub Siren</strong> below for frequency experiments. Slide while holding to modulate. Activate <strong>ECHO_UNIT</strong> for temporal feedback.</p>
+        <h2 style="margin:0; font-size:1rem;">SYSTEM BRIEFING</h2>
+        <p style="font-size:0.8rem; margin:5px 0 0 0;">New hardware detected: <strong>LED VU ARRAY</strong> and <strong>REVERB_CHAMBER</strong>. Siren intensity now drives footer illumination.</p>
     </section>
 
     <section class="siren-box">
         <div class="bolt tl"></div><div class="bolt tr"></div><div class="bolt bl"></div><div class="bolt br"></div>
         <div class="controls-row">
             <div id="sirenTrigger" class="siren-button"></div>
-            <button id="delayToggle" class="toggle-btn">ECHO: OFF</button>
+            <div class="fx-btns">
+                <button id="delayToggle" class="toggle-btn">ECHO: OFF</button>
+                <button id="reverbToggle" class="toggle-btn">REVERB: OFF</button>
+            </div>
         </div>
-        <div style="font-size: 10px; font-weight:bold;">HOLD RED BUTTON: X=WOBBLE | Y=PITCH</div>
+        <div style="font-size: 9px; font-weight:bold;">HOLD RED BUTTON TO TEST SIGNAL</div>
     </section>
 
     <div class="machine-grid">
         <div class="machine-part">
             <div class="bolt tl"></div><div class="bolt tr"></div>
-            <div class="display-screen">
-                <img src="https://picsum.photos/id/101/400/300" alt="Audio 1">
-            </div>
+            <div class="display-screen"><img src="https://picsum.photos/id/101/400/300" alt="Part 1"></div>
             <audio controls><source src="song1.mp3" type="audio/mpeg"></audio>
         </div>
         <div class="machine-part">
             <div class="bolt tl"></div><div class="bolt tr"></div>
-            <div class="display-screen">
-                <img src="https://picsum.photos/id/102/400/300" alt="Audio 2">
-            </div>
+            <div class="display-screen"><img src="https://picsum.photos/id/102/400/300" alt="Part 2"></div>
             <audio controls><source src="song2.mp3" type="audio/mpeg"></audio>
         </div>
     </div>
 
     <article class="blog-log">
-        <h3 style="margin-top:0;">ENGINEERING_LOG #407</h3>
-        <p>Integrated temporal displacement unit (Delay). System now supports recursive audio loops. All mechanical parts verified for 100% landscape coverage.</p>
+        <h3 style="margin-top:0; font-size:1rem;">LOG #408</h3>
+        <p>LED segments responsive. Siren frequency modulation fully synced with visual output. Environmental reverb active.</p>
     </article>
 </main>
 
 <footer>
-    <div style="width:12px; height:12px; background:#00ff00; border-radius:50%; margin-right:10px; box-shadow:0 0 5px #00ff00;"></div>
-    <div class="status-terminal">
-        <marquee scrollamount="5" id="statusText">SYSTEM READY... ECHO_UNIT STANDBY... WAITING FOR INPUT...</marquee>
-    </div>
+    <div class="status-text" id="statusTerm">>>> SYSTEM IDLE ... WAITING FOR OPERATOR ...</div>
+    <div class="vu-meter" id="ledContainer">
+        </div>
 </footer>
 
 <script>
-    let audioCtx, mainOsc, lfo, lfoGain, gainNode, delayNode, feedbackNode;
-    let isEchoOn = false;
+    let audioCtx, mainOsc, lfo, lfoGain, gainNode, delayNode, feedbackNode, reverbNode, analyser;
+    let isEchoOn = false, isReverbOn = false;
 
-    const trigger = document.getElementById('sirenTrigger');
-    const delayBtn = document.getElementById('delayToggle');
-    const statusText = document.getElementById('statusText');
+    // Build LED segments
+    const ledContainer = document.getElementById('ledContainer');
+    const leds = [];
+    const numLeds = 24;
+    for(let i=0; i<numLeds; i++) {
+        const d = document.createElement('div');
+        d.className = 'led ' + (i < 14 ? 'green' : i < 20 ? 'yellow' : 'red');
+        ledContainer.appendChild(d);
+        leds.push(d);
+    }
 
     function initAudio() {
         audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -240,80 +236,99 @@
         lfo = audioCtx.createOscillator();
         lfoGain = audioCtx.createGain();
         gainNode = audioCtx.createGain();
-        
-        // Delay Setup
-        delayNode = audioCtx.createDelay(2.0);
+        analyser = audioCtx.createAnalyser();
+        analyser.fftSize = 32;
+
+        // Effects
+        delayNode = audioCtx.createDelay();
         delayNode.delayTime.value = 0.4;
         feedbackNode = audioCtx.createGain();
-        feedbackNode.gain.value = 0.6; // Echo intensity
+        feedbackNode.gain.value = 0.5;
+        
+        // Reverb (Impulse Simulation)
+        reverbNode = audioCtx.createConvolver();
+        const rate = audioCtx.sampleRate, length = rate * 2, decay = 2;
+        const buffer = audioCtx.createBuffer(2, length, rate);
+        for (let i = 0; i < 2; i++) {
+            let channel = buffer.getChannelData(i);
+            for (let j = 0; j < length; j++) channel[j] = (Math.random() * 2 - 1) * Math.pow(1 - j / length, decay);
+        }
+        reverbNode.buffer = buffer;
 
         mainOsc.type = 'square';
-        lfo.type = 'sine';
-        lfoGain.gain.value = 300;
+        lfoGain.gain.value = 400;
         gainNode.gain.value = 0;
 
-        // Routing
         lfo.connect(lfoGain);
         lfoGain.connect(mainOsc.frequency);
         mainOsc.connect(gainNode);
-
-        // Standard Output
+        
+        // Parallel Output to Analyser
+        gainNode.connect(analyser);
         gainNode.connect(audioCtx.destination);
         
-        // Echo Loop (Internal)
+        // Feedback Loop
         delayNode.connect(feedbackNode);
         feedbackNode.connect(delayNode);
-        
+
         mainOsc.start();
         lfo.start();
+        updateLEDs();
     }
 
-    function toggleEcho() {
+    function updateLEDs() {
+        if(!analyser) return;
+        const data = new Uint8Array(analyser.frequencyBinCount);
+        analyser.getByteFrequencyData(data);
+        const avg = data.reduce((a, b) => a + b) / data.length;
+        const level = Math.floor((avg / 180) * numLeds);
+
+        leds.forEach((led, i) => {
+            led.classList.toggle('on', i < level);
+        });
+        requestAnimationFrame(updateLEDs);
+    }
+
+    function toggleFX(type) {
         if(!audioCtx) initAudio();
-        isEchoOn = !isEchoOn;
-        if(isEchoOn) {
-            gainNode.connect(delayNode);
-            delayNode.connect(audioCtx.destination);
-            delayBtn.innerText = "ECHO: ON";
-            delayBtn.classList.add('active');
+        if(type === 'echo') {
+            isEchoOn = !isEchoOn;
+            isEchoOn ? gainNode.connect(delayNode).connect(audioCtx.destination) : gainNode.disconnect(delayNode);
+            document.getElementById('delayToggle').classList.toggle('active', isEchoOn);
+            document.getElementById('delayToggle').innerText = "ECHO: " + (isEchoOn ? "ON" : "OFF");
         } else {
-            gainNode.disconnect(delayNode);
-            delayBtn.innerText = "ECHO: OFF";
-            delayBtn.classList.remove('active');
+            isReverbOn = !isReverbOn;
+            isReverbOn ? gainNode.connect(reverbNode).connect(audioCtx.destination) : gainNode.disconnect(reverbNode);
+            document.getElementById('reverbToggle').classList.toggle('active', isReverbOn);
+            document.getElementById('reverbToggle').innerText = "REVERB: " + (isReverbOn ? "ON" : "OFF");
         }
     }
 
     function handleSiren(e, active) {
         if(!audioCtx) initAudio();
         if(audioCtx.state === 'suspended') audioCtx.resume();
-        
-        const volume = active ? 0.5 : 0;
-        gainNode.gain.setTargetAtTime(volume, audioCtx.currentTime, 0.05);
-        
-        if(active) {
-            statusText.innerText = ">>> SIGNAL BROADCASTING... ECHO " + (isEchoOn ? "ACTIVE" : "DISABLED") + " <<<";
-            updateParams(e);
-        } else {
-            statusText.innerText = "SYSTEM STANDBY... READY TO BLAST...";
-        }
+        gainNode.gain.setTargetAtTime(active ? 0.4 : 0, audioCtx.currentTime, 0.05);
+        document.getElementById('statusTerm').innerText = active ? ">>> BROADCASTING SIGNAL ... PEAK LEVEL MONITORING ACTIVE <<<" : ">>> SYSTEM IDLE ... WAITING FOR OPERATOR ...";
+        if(active) updateParams(e);
     }
 
     function updateParams(e) {
         if(!audioCtx || gainNode.gain.value < 0.01) return;
         const x = (e.clientX || (e.touches ? e.touches[0].clientX : 0)) / window.innerWidth;
         const y = (e.clientY || (e.touches ? e.touches[0].clientY : 0)) / window.innerHeight;
-
         mainOsc.frequency.setTargetAtTime(1500 - (y * 1300), audioCtx.currentTime, 0.1);
         lfo.frequency.setTargetAtTime(x * 25, audioCtx.currentTime, 0.1);
     }
 
+    const trigger = document.getElementById('sirenTrigger');
     trigger.addEventListener('mousedown', (e) => handleSiren(e, true));
     trigger.addEventListener('touchstart', (e) => { e.preventDefault(); handleSiren(e, true); });
     window.addEventListener('mouseup', () => handleSiren(null, false));
     window.addEventListener('touchend', () => handleSiren(null, false));
     window.addEventListener('mousemove', updateParams);
     window.addEventListener('touchmove', (e) => updateParams(e));
-    delayBtn.addEventListener('click', toggleEcho);
+    document.getElementById('delayToggle').addEventListener('click', () => toggleFX('echo'));
+    document.getElementById('reverbToggle').addEventListener('click', () => toggleFX('reverb'));
 </script>
 
 </body>
