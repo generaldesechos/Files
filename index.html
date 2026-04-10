@@ -19,7 +19,7 @@
         }
 
         header {
-            border: 4px double #ffffff; /* White border */
+            border: 4px double #ffffff;
             background: #222;
             padding: 15px;
             text-align: center;
@@ -28,7 +28,7 @@
         }
 
         h1 {
-            color: #ffffff; /* White Header Color */
+            color: #ffffff;
             margin: 0;
             font-size: 1.8rem;
             text-transform: uppercase;
@@ -47,8 +47,7 @@
             border: 2px solid #8b4513;
             color: #221100;
             max-width: 90%;
-            margin-left: auto;
-            margin-right: auto;
+            margin: 0 auto 30px auto;
             padding: 15px;
         }
 
@@ -58,8 +57,7 @@
             border: 6px outset #eee;
             color: #222;
             max-width: 340px;
-            margin-left: auto;
-            margin-right: auto;
+            margin: 0 auto 30px auto;
             padding: 20px;
         }
 
@@ -73,15 +71,17 @@
         input[type=range] { width: 100%; cursor: pointer; accent-color: #880000; }
 
         .fire-button {
-            width: 70px; height: 70px; background: radial-gradient(circle, #ff0000, #880000);
+            width: 80px; height: 80px; background: radial-gradient(circle, #ff0000, #880000);
             border: 5px outset #ff6666; border-radius: 50%; cursor: pointer; margin: 0 auto 15px auto;
             box-shadow: 0 5px 0 #440000; touch-action: none;
+            display: block;
         }
         .fire-button:active { transform: translateY(3px); box-shadow: 0 2px 0 #440000; border-style: inset; }
 
+        .fx-row { display: flex; justify-content: space-between; gap: 10px; }
         .fx-btn {
             background: #444; color: #00ff00; border: 3px outset #666; padding: 10px;
-            font-size: 10px; font-family: "Courier New", monospace; width: 48%; cursor: pointer;
+            font-size: 10px; font-family: "Courier New", monospace; width: 50%; cursor: pointer;
         }
         .fx-btn.active { background: #00ff00; color: #000; border-style: inset; }
 
@@ -127,20 +127,20 @@
     <section class="intro-box">
         <div class="bolt tl"></div><div class="bolt tr"></div><div class="bolt bl"></div><div class="bolt br"></div>
         <h2 style="margin:0; font-size:1rem;">SYSTEM BRIEFING</h2>
-        <p style="font-size:0.8rem; margin:5px 0 0 0;">Welcome to the <strong>General desEchos</strong> audio interface. Calibrate the SE-G1 module below for signal testing. Documentation logs are stored at the bottom of the feed.</p>
+        <p style="font-size:0.8rem; margin:5px 0 0 0;">Welcome to <strong>General desEchos</strong>. Hold the red button to fire the SE-G1 siren. Use knobs to modulate frequency. Toggle <strong>ECHO UNIT</strong> for temporal feedback.</p>
     </section>
 
     <section class="seg1-unit">
         <div class="bolt tl"></div><div class="bolt tr"></div><div class="bolt bl"></div><div class="bolt br"></div>
         <div class="unit-label">GENERAL desECHOS // SE-G1 UNIT</div>
         <div class="control-grid">
-            <div class="knob-container">PITCH<input type="range" id="pitchKnob" min="100" max="1200" value="440"></div>
-            <div class="knob-container">LFO RATE<input type="range" id="rateKnob" min="1" max="30" value="10"></div>
-            <div class="knob-container">LFO DEPTH<input type="range" id="depthKnob" min="0" max="1200" value="600"></div>
+            <div class="knob-container">PITCH<input type="range" id="pitchKnob" min="100" max="1500" value="440"></div>
+            <div class="knob-container">LFO RATE<input type="range" id="rateKnob" min="1" max="40" value="12"></div>
+            <div class="knob-container">LFO DEPTH<input type="range" id="depthKnob" min="0" max="1500" value="600"></div>
             <div class="knob-container">ECHO FBK<input type="range" id="echoKnob" min="0" max="0.9" step="0.1" value="0.5"></div>
         </div>
         <div id="fireBtn" class="fire-button"></div>
-        <div style="display:flex; justify-content: space-between;">
+        <div class="fx-row">
             <button id="delayToggle" class="fx-btn">ECHO UNIT</button>
             <button id="modeToggle" class="fx-btn">LFO: SQUARE</button>
         </div>
@@ -149,19 +149,19 @@
     <div class="machine-grid">
         <div class="machine-part">
             <div class="bolt tl"></div><div class="bolt tr"></div>
-            <div class="display-screen"><img src="https://picsum.photos/id/101/400/300" alt="Waveform 1"></div>
+            <div class="display-screen"><img src="https://picsum.photos/id/101/400/300" alt="Audio Part 1"></div>
             <audio controls><source src="audio1.mp3" type="audio/mpeg"></audio>
         </div>
         <div class="machine-part">
             <div class="bolt tl"></div><div class="bolt tr"></div>
-            <div class="display-screen"><img src="https://picsum.photos/id/102/400/300" alt="Waveform 2"></div>
+            <div class="display-screen"><img src="https://picsum.photos/id/102/400/300" alt="Audio Part 2"></div>
             <audio controls><source src="audio2.mp3" type="audio/mpeg"></audio>
         </div>
     </div>
 
     <article class="blog-log">
-        <h3 style="margin-top:0; font-size:1rem;">LOG #410: HARDWARE RESET</h3>
-        <p>Aesthetic recalibration complete. Header color shifted to white for high-contrast visibility. SE-G1 LFO circuitry stabilized. Ready for field operations.</p>
+        <h3 style="margin-top:0; font-size:1rem;">LOG #411: COMMS ACTIVE</h3>
+        <p>Interface verified. White header specification locked. Audio context initialization protocol updated for seamless mobile activation.</p>
     </article>
 </main>
 
@@ -172,10 +172,12 @@
 
 <script>
     let audioCtx, osc, lfo, lfoGain, mainGain, delay, feedback, analyser;
-    let isEcho = false; let lfoType = 'square';
+    let isEcho = false; 
+    let lfoType = 'square';
     const vuContainer = document.getElementById('vu');
     const leds = [];
 
+    // Build VU LEDs
     for(let i=0; i<24; i++) {
         const led = document.createElement('div');
         led.className = 'led ' + (i < 14 ? 'green' : i < 20 ? 'yellow' : 'red');
@@ -184,8 +186,14 @@
     }
 
     function init() {
-        if (audioCtx) return;
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (!audioCtx) {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (audioCtx.state === 'suspended') {
+            audioCtx.resume();
+        }
+        if (osc) return;
+
         osc = audioCtx.createOscillator();
         lfo = audioCtx.createOscillator();
         lfoGain = audioCtx.createGain();
@@ -194,13 +202,25 @@
         delay = audioCtx.createDelay(2.0);
         feedback = audioCtx.createGain();
         
-        osc.type = 'square'; lfo.type = lfoType; mainGain.gain.value = 0;
-        delay.delayTime.value = 0.35; feedback.gain.value = document.getElementById('echoKnob').value;
+        osc.type = 'square'; 
+        lfo.type = lfoType; 
+        mainGain.gain.value = 0;
         
-        lfo.connect(lfoGain); lfoGain.connect(osc.frequency);
-        osc.connect(mainGain); mainGain.connect(analyser); analyser.connect(audioCtx.destination);
-        delay.connect(feedback); feedback.connect(delay);
-        osc.start(); lfo.start(); drawVU();
+        delay.delayTime.value = 0.35; 
+        feedback.gain.value = document.getElementById('echoKnob').value;
+        
+        lfo.connect(lfoGain); 
+        lfoGain.connect(osc.frequency);
+        osc.connect(mainGain); 
+        mainGain.connect(analyser); 
+        analyser.connect(audioCtx.destination);
+        
+        delay.connect(feedback); 
+        feedback.connect(delay);
+        
+        osc.start(); 
+        lfo.start(); 
+        drawVU();
     }
 
     function drawVU() {
@@ -213,20 +233,44 @@
     }
 
     const fireBtn = document.getElementById('fireBtn');
-    fireBtn.addEventListener('mousedown', () => { init(); if(audioCtx.state === 'suspended') audioCtx.resume(); mainGain.gain.setTargetAtTime(0.5, audioCtx.currentTime, 0.02); });
-    window.addEventListener('mouseup', () => { if(mainGain) mainGain.gain.setTargetAtTime(0, audioCtx.currentTime, 0.1); });
-    fireBtn.addEventListener('touchstart', (e) => { e.preventDefault(); init(); mainGain.gain.setTargetAtTime(0.5, audioCtx.currentTime, 0.02); });
-    window.addEventListener('touchend', () => { if(mainGain) mainGain.gain.setTargetAtTime(0, audioCtx.currentTime, 0.1); });
+    
+    const startSiren = (e) => {
+        if (e) e.preventDefault();
+        init();
+        if(audioCtx) {
+            audioCtx.resume().then(() => {
+                mainGain.gain.setTargetAtTime(0.5, audioCtx.currentTime, 0.02);
+            });
+        }
+    };
 
+    const stopSiren = () => {
+        if(mainGain) mainGain.gain.setTargetAtTime(0, audioCtx.currentTime, 0.1);
+    };
+
+    // Siren Triggers
+    fireBtn.addEventListener('mousedown', startSiren);
+    fireBtn.addEventListener('touchstart', startSiren);
+    window.addEventListener('mouseup', stopSiren);
+    window.addEventListener('touchend', stopSiren);
+
+    // Knob Updates
     document.getElementById('pitchKnob').oninput = (e) => { if(osc) osc.frequency.setTargetAtTime(e.target.value, audioCtx.currentTime, 0.05); };
     document.getElementById('rateKnob').oninput = (e) => { if(lfo) lfo.frequency.setTargetAtTime(e.target.value, audioCtx.currentTime, 0.05); };
     document.getElementById('depthKnob').oninput = (e) => { if(lfoGain) lfoGain.gain.setTargetAtTime(e.target.value, audioCtx.currentTime, 0.05); };
     document.getElementById('echoKnob').oninput = (e) => { if(feedback) feedback.gain.value = e.target.value; };
 
+    // FX Toggles
     document.getElementById('delayToggle').onclick = () => {
-        init(); isEcho = !isEcho;
+        init();
+        isEcho = !isEcho;
         document.getElementById('delayToggle').classList.toggle('active');
-        isEcho ? mainGain.connect(delay).connect(audioCtx.destination) : mainGain.disconnect(delay);
+        if(isEcho) {
+            mainGain.connect(delay);
+            delay.connect(audioCtx.destination);
+        } else {
+            mainGain.disconnect(delay);
+        }
     };
 
     document.getElementById('modeToggle').onclick = () => {
