@@ -1,1 +1,132 @@
 
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>THE AUDIO CONTRAPTION v1.0</title>
+    <style>
+        /* THE BLUEPRINT BACKGROUND */
+        body {
+            background-color: #004488;
+            background-image: 
+                linear-gradient(rgba(255,255,255,.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,.1) 1px, transparent 1px);
+            background-size: 30px 30px;
+            color: #ffffff;
+            font-family: "MS Sans Serif", "Courier New", monospace;
+            padding: 40px;
+            margin: 0;
+        }
+
+        /* THE MAIN HEADER */
+        header {
+            border: 6px double #ffcc00;
+            background: #222;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 10px 10px 0px #000;
+            margin-bottom: 50px;
+        }
+
+        h1 {
+            color: #ffcc00;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            margin: 0;
+            text-shadow: 2px 2px #884400;
+        }
+
+        /* THE PROJECT CARD (ENGINEERING BOX) */
+        .machine-part {
+            background: #c0c0c0;
+            border: 5px outset #eee;
+            color: #000;
+            width: 350px;
+            padding: 15px;
+            box-shadow: 8px 8px 0px rgba(0,0,0,0.5);
+            position: relative;
+            margin: 20px auto;
+        }
+
+        .label-plate {
+            background: #800000;
+            color: white;
+            padding: 2px 10px;
+            font-size: 12px;
+            border: 2px inset #550000;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+
+        .display-screen {
+            background: #112211;
+            border: 4px inset #808080;
+            padding: 10px;
+            margin-bottom: 15px;
+        }
+
+        img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            filter: sepia(0.3) contrast(1.2);
+            border: 2px solid #000;
+        }
+
+        /* CUSTOM RETRO PLAYER STYLING */
+        audio {
+            width: 100%;
+            filter: invert(100%) hue-rotate(180deg) brightness(1.5);
+            margin-top: 10px;
+        }
+
+        marquee {
+            background: #000;
+            color: #00ff00;
+            font-family: 'Courier', monospace;
+            padding: 5px;
+            border: 2px inset #444;
+            font-weight: bold;
+        }
+
+        .bolt {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: #888;
+            border-radius: 50%;
+            border: 2px solid #444;
+        }
+        .tl { top: 5px; left: 5px; }
+        .tr { top: 5px; right: 5px; }
+        .bl { bottom: 5px; left: 5px; }
+        .br { bottom: 5px; right: 5px; }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>⚙️ PROJECT: SOUND-O-MATIC ⚙️</h1>
+    <p>Patent Pending - Model 90-X</p>
+</header>
+
+<div class="machine-part">
+    <div class="bolt tl"></div><div class="bolt tr"></div>
+    <div class="bolt bl"></div><div class="bolt br"></div>
+
+    <div class="label-plate">ASSET_FILE_001</div>
+    
+    <div class="display-screen">
+        <img src="https://via.placeholder.com/300x200?text=Your+Project+Image" alt="Machine Part">
+    </div>
+
+    <marquee scrollamount="3">>>> LOADING TRACK: "INDUSTRIAL HARMONICS" ... SYSTEM READY <<<</marquee>
+
+    <audio controls>
+        <source src="your-audio-file.mp3" type="audio/mpeg">
+    </audio>
+</div>
+
+</body>
+</html>
