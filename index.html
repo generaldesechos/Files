@@ -1,190 +1,24 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>DER GENERAL DESECHOS v1.0</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE AUDIO CONTRAPTION v1.0</title>
     <style>
-        /* VU METER HOUSING (Floating Module) */
-.vu-meter-module {
-    position: fixed;
-    top: 100px;
-    right: 20px;
-    width: 220px;
-    background: #c0c0c0; /* Gray Industrial Plastic */
-    border: 5px outset #eee;
-    padding: 10px;
-    box-shadow: 8px 8px 0px rgba(0,0,0,0.5);
-    z-index: 2000;
-    font-family: "Courier New", monospace;
-    color: #000;
-}
-
-/* The Label Plate */
-.vu-label {
-    background: #222;
-    color: #ffcc00;
-    text-align: center;
-    padding: 2px;
-    border: 2px inset #555;
-    font-size: 12px;
-    font-weight: bold;
-    margin-bottom: 8px;
-}
-
-/* THE METER FACE */
-.vu-face {
-    position: relative;
-    width: 200px;
-    height: 100px;
-    background: #ffff99; /* Aged yellow backlight */
-    border: 4px inset #808080;
-    border-radius: 100px 100px 0 0; /* Semi-circle */
-    overflow: hidden;
-}
-
-/* The Curved Scale (VGA-style) */
-.vu-scale {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: 
-        /* The Red "Danger" Zone */
-        conic-gradient(from -90deg at 50% 100%, 
-            transparent 0deg, 
-            transparent 135deg, 
-            rgba(255,0,0,0.6) 135deg, 
-            rgba(255,0,0,0.6) 180deg),
-        /* The Arc Line */
-        radial-gradient(circle at 50% 100%, 
-            transparent 110px, 
-            #000 110px, 
-            #000 113px, 
-            transparent 113px);
-}
-
-/* Scale Numbers */
-.vu-numbers {
-    position: absolute;
-    width: 100%;
-    bottom: 5px;
-    display: flex;
-    justify-content: space-between;
-    padding: 0 15px;
-    font-size: 10px;
-    font-weight: bold;
-}
-
-/* THE NEEDLE */
-.vu-needle {
-    position: absolute;
-    bottom: 10px; /* Pivot Point */
-    left: 50%;
-    width: 2px;
-    height: 90px;
-    background: #000;
-    transform-origin: bottom center; /* Pivot at the bottom */
-    transform: rotate(-70deg); /* Default State (Off) */
-    
-    /* Smooth bounce physics */
-    transition: transform 0.15s cubic-bezier(0.23, 1, 0.32, 1); 
-    
-    z-index: 10;
-}
-
-/* The Pivot Bolt */
-.vu-pivot {
-    position: absolute;
-    bottom: -5px;
-    left: calc(50% - 8px);
-    width: 16px;
-    height: 16px;
-    background: #444;
-    border-radius: 50%;
-    border: 2px solid #000;
-    z-index: 11;
-}
-
-        /* THE SYSTEM TRAY */
-footer {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background: #c0c0c0;
-    border-top: 4px outset #ffffff;
-    display: flex;
-    align-items: center;
-    padding: 5px 20px;
-    box-sizing: border-box;
-    z-index: 1000;
-    font-family: "Courier New", monospace;
-    font-size: 14px;
-    color: #000;
-}
-
-.status-indicator {
-    background: #000;
-    color: #00ff00; /* Neon Green Terminal */
-    padding: 2px 15px;
-    border: 2px inset #808080;
-    flex-grow: 1;
-    margin-right: 20px;
-    overflow: hidden;
-    white-space: nowrap;
-}
-
-.power-light {
-    width: 12px;
-    height: 12px;
-    background: #00ff00;
-    border-radius: 50%;
-    box-shadow: 0 0 5px #00ff00;
-    margin-right: 10px;
-    animation: blink 1s infinite;
-}
-
-.gauge-container {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.gauge-bar {
-    width: 100px;
-    height: 15px;
-    background: #808080;
-    border: 2px inset #fff;
-}
-
-.gauge-fill {
-    height: 100%;
-    width: 75%; /* You can animate this with JS later */
-    background: linear-gradient(90deg, #00ff00, #ffff00, #ff0000);
-}
-
-@keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.3; }
-}
-
-        /* THE BLUEPRINT BACKGROUND */
+        /* --- CORE SYSTEM STYLES --- */
         body {
             background-color: #004488;
             background-image: 
-                linear-gradient(rgba(255,255,255,.1) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255,255,255,.1) 1px, transparent 1px);
-            background-size: 30px 30px;
+                linear-gradient(rgba(255,255,255,.07) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,.07) 1px, transparent 1px);
+            background-size: 40px 40px;
             color: #ffffff;
-            font-family: "MS Sans Serif", "Courier New", monospace;
-            padding: 40px;
+            font-family: "Courier New", monospace;
             margin: 0;
+            padding: 40px 40px 150px 40px; /* Extra bottom padding for footer */
+            line-height: 1.4;
         }
 
-        /* THE MAIN HEADER */
         header {
             border: 6px double #ffcc00;
             background: #222;
@@ -196,292 +30,276 @@ footer {
 
         h1 {
             color: #ffcc00;
-            text-transform: uppercase;
-            letter-spacing: 4px;
             margin: 0;
             text-shadow: 2px 2px #884400;
+            font-size: 2.5em;
         }
 
-        /* THE PROJECT CARD (ENGINEERING BOX) */
+        /* --- THE MACHINE MODULES (AUDIO/IMAGES) --- */
+        .machine-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+        }
+
         .machine-part {
             background: #c0c0c0;
             border: 5px outset #eee;
             color: #000;
-            width: 350px;
+            width: 320px;
             padding: 15px;
             box-shadow: 8px 8px 0px rgba(0,0,0,0.5);
             position: relative;
-            margin: 20px auto;
         }
 
         .label-plate {
             background: #800000;
             color: white;
             padding: 2px 10px;
-            font-size: 12px;
+            font-size: 11px;
             border: 2px inset #550000;
             display: inline-block;
             margin-bottom: 10px;
+            font-weight: bold;
         }
 
         .display-screen {
             background: #112211;
             border: 4px inset #808080;
-            padding: 10px;
-            margin-bottom: 15px;
+            padding: 5px;
+            margin-bottom: 10px;
         }
 
-        img {
+        .display-screen img {
             width: 100%;
-            height: 200px;
+            height: 180px;
             object-fit: cover;
-            filter: sepia(0.3) contrast(1.2);
-            border: 2px solid #000;
+            filter: contrast(1.2) sepia(0.2);
         }
 
-        /* CUSTOM RETRO PLAYER STYLING */
         audio {
             width: 100%;
-            filter: invert(100%) hue-rotate(180deg) brightness(1.5);
-            margin-top: 10px;
+            filter: invert(100%) hue-rotate(180deg) brightness(1.2);
         }
 
-        marquee {
+        /* --- BLOG SECTION --- */
+        .blog-log {
+            background: #fdf5e6;
+            border: 1px solid #d2b48c;
+            max-width: 800px;
+            margin: 60px auto;
+            padding: 40px;
+            color: #332211;
+            box-shadow: 15px 15px 0px rgba(0,0,0,0.3);
+            position: relative;
+            font-family: "Georgia", serif;
+        }
+
+        .blog-log::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 35px;
+            width: 2px; height: 100%;
+            background: rgba(255, 0, 0, 0.2);
+        }
+
+        .blog-img-wrapper {
+            background: #fff;
+            padding: 10px;
+            border: 1px solid #ccc;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+            transform: rotate(1.5deg);
+            margin: 25px auto;
+            width: 70%;
+            position: relative;
+        }
+
+        .tape {
+            position: absolute;
+            top: -15px; left: 50%;
+            transform: translateX(-50%);
+            width: 100px; height: 30px;
+            background: rgba(255, 255, 200, 0.6);
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        /* --- THE SYSTEM FOOTER --- */
+        footer {
+            position: fixed;
+            bottom: 0; left: 0;
+            width: 100%;
+            background: #a0a0a0;
+            border-top: 5px outset #fff;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            box-sizing: border-box;
+            z-index: 9999;
+            height: 100px;
+        }
+
+        .footer-left {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            flex-grow: 1;
+        }
+
+        .status-terminal {
             background: #000;
             color: #00ff00;
-            font-family: 'Courier', monospace;
+            border: 3px inset #808080;
             padding: 5px;
-            border: 2px inset #444;
-            font-weight: bold;
+            font-size: 12px;
+            overflow: hidden;
+            white-space: nowrap;
         }
 
-        .bolt {
-            position: absolute;
-            width: 12px;
-            height: 12px;
-            background: #888;
-            border-radius: 50%;
-            border: 2px solid #444;
+        /* --- INTEGRATED VU METER --- */
+        .vu-container {
+            width: 160px;
+            height: 80px;
+            background: #ffffcc;
+            border: 4px inset #666;
+            position: relative;
+            margin-left: 20px;
+            overflow: hidden;
         }
-        .tl { top: 5px; left: 5px; }
-        .tr { top: 5px; right: 5px; }
-        .bl { bottom: 5px; left: 5px; }
-        .br { bottom: 5px; right: 5px; }
+
+        .vu-scale {
+            position: absolute;
+            width: 100%; height: 100%;
+            background: radial-gradient(circle at 50% 100%, transparent 60px, #000 60px, #000 62px, transparent 62px);
+        }
+
+        .vu-danger {
+            position: absolute;
+            right: 0; top: 0;
+            width: 40px; height: 100%;
+            background: rgba(255, 0, 0, 0.3);
+            clip-path: polygon(100% 0, 0% 100%, 100% 100%);
+        }
+
+        .vu-needle {
+            position: absolute;
+            bottom: 0; left: 50%;
+            width: 2px; height: 70px;
+            background: #cc0000;
+            transform-origin: bottom center;
+            transform: rotate(-70deg);
+            transition: transform 0.1s ease-out;
+            z-index: 10;
+        }
+
+        .vu-label {
+            position: absolute;
+            top: 5px; width: 100%;
+            text-align: center;
+            font-size: 9px;
+            font-weight: bold;
+            color: #000;
+        }
+
+        /* Decorative Bolts */
+        .bolt {
+            position: absolute; width: 10px; height: 10px;
+            background: #777; border-radius: 50%; border: 1px solid #333;
+        }
+        .tl { top: 5px; left: 5px; } .tr { top: 5px; right: 5px; }
+        .bl { bottom: 5px; left: 5px; } .br { bottom: 5px; right: 5px; }
     </style>
 </head>
 <body>
-<div class="vu-meter-module">
-    <div class="bolt tl"></div><div class="bolt tr"></div>
-    <div class="bolt bl"></div><div class="bolt br"></div>
-
-    <div class="vu-label">SCROLL_VELOCITY (VU)</div>
-    
-    <div class="vu-face">
-        <div class="vu-scale"></div>
-        <div class="vu-needle" id="vuNeedle"></div>
-        <div class="vu-numbers">
-            <span>0</span>
-            <span>3</span>
-            <span>5</span>
-            <span style="color:#aa0000;">10</span>
-        </div>
-    </div>
-    <div class="vu-pivot"></div>
-</div>
 
 <header>
-    <h1>General desEchos</h1>
-    <p>Projects & Sound samples</p>
+    <h1>⚙️ ACOUSTIC_CONTRAPTION_v1.0 ⚙️</h1>
+    <p>ENGINEERING DEPT. | PROJECT #99-B</p>
 </header>
 
-<div class="machine-part">
-    <div class="bolt tl"></div><div class="bolt tr"></div>
-    <div class="bolt bl"></div><div class="bolt br"></div>
+<main>
+    <div class="machine-grid">
+        <div class="machine-part">
+            <div class="bolt tl"></div><div class="bolt tr"></div><div class="bolt bl"></div><div class="bolt br"></div>
+            <div class="label-plate">SONIC_CORE_01</div>
+            <div class="display-screen">
+                <img src="https://picsum.photos/id/1/300/200" alt="Part 1">
+            </div>
+            <audio controls>
+                <source src="your-audio-1.mp3" type="audio/mpeg">
+            </audio>
+        </div>
 
-    <div class="label-plate">ASSET_FILE_001</div>
-    
-    <div class="display-screen">
-        <img src="https://via.placeholder.com/300x200?text=Your+Project+Image" alt="Machine Part">
-    </div>
-
-    <marquee scrollamount="3">>>> LOADING TRACK: "INDUSTRIAL HARMONICS" ... SYSTEM READY <<<</marquee>
-
-    <audio controls>
-        <source src="your-audio-file.mp3" type="audio/mpeg">
-    </audio>
-
-        <style>
-    /* BLOG SECTION CONTAINER */
-    .blog-log {
-        background: #fdf5e6; /* Old Paper Color */
-        border: 1px solid #d2b48c;
-        max-width: 700px;
-        margin: 50px auto;
-        padding: 40px;
-        color: #332211;
-        box-shadow: 15px 15px 0px rgba(0,0,0,0.3);
-        position: relative;
-        font-family: "Georgia", serif; /* Typewriter-esque feel */
-        line-height: 1.6;
-    }
-
-    /* RED MARGIN LINE */
-    .blog-log::before {
-        content: "";
-        position: absolute;
-        top: 0; left: 30px;
-        width: 2px; height: 100%;
-        background: rgba(255, 0, 0, 0.2);
-    }
-
-    .blog-header {
-        border-bottom: 2px solid #332211;
-        margin-bottom: 20px;
-    }
-
-    .blog-date {
-        font-family: "Courier New", monospace;
-        font-weight: bold;
-        text-transform: uppercase;
-    }
-
-    /* THE "TAPED" PICTURE EFFECT */
-    .blog-img-wrapper {
-        background: #fff;
-        padding: 10px;
-        border: 1px solid #ccc;
-        box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
-        transform: rotate(2deg);
-        margin: 20px auto;
-        width: 80%;
-        position: relative;
-    }
-
-    /* THE "TAPE" */
-    .tape {
-        position: absolute;
-        top: -15px; left: 50%;
-        transform: translateX(-50%);
-        width: 100px; height: 30px;
-        background: rgba(255, 255, 200, 0.5); /* Masking tape look */
-        border: 1px solid rgba(0,0,0,0.05);
-    }
-
-    .blog-img {
-        width: 100%;
-        height: auto;
-        display: block;
-        filter: grayscale(0.2) contrast(1.1);
-    }
-
-    .stamped {
-        color: #aa0000;
-        border: 3px solid #aa0000;
-        display: inline-block;
-        padding: 5px 10px;
-        font-weight: bold;
-        text-transform: uppercase;
-        transform: rotate(-15deg);
-        opacity: 0.8;
-        margin-top: 10px;
-    }
-</style>
-
-<article class="blog-log">
-    <div class="blog-header">
-        <span class="blog-date">Log Date: March, 2026</span>
-        <h2>Subject: The Tape Delay Experiment</h2>
-    </div>
-
-    <p>
-        Today's calibration of the <strong>Sound-O-Matic</strong> exceeded all expectations. 
-        By piping the audio signal through a series of brass pulleys and steam-vented 
-        sub-woofers, we've achieved a resonance frequency that actually moves 
-        small objects across the workbench.
-    </p>
-
-    <div class="blog-img-wrapper">
-        <div class="tape"></div>
-        <img src="https://via.placeholder.com/600x400/555/eee?text=Experimental+Apparatus+Photo" alt="Research Photo" class="blog-img">
-        <p style="font-size: 0.8em; text-align: center; color: #666;">Fig 1.2: The prototype assembly in a state of vibration.</p>
-    </div>
-
-    <p>
-        We encountered a slight issue with the <em>Bellows-System</em> leaking air, 
-        which added a high-pitched whistling to the track. However, the lead engineer 
-        decided to keep it in—calling it "Lo-Fi Industrial Aesthetic." 
-    </p>
-
-   
-</article>
-
-</div>
-        
-<footer>
-    <div class="power-light"></div>
-    <div class="status-label">SYSTEM_STATUS:</div>
-    <div class="status-indicator">
-        <marquee scrollamount="4">
-            CORE TEMPERATURE: NOMINAL... GAIN: 88%... CONNECTION: STABLE... AUDIO SIGNAL: DETECTED... WELCOME...
-        </marquee>
-    </div>
-    <div class="gauge-container">
-        <span>SPL</span>
-        <div class="gauge-bar">
-            <div class="gauge-fill"></div>
+        <div class="machine-part">
+            <div class="bolt tl"></div><div class="bolt tr"></div><div class="bolt bl"></div><div class="bolt br"></div>
+            <div class="label-plate">SONIC_CORE_02</div>
+            <div class="display-screen">
+                <img src="https://picsum.photos/id/2/300/200" alt="Part 2">
+            </div>
+            <audio controls>
+                <source src="your-audio-2.mp3" type="audio/mpeg">
+            </audio>
         </div>
     </div>
-</footer><script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const needle = document.getElementById('vuNeedle');
+
+    <article class="blog-log">
+        <div class="bolt tl"></div><div class="bolt tr"></div>
+        <h3 style="margin-top:0;">RESEARCH_LOG: DAY 42</h3>
+        <p>Successful synchronization of the brass gears with the low-end frequencies. The <strong>VU Meter</strong> in the main console is finally responding to mechanical friction (scroll-velocity).</p>
         
-        let lastScrollY = window.scrollY;
-        let currentVelocity = 0;
-        let targetVelocity = 0;
+        <div class="blog-img-wrapper">
+            <div class="tape"></div>
+            <img src="https://picsum.photos/id/48/600/400" class="blog-img" alt="Research">
+        </div>
+        
+        <p>Testing suggests that rapid navigation of the document increases pressure on the steam valves. Proceed with caution.</p>
+        <div style="color: #aa0000; font-weight: bold; border: 2px solid #aa0000; display: inline-block; padding: 5px; transform: rotate(-5deg);">TOP SECRET</div>
+    </article>
+</main>
 
-        // Needle rotational boundaries in degrees
-        const MIN_ROTATION = -70; // Left (Zero)
-        const MAX_ROTATION = 70;  // Right (Danger Zone)
-        const RANGE = MAX_ROTATION - MIN_ROTATION;
+<footer>
+    <div class="footer-left">
+        <div style="font-weight: bold; font-size: 12px;">SYSTEM DIAGNOSTICS:</div>
+        <div class="status-terminal">
+            <marquee scrollamount="5">>>> ENGINE_STATUS: ONLINE ... LUBRICATION: OPTIMAL ... POWER_DRAW: 4.2kW ... SCROLLING DETECTED ... NEEDLE CALIBRATED ...</marquee>
+        </div>
+    </div>
 
-        // How fast the needle decays when scrolling stops
-        const DECAY_RATE = 0.93; 
+    <div class="vu-container">
+        <div class="vu-label">SCROLL VELOCITY</div>
+        <div class="vu-scale"></div>
+        <div class="vu-danger"></div>
+        <div class="vu-needle" id="needle"></div>
+        <div style="position: absolute; bottom: -5px; left: 50%; width: 12px; height: 12px; background: #333; border-radius: 50%; transform: translateX(-50%);"></div>
+    </div>
+</footer>
 
-        // Main animation loop
-        function updateVU() {
-            const currentScrollY = window.scrollY;
-            
-            // 1. Calculate the instantaneous speed (absolute difference)
-            let scrollDelta = Math.abs(currentScrollY - lastScrollY);
-            
-            // 2. Map scroll speed to target velocity (Max speed caps at ~150px/frame)
-            // Divide by 150 (max expected speed) to get a 0.0 to 1.0 factor
-            targetVelocity = Math.min(scrollDelta / 150, 1.0);
-            
-            // 3. Apply smooth movement toward target (creates the "bounce")
-            // This is "linear interpolation" (LERP)
-            currentVelocity += (targetVelocity - currentVelocity) * 0.3;
+<script>
+    const needle = document.getElementById('needle');
+    let lastScrollY = window.scrollY;
+    let velocity = 0;
 
-            // 4. If target is higher, needle moves fast up. If lower, decay slowly.
-            currentVelocity *= DECAY_RATE;
+    function update() {
+        const currentScroll = window.scrollY;
+        const delta = Math.abs(currentScroll - lastScrollY);
+        
+        // Target rotation based on speed
+        // Mapping speed to a range of -70deg (rest) to 60deg (max)
+        const targetRotation = -70 + Math.min(delta * 1.5, 130);
+        
+        // Smoothly interpolate current needle position
+        velocity += (targetRotation - velocity) * 0.1;
+        
+        // Slow decay
+        velocity *= 0.95;
 
-            // 5. Calculate final rotation degrees
-            let rotationAngle = MIN_ROTATION + (currentVelocity * RANGE);
-            
-            // 6. Apply rotation to the needle element
-            needle.style.transform = `rotate(${rotationAngle}deg)`;
-
-            // 7. Update state for next frame
-            lastScrollY = currentScrollY;
-            
-            requestAnimationFrame(updateVU);
-        }
-
-        // Fire the machine up
-        updateVU();
-    });
+        needle.style.transform = `rotate(${velocity}deg)`;
+        
+        lastScrollY = currentScroll;
+        requestAnimationFrame(update);
+    }
+    update();
 </script>
-
 
 </body>
 </html>
