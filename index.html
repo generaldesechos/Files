@@ -3,59 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>General desEchos v4.5 - Full Integration</title>
+    <title>General desEchos v4.6 - Full Specs</title>
     <style>
-        body { background: #004488; color: #fff; font-family: "Courier New", monospace; margin: 0; padding: 10px 0 120px 0; touch-action: manipulation; }
-        header { border: 4px double #fff; background: #222; padding: 10px; text-align: center; margin: 0 15px 15px; }
+        body { background: #004488; color: #fff; font-family: "Courier New", monospace; margin: 0; padding: 10px 0 120px 0; touch-action: pan-y; }
+        header { border: 4px double #fff; background: #222; padding: 10px; text-align: center; margin: 0 15px 15px; box-shadow: 4px 4px 0px #000; }
         .stack { display: flex; flex-direction: column; align-items: center; gap: 20px; width: 95%; margin: 0 auto; }
-        .unit { background: #444; border: 4px outset #888; width: 100%; max-width: 550px; padding: 15px; position: relative; box-sizing: border-box; box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
-        .unit-label { background: #111; color: #fc0; text-align: center; font-size: 10px; padding: 4px; border: 1px solid #444; margin-bottom: 12px; font-weight: bold; }
+        .unit { background: #444; border: 5px outset #888; width: 100%; max-width: 550px; padding: 15px; position: relative; box-sizing: border-box; box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
+        .unit-label { background: #111; color: #fc0; text-align: center; font-size: 10px; padding: 4px; border: 1px solid #444; margin-bottom: 12px; font-weight: bold; text-transform: uppercase; }
         .bolt { position: absolute; width: 8px; height: 8px; background: #666; border-radius: 50%; border: 1px solid #333; }
         .tl { top: 8px; left: 8px; } .tr { top: 8px; right: 8px; } .bl { bottom: 8px; left: 8px; } .br { bottom: 8px; right: 8px; }
 
-        /* INTRO BOX */
-        .intro-box { background: #e6be8a; border: 2px solid #8b4513; color: #221100; font-size: 0.75rem; padding: 15px; line-height: 1.4; }
+        /* INTRO & LOG */
+        .intro-box { background: #e6be8a; border: 2px solid #8b4513; color: #221100; font-size: 0.75rem; padding: 15px; }
+        .blog-log { background: #fdf5e6; border: 1px solid #d2b48c; padding: 25px 20px 25px 45px; color: #332211; position: relative; }
+        .blog-log::before { content: ""; position: absolute; top: 0; left: 30px; width: 2px; height: 100%; background: rgba(255, 0, 0, 0.2); }
 
-        /* D-PAD PERFORMANCE */
-        .dpad-area { width: 130px; height: 130px; background: #222; margin: 10px auto; border-radius: 50%; position: relative; border: 4px inset #000; touch-action: none; }
-        .cross-v { position: absolute; left: 50px; top: 15px; width: 30px; height: 100px; background: #111; border: 1px solid #000; }
-        .cross-h { position: absolute; left: 15px; top: 50px; width: 100px; height: 30px; background: #111; border: 1px solid #000; }
-        #dot { position: absolute; width: 12px; height: 12px; background: red; border-radius: 50%; display: none; z-index: 10; pointer-events: none; box-shadow: 0 0 10px #f00; }
+        /* D-PAD */
+        .dpad-area { width: 120px; height: 120px; background: #222; margin: 10px auto; border-radius: 50%; position: relative; border: 4px inset #000; touch-action: none; }
+        .cross-v { position: absolute; left: 45px; top: 15px; width: 30px; height: 90px; background: #111; border: 1px solid #000; }
+        .cross-h { position: absolute; left: 15px; top: 45px; width: 90px; height: 30px; background: #111; border: 1px solid #000; }
+        #dot { position: absolute; width: 10px; height: 10px; background: red; border-radius: 50%; display: none; pointer-events: none; z-index: 10; }
 
-        /* SIREN & FX */
-        .siren-btn { width: 50px; height: 50px; background: radial-gradient(circle, #f00, #800); border: 4px outset #f66; border-radius: 50%; margin: 10px auto; display: block; cursor: pointer; }
-        .win95-switch { appearance: none; width: 34px; height: 18px; background: #400; border: 2px solid #808080; cursor: pointer; position: relative; }
-        .win95-switch:checked { background: #f00; }
-        .win95-switch::after { content: ''; position: absolute; top: 1px; left: 1px; width: 10px; height: 10px; background: #c0c0c0; border: 2px outset #fff; transition: 0.2s; }
-        .win95-switch:checked::after { left: 18px; }
+        /* SIREN SE-G1 */
+        .seg1 { background: #b08d57; color: #000; }
+        .fire-button { width: 50px; height: 50px; background: radial-gradient(circle, #f00, #800); border: 4px outset #f66; border-radius: 50%; cursor: pointer; margin: 10px auto; display: block; touch-action: none; }
 
         /* MIXER */
         .mixer-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
-        .chan { background: #333; border: 2px inset #222; padding: 10px; text-align: center; }
-        .fader { appearance: slider-vertical; width: 18px; height: 75px; margin-top: 5px; }
-        .s-btn { font-size: 8px; padding: 3px; background: #222; color: #fff; border: 2px outset #666; cursor: pointer; width: 34px; }
-        .active-e { background: #0f0 !important; color: #000 !important; }
+        .chan { background: #333; border: 2px inset #222; padding: 8px; text-align: center; }
+        .upload-area { font-size: 7px; background: #000; color: #0f0; padding: 4px; border: 1px solid #333; height: 24px; display: flex; align-items: center; justify-content: center; cursor: pointer; margin-bottom: 5px;}
+        .fader { appearance: slider-vertical; width: 18px; height: 70px; }
+        .s-btn { font-size: 8px; padding: 3px; background: #222; color: #fff; border: 2px outset #666; cursor: pointer; width: 32px; margin: 1px; }
+        .active-e { background: #0f0 !important; color: #000; }
+        .active-f { background: #fc0 !important; color: #000; }
+        .active-m { background: #f00 !important; }
+        .active-s { background: #0080ff !important; }
 
-        /* SYSTEM POWER */
-        .master-power { width: 100%; padding: 15px; background: #060; border: 4px outset #0a0; color: #fff; font-weight: bold; cursor: pointer; margin-bottom: 20px; }
-        
+        /* FILTER UNIT */
+        .filter-dial { width: 60px; height: 60px; background: #222; border-radius: 50%; border: 3px solid #666; margin: 5px auto; position: relative; cursor: pointer; }
+        .hand { width: 3px; height: 20px; background: red; position: absolute; top: 10px; left: 28.5px; transform-origin: bottom; }
+
+        /* FOOTER */
         footer { position: fixed; bottom: 0; width: 100%; background: #c0c0c0; border-top: 2px solid #fff; height: 90px; padding: 10px; box-sizing: border-box; z-index: 1000; }
         #vu { height: 25px; background: #000; display: flex; gap: 2px; border: 2px inset #808080; flex-grow: 1; }
-        
+        .win95-switch { appearance: none; width: 34px; height: 18px; background: #400; border: 2px solid #808080; cursor: pointer; position: relative; }
+        .win95-switch:checked { background: #f00; }
+        .win95-switch::after { content: ''; position: absolute; top: 1px; left: 1px; width: 10px; height: 10px; background: #c0c0c0; border: 2px outset #fff; transition: 0.1s; }
+        .win95-switch:checked::after { left: 18px; }
+
         @media (min-width: 600px) { .mixer-grid { grid-template-columns: repeat(4, 1fr); } }
     </style>
 </head>
 <body>
 
-<header><h1>General desEchos v4.5</h1></header>
+<header><h1>General desEchos v4.6</h1></header>
 
 <div class="stack">
-    <button class="master-power" id="pwrBtn" onclick="bootSystem()">[ CLICK TO INITIALIZE SYSTEM ]</button>
-
     <section class="unit intro-box">
         <div class="bolt tl"></div><div class="bolt tr"></div><div class="bolt bl"></div><div class="bolt br"></div>
-        <h2 style="margin:0 0 5px 0; font-size:0.8rem; text-transform: uppercase;">System Operational Brief</h2>
-        <p style="margin:0;">RP2A03 Performance Core Re-integrated. D-Pad XY modulation active. All FX busses (Delay/Filter) re-established. <strong>Signal path:</strong> Source -> Filter -> Delay -> Master. Press "Initialize" to begin.</p>
+        <p style="margin:0;"><strong>STATUS:</strong> Full signal path restoration complete. RP2A03 D-Pad integrated with legacy SE-G1 waveform logic. Mixer Solo/Mute logic active. <em>Note: Initialize System before performance.</em></p>
     </section>
 
     <div class="unit" style="background: #555;">
@@ -64,28 +70,35 @@
         <div class="dpad-area" id="dpad">
             <div class="cross-v"></div><div class="cross-h"></div><div id="dot"></div>
         </div>
-        <div style="display:flex; justify-content: space-around; font-size: 9px; color: #fc0; font-weight: bold;">
-            <div>PITCH: <input type="range" id="nPit" min="400" max="1200" value="987"></div>
-            <div>DECAY: <input type="range" id="nDec" min="0.1" max="1.0" step="0.1" value="0.3"></div>
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; font-size: 9px;">
+            <div>PITCH <input type="range" id="nPit" min="400" max="1200" value="987"></div>
+            <div>DECAY <input type="range" id="nDec" min="0.1" max="1.0" step="0.05" value="0.3"></div>
         </div>
     </div>
 
-    <div class="unit" style="background: #b08d57; color: #000;">
+    <div class="unit seg1">
         <div class="bolt tl"></div><div class="bolt tr"></div><div class="bolt bl"></div><div class="bolt br"></div>
-        <div class="unit-label" style="color:#000; background: #e6be8a;">SIREN GENERATOR // SE-G1</div>
-        <div style="display:flex; justify-content: space-around; font-size: 9px; font-weight: bold;">
-            <div>PITCH: <input type="range" id="sPit" min="100" max="1500" value="440"></div>
-            <div>RATE: <input type="range" id="sRat" min="1" max="40" value="12"></div>
+        <div class="unit-label" style="color:#000; border-color:#000;">SIREN GENERATOR // SE-G1</div>
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; font-size: 9px; font-weight: bold;">
+            <div>PITCH <input type="range" id="sPit" min="100" max="1500" value="440"></div>
+            <div>LFO RATE <input type="range" id="sRat" min="1" max="40" value="12"></div>
         </div>
-        <button class="siren-btn" id="sBtn"></button>
+        <div style="text-align:center; margin-top:10px;">
+            <div id="sFire" class="fire-button"></div>
+            <button id="sWave" style="font-size:8px; padding:4px; background:#333; color:#fff; cursor:pointer;">WAVE: SQUARE</button>
+        </div>
     </div>
 
-    <div class="unit" style="background: #c0c0c0; color: #333;">
+    <div class="unit" style="background: #c0c0c0; color: #000;">
         <div class="bolt tl"></div><div class="bolt tr"></div><div class="bolt bl"></div><div class="bolt br"></div>
         <div class="unit-label" style="background:#222; color:#fff;">DIGITAL SPACE DELAY // E-X2</div>
-        <div style="display:flex; justify-content: space-around; font-size: 9px; font-weight: bold; margin-bottom:10px;">
-            <div>FEEDBACK: <input type="range" id="eFbk" min="0" max="0.9" step="0.1" value="0.5"></div>
-            <div>TIME: <input type="range" id="eTim" min="0.1" max="1.0" step="0.1" value="0.4"></div>
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; font-size: 9px; font-weight: bold;">
+            <div>FEEDBACK <input type="range" id="eFbk" min="0" max="0.9" step="0.1" value="0.5"></div>
+            <div>TIME <input type="range" id="eTim" min="0.1" max="1.0" step="0.1" value="0.4"></div>
+        </div>
+        <div style="text-align:center; margin-top:10px;">
+            <span style="font-size:8px; font-weight:bold;">S-ECHO MODE</span>
+            <input type="checkbox" id="eTog" class="win95-switch">
         </div>
     </div>
 
@@ -93,107 +106,156 @@
         <div class="bolt tl"></div><div class="bolt tr"></div><div class="bolt bl"></div><div class="bolt br"></div>
         <div class="unit-label">4-CH DUB MIXER</div>
         <div class="mixer-grid" id="mGrid"></div>
+        <div style="background:#111; padding:10px; margin-top:15px; text-align:center; border: 4px inset #444;">
+            <div class="filter-dial" onclick="rotFilter()"><div id="fHand" class="hand"></div></div>
+            <div id="fLabel" style="color:#fc0; font-size:10px; font-weight:bold;">FILTER: OFF</div>
+        </div>
+        <button id="masterBtn" style="width:100%; padding:15px; margin-top:15px; background:#040; color:#fff; font-weight:bold; cursor:pointer;" onclick="bootSystem()">START ENGINE</button>
     </div>
+
+    <section class="unit blog-log">
+        <div class="bolt tl"></div><div class="bolt tr"></div><div class="bolt bl"></div><div class="bolt br"></div>
+        <h3 style="margin:0; font-size:0.9rem;">LOG #417: FULL PARITY</h3>
+        <p style="margin:0; font-size:0.85rem;">Corrected I/O routing for the Mixer Solo/Mute logic. Restored the SE-G1 variable waveform oscillator. RP2A03 Core now successfully bridges legacy and experimental control surfaces.</p>
+    </section>
 </div>
 
 <footer>
     <div style="display:flex; align-items:center; gap:15px; height:100%;">
         <div id="vu"></div>
         <div style="text-align:center; min-width:60px;">
-            <span style="font-size:8px; color:#000; font-weight:bold; display:block; margin-bottom:2px;">VU PWR</span>
+            <span style="font-size:8px; color:#000; font-weight:bold; display:block;">VU PWR</span>
             <input type="checkbox" id="vuTog" class="win95-switch" checked>
         </div>
     </div>
 </footer>
 
 <script>
-    let ctx, analyser, sirenG, sirenO, sirenL, nesO, nesG, delay, feed, channels = [];
+    let ctx, analyser, sirenG, sirenO, sirenL, sirenLG, nesO, nesG, delay, feed, hpf1, hpf2, channels = [];
+    let isBooted = false, lfoType = 'square', fIdx = 0, fFreqs = [0, 200, 500, 1000, 2000, 4000];
+    let isSEcho = false;
 
     function bootSystem() {
-        if (ctx) return;
+        if (isBooted) { togglePlayback(); return; }
         ctx = new (window.AudioContext || window.webkitAudioContext)();
         analyser = ctx.createAnalyser(); 
         
-        // Delay Unit
         delay = ctx.createDelay(2.0); feed = ctx.createGain();
         delay.delayTime.value = 0.4; feed.gain.value = 0.5;
         delay.connect(feed); feed.connect(delay); delay.connect(analyser);
+
+        hpf1 = ctx.createBiquadFilter(); hpf2 = ctx.createBiquadFilter();
+        hpf1.type = hpf2.type = 'highpass'; hpf1.frequency.value = hpf2.frequency.value = 0;
+        hpf1.connect(hpf2); hpf2.connect(analyser);
         
-        // Siren SE-G1
         sirenO = ctx.createOscillator(); sirenL = ctx.createOscillator();
-        let sLG = ctx.createGain(); sirenG = ctx.createGain();
-        sirenO.type = 'square'; sirenG.gain.value = 0; sLG.gain.value = 300;
-        sirenL.connect(sLG); sLG.connect(sirenO.frequency);
-        sirenO.connect(sirenG); sirenG.connect(analyser); sirenG.connect(delay);
+        sirenLG = ctx.createGain(); sirenG = ctx.createGain();
+        sirenO.type = 'square'; sirenG.gain.value = 0; sirenLG.gain.value = 300;
+        sirenL.connect(sirenLG); sirenLG.connect(sirenO.frequency);
+        sirenO.connect(sirenG); sirenG.connect(analyser);
         sirenO.start(); sirenL.start();
 
-        // Mixer Setup
-        const g = document.getElementById('mGrid');
+        const g = document.getElementById('mGrid'); g.innerHTML = '';
         for(let i=0; i<4; i++) {
             const d = document.createElement('div'); d.className='chan';
-            d.innerHTML = `<label class="s-btn" style="display:block;width:auto;margin-bottom:5px;">LOAD FILE<input type="file" style="display:none" onchange="loadF(${i},this)"></label>
-            <button class="s-btn" id="e-${i}" onclick="toggleEcho(${i})">ECHO</button><br>
-            <input type="range" class="fader" oninput="setV(${i},this.value)" min="0" max="1" step="0.01" value="0.7">
-            <audio id="a${i}" loop></audio>`;
+            d.innerHTML = `
+                <div id="led-${i}" style="width:6px;height:6px;background:#111;border-radius:50%;margin:0 auto 4px;"></div>
+                <label class="upload-area">LOAD<input type="file" style="display:none" onchange="loadF(${i},this)"></label>
+                <div style="display:flex;justify-content:center;gap:1px;">
+                    <button class="s-btn" id="e-${i}" onclick="togM(${i},'e')">E</button>
+                    <button class="s-btn" id="f-${i}" onclick="togM(${i},'f')">F</button>
+                </div>
+                <div style="display:flex;justify-content:center;gap:1px;">
+                    <button class="s-btn" id="m-${i}" onclick="togM(${i},'m')">M</button>
+                    <button class="s-btn" id="s-${i}" onclick="togM(${i},'s')">S</button>
+                </div>
+                <input type="range" class="fader" oninput="setV(${i},this.value)" min="0" max="1" step="0.01" value="0.7">
+                <audio id="a${i}" loop crossorigin="anonymous"></audio>`;
             g.appendChild(d);
             const node = ctx.createMediaElementSource(document.getElementById(`a${i}`));
-            const gain = ctx.createGain(); const echoG = ctx.createGain();
-            echoG.gain.value = 0;
-            node.connect(gain); gain.connect(analyser); gain.connect(echoG); echoG.connect(delay);
-            channels.push({gain, echoG, aud: document.getElementById(`a${i}`), eOn: false});
+            const gn = ctx.createGain(); const eGn = ctx.createGain(); const fGn = ctx.createGain();
+            eGn.gain.value = fGn.gain.value = 0;
+            node.connect(gn); gn.connect(analyser); gn.connect(eGn); eGn.connect(delay); gn.connect(fGn); fGn.connect(hpf1);
+            channels.push({gn, eGn, fGn, aud: document.getElementById(`a${i}`), eOn:0, fOn:0, mOn:0, sOn:0, vol:0.7});
         }
-
         analyser.connect(ctx.destination);
-        document.getElementById('pwrBtn').innerText = "SYSTEM ONLINE";
-        document.getElementById('pwrBtn').style.background = "#333";
+        isBooted = true; document.getElementById('masterBtn').innerText = "STOP ENGINE";
         startVU();
     }
 
-    // RP2A03 D-PAD PERFORMANCE
-    const dp = document.getElementById('dpad'); const dot = document.getElementById('dot');
-    let active = false;
+    function togglePlayback() {
+        const state = ctx.state === 'running' ? 'suspend' : 'resume';
+        ctx[state]().then(() => {
+            document.getElementById('masterBtn').innerText = ctx.state === 'running' ? "STOP ENGINE" : "START ENGINE";
+            channels.forEach(c => ctx.state === 'running' ? c.aud.play() : c.aud.pause());
+        });
+    }
 
-    const start = (e) => { if(!ctx) return; e.preventDefault(); active = true; dot.style.display = 'block'; playCoin(); move(e.touches?.[0] || e); };
-    const end = () => { active = false; dot.style.display='none'; stopCoin(); };
+    // NES D-PAD
+    const dp = document.getElementById('dpad'), dot = document.getElementById('dot');
+    let dAct = false;
+    const startN = (e) => { if(!ctx) return; e.preventDefault(); dAct = true; dot.style.display='block'; trigN(); moveN(e.touches?.[0] || e); };
+    const endN = () => { dAct = false; dot.style.display='none'; stopN(); };
+    dp.onmousedown = dp.ontouchstart = startN;
+    window.onmousemove = (e) => dAct && moveN(e);
+    window.ontouchmove = (e) => dAct && moveN(e.touches[0]);
+    window.onmouseup = window.ontouchend = endN;
 
-    dp.addEventListener('mousedown', start); dp.addEventListener('touchstart', start);
-    window.addEventListener('mousemove', (e) => active && move(e));
-    window.addEventListener('touchmove', (e) => active && move(e.touches?.[0]));
-    window.addEventListener('mouseup', end); window.addEventListener('touchend', end);
-
-    function playCoin() {
-        const root = parseFloat(document.getElementById('nPit').value);
+    function trigN() {
+        const r = parseFloat(document.getElementById('nPit').value);
         nesO = ctx.createOscillator(); nesG = ctx.createGain();
-        nesO.type = 'square'; nesO.connect(nesG); nesG.connect(analyser); nesG.connect(delay);
-        nesO.frequency.setValueAtTime(root, ctx.currentTime);
-        nesO.frequency.setValueAtTime(root * 1.334, ctx.currentTime + 0.08); // Bling jump
+        nesO.type = 'square'; nesO.connect(nesG); nesG.connect(analyser);
+        if(isSEcho) nesG.connect(delay);
+        nesO.frequency.setValueAtTime(r, ctx.currentTime);
+        nesO.frequency.setValueAtTime(r * 1.334, ctx.currentTime + 0.08);
         nesG.gain.setValueAtTime(0.3, ctx.currentTime);
         nesO.start();
     }
-
-    function move(e) {
+    function moveN(e) {
         const r = dp.getBoundingClientRect();
-        const x = (e.clientX - r.left) / r.width; const y = (e.clientY - r.top) / r.height;
-        dot.style.left = (x*100)+'%'; dot.style.top = (y*100)+'%';
+        const y = (e.clientY - r.top) / r.height;
+        dot.style.left = ((e.clientX - r.left) / r.width * 100) + '%';
+        dot.style.top = (y * 100) + '%';
         if(nesO) {
-            const root = parseFloat(document.getElementById('nPit').value) * 1.334;
-            nesO.frequency.setTargetAtTime(root + ((0.5 - y) * root), ctx.currentTime, 0.05);
+            const rt = parseFloat(document.getElementById('nPit').value) * 1.334;
+            nesO.frequency.setTargetAtTime(rt + ((0.5 - y) * rt), ctx.currentTime, 0.05);
         }
     }
+    function stopN() { if(!nesG) return; nesG.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + parseFloat(document.getElementById('nDec').value)); nesO.stop(ctx.currentTime + 1); }
 
-    function stopCoin() { if(!nesG) return; const d = parseFloat(document.getElementById('nDec').value); nesG.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + d); nesO.stop(ctx.currentTime + d + 0.1); }
-
-    // SIREN & FX CONTROLS
-    document.getElementById('sBtn').onmousedown = document.getElementById('sBtn').ontouchstart = (e) => { e.preventDefault(); if(sirenG) sirenG.gain.setTargetAtTime(0.4, ctx.currentTime, 0.02); };
-    window.onmouseup = window.ontouchend = () => { if(sirenG) sirenG.gain.setTargetAtTime(0, ctx.currentTime, 0.1); };
+    // SIREN & FX
+    const sf = document.getElementById('sFire');
+    sf.onmousedown = sf.ontouchstart = (e) => { e.preventDefault(); if(sirenG) sirenG.gain.setTargetAtTime(0.5, ctx.currentTime, 0.02); };
+    window.addEventListener('mouseup', () => { if(sirenG) sirenG.gain.setTargetAtTime(0, ctx.currentTime, 0.1); });
+    document.getElementById('sWave').onclick = () => { lfoType = lfoType === 'square' ? 'sine' : 'square'; if(sirenL) sirenL.type = lfoType; document.getElementById('sWave').innerText = "WAVE: " + lfoType.toUpperCase(); };
     document.getElementById('sPit').oninput = (e) => { if(sirenO) sirenO.frequency.value = e.target.value; };
     document.getElementById('sRat').oninput = (e) => { if(sirenL) sirenL.frequency.value = e.target.value; };
     document.getElementById('eFbk').oninput = (e) => { if(feed) feed.gain.value = e.target.value; };
     document.getElementById('eTim').oninput = (e) => { if(delay) delay.delayTime.value = e.target.value; };
+    document.getElementById('eTog').onchange = (e) => { isSEcho = e.target.checked; if(isSEcho) sirenG.connect(delay); else try { sirenG.disconnect(delay); } catch(i){} };
 
-    function toggleEcho(i) { channels[i].eOn = !channels[i].eOn; channels[i].echoG.gain.value = channels[i].eOn ? 0.6 : 0; document.getElementById(`e-${i}`).classList.toggle('active-e'); }
-    function loadF(i,inp) { if(inp.files[0]) { channels[i].aud.src = URL.createObjectURL(inp.files[0]); channels[i].aud.play(); } }
-    function setV(i,v) { channels[i].gain.gain.value = v; }
+    function rotFilter() { fIdx = (fIdx+1)%fFreqs.length; hpf1.frequency.value = hpf2.frequency.value = fFreqs[fIdx]; document.getElementById('fHand').style.transform=`rotate(${fIdx*45}deg)`; document.getElementById('fLabel').innerText = fFreqs[fIdx]===0?"FILTER: OFF":"FILTER: "+fFreqs[fIdx]+"Hz"; }
+
+    // MIXER LOGIC
+    function togM(i, t) {
+        const c = channels[i];
+        if(t==='e') { c.eOn = !c.eOn; c.eGn.gain.value = c.eOn?0.7:0; }
+        if(t==='f') { c.fOn = !c.fOn; c.fGn.gain.value = c.fOn?1:0; }
+        if(t==='m') { c.mOn = !c.mOn; }
+        if(t==='s') { c.sOn = !c.sOn; }
+        document.getElementById(`${t}-${i}`).classList.toggle(`active-${t}`);
+        updateMix();
+    }
+    function updateMix() {
+        const anyS = channels.some(c => c.sOn);
+        channels.forEach((c, i) => {
+            let t = c.mOn ? 0 : (anyS && !c.sOn ? 0 : c.vol);
+            c.gn.gain.setTargetAtTime(t, ctx.currentTime, 0.05);
+            document.getElementById(`led-${i}`).style.background = t > 0 ? "#0f0" : "#111";
+        });
+    }
+    function loadF(i,inp) { if(inp.files[0]) { channels[i].aud.src = URL.createObjectURL(inp.files[0]); if(ctx.state==='running') channels[i].aud.play(); } }
+    function setV(i,v) { channels[i].vol = v; updateMix(); }
 
     function startVU() {
         const v = document.getElementById('vu');
@@ -205,7 +267,7 @@
             v.innerHTML = '';
             for(let i=0; i<20; i++) {
                 const l = document.createElement('div'); l.style.flex = "1";
-                l.style.background = (i < avg/4) ? (i<15?"#0f0":"#f00") : "#111";
+                l.style.background = (i < avg/4) ? (i<14?"#0f0":"#f00") : "#111";
                 v.appendChild(l);
             }
         }, 50);
