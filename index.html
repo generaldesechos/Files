@@ -48,7 +48,7 @@
         .unit-label { background: #111; color: #ffcc00; padding: 4px; text-align: center; font-weight: bold; border: 1px solid #444; margin-bottom: 15px; font-size: 10px; letter-spacing: 1px; }
 
         /* --- INTRO BOX --- */
-        .intro-box { background: #e6be8a; border: 2px solid #8b4513; color: #221100; padding: 15px; font-size: 0.8rem; }
+        .intro-box { background: #e6be8a; border: 2px solid #8b4513; color: #221100; padding: 15px; font-size: 0.75rem; line-height: 1.4; }
 
         /* --- SIREN UNIT --- */
         .seg1-unit { background: #b08d57; border: 5px outset #d4af37; color: #222; padding: 20px; }
@@ -61,7 +61,6 @@
         /* --- DELAY UNIT --- */
         .delay-unit { background: #c0c0c0; border: 5px outset #eee; color: #333; padding: 20px; }
         
-        /* --- WIN95 STYLE TOGGLE (Used for VU and Delay) --- */
         .toggle-style-container { text-align: center; }
         .win95-switch {
             appearance: none; width: 40px; height: 20px; background: #440000;
@@ -82,11 +81,13 @@
         .chan-led { width: 10px; height: 10px; background: #111; border-radius: 50%; margin: 0 auto 8px auto; }
         .chan-led.active { background: #0f0; box-shadow: 0 0 8px #0f0; }
         
-        .s-btn { font-size: 8px; padding: 4px; margin: 2px; border: 2px outset #666; background: #222; color: #fff; cursor: pointer; width: 35px;}
+        .s-btn { font-size: 8px; padding: 4px; margin: 1px; border: 2px outset #666; background: #222; color: #fff; cursor: pointer; width: 34px;}
         .s-btn.active-e { background: #00ff00; color: #000; }
         .s-btn.active-f { background: #ffcc00; color: #000; }
+        .s-btn.active-m { background: #ff0000; color: #fff; }
+        .s-btn.active-s { background: #0080ff; color: #fff; }
 
-        .upload-area { font-size: 7px; background: #000; color: #0f0; padding: 4px; border: 1px solid #333; height: 24px; overflow: hidden; display: flex; align-items: center; justify-content: center; cursor: pointer; margin-bottom: 5px; line-height: 1;}
+        .upload-area { font-size: 7px; background: #000; color: #0f0; padding: 4px; border: 1px solid #333; height: 24px; overflow: hidden; display: flex; align-items: center; justify-content: center; cursor: pointer; margin-bottom: 5px;}
 
         /* --- KING TUBBY FILTER PANEL --- */
         .big-knob-panel { grid-column: span 2; background: #1a1a1a; padding: 10px; margin-top: 10px; text-align: center; border: 4px inset #444; }
@@ -104,21 +105,18 @@
         input[type=range] { width: 100%; cursor: pointer; accent-color: #800; }
         .vert-fader { appearance: slider-vertical; width: 18px; height: 80px; margin: 5px 0; }
 
-        /* --- WIN95 FOOTER --- */
+        /* --- FOOTER --- */
         footer { 
             position: fixed; bottom: 0; left: 0; width: 100%; 
             background: #c0c0c0; border-top: 2px solid #ffffff; 
             outline: 1px solid #808080; padding: 8px 15px; box-sizing: border-box; 
-            z-index: 10000; height: 100px; box-shadow: inset 1px 1px 0px #fff;
+            z-index: 10000; height: 100px;
         }
         .footer-flex { display: flex; align-items: center; gap: 15px; height: 100%; }
-        .footer-main-area { flex-grow: 1; }
-        .footer-label { color: #000; font-size: 10px; font-weight: bold; margin-bottom: 4px; font-family: sans-serif; text-transform: uppercase; }
-        
         .vu-meter { 
             display: flex; gap: 2px; height: 25px; background: #000; padding: 3px; 
             border-top: 2px solid #808080; border-left: 2px solid #808080;
-            border-bottom: 2px solid #fff; border-right: 2px solid #fff;
+            border-bottom: 2px solid #fff; border-right: 2px solid #fff; flex-grow: 1;
         }
         .led { flex: 1; background: #1a1a1a; border-right: 1px solid #333; }
         .led.on-g { background: #0f0; box-shadow: 0 0 8px #0f0; } 
@@ -135,8 +133,8 @@
 <div class="stack-container">
     <section class="rack-unit intro-box">
         <div class="bolt tl"></div><div class="bolt tr"></div><div class="bolt bl"></div><div class="bolt br"></div>
-        <h2 style="margin:0 0 5px 0; font-size:1rem; text-transform: uppercase;">System Briefing</h2>
-        <p style="margin:0;">Master DUB Station. Restore Dubwise pressure. Use RED TOGGLE to activate visual metering.</p>
+        <h2 style="margin:0 0 5px 0; font-size:0.9rem; text-transform: uppercase;">System Operational Brief</h2>
+        <p style="margin:0;">The Master Stack combines a 4-channel Mixer with dedicated FX routing to a Digital Delay and high-pass Filter. <strong>Privacy Note:</strong> All track uploads are processed in real-time via the Web Audio API. Files remain entirely on your local machine; no data is transmitted to any server.</p>
     </section>
 
     <section class="rack-unit seg1-unit">
@@ -173,31 +171,27 @@
         <div class="bolt tl"></div><div class="bolt tr"></div><div class="bolt bl"></div><div class="bolt br"></div>
         <div class="unit-label">4-CH DUB MIXER / FX SENDS</div>
         <div class="mixer-grid" id="mixerUI"></div>
-        
         <div class="big-knob-panel">
-            <div class="rotary-dial" onclick="rotateFilter()">
-                <div id="dialHand" class="dial-hand"></div>
-            </div>
+            <div class="rotary-dial" onclick="rotateFilter()"><div id="dialHand" class="dial-hand"></div></div>
             <div id="freqLabel" class="freq-text">OFF</div>
         </div>
-
-        <button id="masterBtn" style="width:100%; padding:15px; margin-top:15px; background:#040; color:#fff; border:3px outset #080; font-family:monospace; font-weight:bold; cursor:pointer;" onclick="toggleAll()">START MIXER ENGINE</button>
+        <button id="masterBtn" style="width:100%; padding:15px; margin-top:15px; background:#040; color:#fff; border:3px outset #080; font-weight:bold; cursor:pointer;" onclick="toggleAll()">START MIXER ENGINE</button>
     </section>
 
     <section class="rack-unit blog-log">
         <div class="bolt tl"></div><div class="bolt tr"></div><div class="bolt bl"></div><div class="bolt br"></div>
-        <h3 style="margin:0 0 10px 0; font-size:1rem;">LOG #411: SENDS RESTORED</h3>
-        <p style="margin:0; font-size:0.9rem;">Routing corrected. Individual Echo (E) and Filter (F) sends now available per channel. Hardware stack integrity 100%.</p>
+        <h3 style="margin:0 0 10px 0; font-size:1rem;">LOG #412: COMMAND CENTER UPDATE</h3>
+        <p style="margin:0; font-size:0.85rem;">Channel strips expanded with <strong>Mute</strong> and <strong>Solo</strong> capability. Logic gate implemented: Solo overrides all un-soloed channels. Red toggle architecture confirmed for VU and Delay modules. Stack is stable.</p>
     </section>
 </div>
 
 <footer>
     <div class="footer-flex">
-        <div class="footer-main-area">
-            <div class="footer-label">SIGNAL MONITOR // PEAK LEVEL</div>
+        <div style="flex-grow:1;">
+            <div style="color:#000; font-size:10px; font-weight:bold; margin-bottom:4px; font-family:sans-serif;">SIGNAL MONITOR</div>
             <div class="vu-meter" id="vu"></div>
         </div>
-        <div class="toggle-style-container" style="min-width: 60px;">
+        <div class="toggle-style-container">
             <span style="color:#000; font-size:8px; font-weight:bold; display:block; margin-bottom:5px;">VU ON</span>
             <input type="checkbox" id="vuMasterToggle" class="win95-switch">
         </div>
@@ -215,50 +209,43 @@
         const strip = document.createElement('div');
         strip.className = 'channel-strip';
         strip.innerHTML = `
-            <div style="font-size:8px; color:#aaa; margin-bottom:4px;">CH ${i+1}</div>
             <div id="led-${i}" class="chan-led"></div>
             <label class="upload-area" id="up-box-${i}">LOAD TRACK<input type="file" style="display:none" onchange="loadUserFile(${i}, this)"></label>
-            <div style="display:flex; justify-content:center; gap:2px;">
+            <div style="display:flex; justify-content:center; gap:2px; margin-bottom:4px;">
                 <button class="s-btn" id="e-${i}" onclick="toggleFX(${i},'e')">E</button>
                 <button class="s-btn" id="f-${i}" onclick="toggleFX(${i},'f')">F</button>
             </div>
-            <input type="range" class="vert-fader" min="0" max="1" step="0.01" value="0.7" oninput="setVol(${i}, this.value)">
-            <audio id="mix-aud-${i}" loop src="audio${i+1}.mp3" crossorigin="anonymous"></audio>
+            <div style="display:flex; justify-content:center; gap:2px; margin-bottom:8px;">
+                <button class="s-btn" id="m-${i}" onclick="toggleFX(${i},'m')">M</button>
+                <button class="s-btn" id="s-${i}" onclick="toggleFX(${i},'s')">S</button>
+            </div>
+            <input type="range" class="vert-fader" id="fader-${i}" min="0" max="1" step="0.01" value="0.7" oninput="setVol(${i}, this.value)">
+            <audio id="mix-aud-${i}" loop crossorigin="anonymous"></audio>
         `;
         mixerUI.appendChild(strip);
-        channels.push({ gain:null, echoG:null, fltrG:null, eOn:false, fOn:false, connected:false });
+        channels.push({ gain:null, echoG:null, fltrG:null, eOn:false, fOn:false, mOn:false, sOn:false, userVol:0.7, connected:false });
     }
 
     function initAudio() {
         if (audioCtx && audioCtx.state !== 'suspended') return;
         audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        analyser = audioCtx.createAnalyser();
-        analyser.fftSize = 256;
-
-        delay = audioCtx.createDelay(2.0);
-        delay.delayTime.value = 0.4;
-        feedback = audioCtx.createGain();
-        feedback.gain.value = 0.5;
+        analyser = audioCtx.createAnalyser(); analyser.fftSize = 256;
+        delay = audioCtx.createDelay(2.0); delay.delayTime.value = 0.4;
+        feedback = audioCtx.createGain(); feedback.gain.value = 0.5;
         delay.connect(feedback); feedback.connect(delay); delay.connect(analyser);
-
         filter1 = audioCtx.createBiquadFilter(); filter2 = audioCtx.createBiquadFilter();
-        filter1.type = filter2.type = 'highpass';
-        filter1.connect(filter2); filter2.connect(analyser);
-
+        filter1.type = filter2.type = 'highpass'; filter1.connect(filter2); filter2.connect(analyser);
         sirenOsc = audioCtx.createOscillator(); sirenLfo = audioCtx.createOscillator();
         sirenLfoG = audioCtx.createGain(); sirenG = audioCtx.createGain(); 
         sirenOsc.type = 'square'; sirenLfo.type = lfoType; sirenG.gain.value = 0;
         sirenLfo.connect(sirenLfoG); sirenLfoG.connect(sirenOsc.frequency);
         sirenOsc.connect(sirenG); sirenG.connect(analyser);
         sirenOsc.start(); sirenLfo.start();
-
         channels.forEach((ch, i) => {
             if (!ch.connected) {
                 const audEl = document.getElementById(`mix-aud-${i}`);
                 const node = audioCtx.createMediaElementSource(audEl);
-                ch.gain = audioCtx.createGain();
-                ch.echoG = audioCtx.createGain();
-                ch.fltrG = audioCtx.createGain();
+                ch.gain = audioCtx.createGain(); ch.echoG = audioCtx.createGain(); ch.fltrG = audioCtx.createGain();
                 ch.echoG.gain.value = 0; ch.fltrG.gain.value = 0;
                 node.connect(ch.gain); ch.gain.connect(analyser); 
                 ch.gain.connect(ch.echoG); ch.echoG.connect(delay);
@@ -271,23 +258,39 @@
         analyser.connect(audioCtx.destination);
     }
 
+    function updateMixerGains() {
+        const anySolo = channels.some(c => c.sOn);
+        channels.forEach((ch, i) => {
+            if (!ch.gain) return;
+            let target = ch.userVol;
+            if (ch.mOn) target = 0;
+            else if (anySolo && !ch.sOn) target = 0;
+            ch.gain.gain.setTargetAtTime(target, audioCtx.currentTime, 0.05);
+        });
+    }
+
+    function toggleFX(i, type) {
+        initAudio(); audioCtx.resume();
+        const ch = channels[i];
+        if(type === 'e') { ch.eOn = !ch.eOn; ch.echoG.gain.value = ch.eOn ? 0.8 : 0; document.getElementById(`e-${i}`).classList.toggle('active-e'); }
+        if(type === 'f') { ch.fOn = !ch.fOn; ch.fltrG.gain.value = ch.fOn ? 1 : 0; document.getElementById(`f-${i}`).classList.toggle('active-f'); }
+        if(type === 'm') { ch.mOn = !ch.mOn; document.getElementById(`m-${i}`).classList.toggle('active-m'); updateMixerGains(); }
+        if(type === 's') { ch.sOn = !ch.sOn; document.getElementById(`s-${i}`).classList.toggle('active-s'); updateMixerGains(); }
+    }
+
     function startVULoop() {
         const vu = document.getElementById('vu'); vu.innerHTML = '';
         const leds = [];
-        const numLeds = 20;
-        for(let i=0; i<numLeds; i++) {
-            const l = document.createElement('div'); l.className = 'led'; vu.appendChild(l); leds.push(l);
-        }
+        for(let i=0; i<20; i++) { const l = document.createElement('div'); l.className = 'led'; vu.appendChild(l); leds.push(l); }
         function draw() {
             let vol = 0;
             if (document.getElementById('vuMasterToggle').checked && analyser) {
                 const data = new Uint8Array(analyser.frequencyBinCount);
                 analyser.getByteFrequencyData(data);
-                let sum = 0;
-                for(let i=0; i<data.length; i++) sum += data[i];
+                let sum = 0; for(let i=0; i<data.length; i++) sum += data[i];
                 vol = sum / data.length;
             }
-            const lit = Math.min(numLeds, Math.floor((vol / 55) * numLeds)); 
+            const lit = Math.min(20, Math.floor((vol / 55) * 20)); 
             leds.forEach((l, i) => {
                 l.className = 'led';
                 if(i < lit) {
@@ -302,21 +305,13 @@
     }
 
     window.onload = startVULoop;
-
     document.getElementById('vuMasterToggle').onchange = function() { if(this.checked) { initAudio(); if(audioCtx) audioCtx.resume(); } };
-    document.getElementById('delayToggle').onchange = (e) => { initAudio(); audioCtx.resume(); isSirenEcho = e.target.checked; if(isSirenEcho) sirenG.connect(delay); else try { sirenG.disconnect(delay); } catch(e){} };
-
-    document.getElementById('modeToggle').onclick = () => {
-        lfoType = (lfoType === 'square') ? 'sine' : 'square';
-        if(sirenLfo) sirenLfo.type = lfoType;
-        document.getElementById('modeToggle').innerText = "LFO: " + lfoType.toUpperCase();
-    };
-
-    function toggleFX(i, type) { initAudio(); audioCtx.resume(); if(type === 'e') { channels[i].eOn = !channels[i].eOn; channels[i].echoG.gain.value = channels[i].eOn ? 0.8 : 0; document.getElementById(`e-${i}`).classList.toggle('active-e'); } else { channels[i].fOn = !channels[i].fOn; channels[i].fltrG.gain.value = channels[i].fOn ? 1 : 0; document.getElementById(`f-${i}`).classList.toggle('active-f'); } }
+    document.getElementById('delayToggle').onchange = (e) => { initAudio(); audioCtx.resume(); isSirenEcho = e.target.checked; if(isSirenEcho) sirenG.connect(delay); else try { sirenG.disconnect(delay); } catch(err){} };
+    document.getElementById('modeToggle').onclick = () => { lfoType = (lfoType === 'square') ? 'sine' : 'square'; if(sirenLfo) sirenLfo.type = lfoType; document.getElementById('modeToggle').innerText = "LFO: " + lfoType.toUpperCase(); };
     function toggleAll() { initAudio(); audioCtx.resume(); isPlaying = !isPlaying; document.getElementById('masterBtn').innerText = isPlaying ? "STOP ENGINE" : "START ENGINE"; channels.forEach((ch, i) => { const aud = document.getElementById(`mix-aud-${i}`); isPlaying ? aud.play() : aud.pause(); }); }
     function rotateFilter() { initAudio(); audioCtx.resume(); filterIdx = (filterIdx + 1) % freqs.length; const f = freqs[filterIdx]; document.getElementById('dialHand').style.transform = `rotate(${filterIdx * 45}deg)`; document.getElementById('freqLabel').innerText = f === 0 ? "OFF" : f + "Hz"; filter1.frequency.setTargetAtTime(f, audioCtx.currentTime, 0.05); filter2.frequency.setTargetAtTime(f, audioCtx.currentTime, 0.05); }
     function loadUserFile(i, input) { const file = input.files[0]; if(file) { document.getElementById(`up-box-${i}`).innerText = file.name.substring(0,8); document.getElementById(`mix-aud-${i}`).src = URL.createObjectURL(file); } }
-    function setVol(i, v) { if(channels[i].gain) channels[i].gain.gain.value = v; }
+    function setVol(i, v) { channels[i].userVol = v; updateMixerGains(); }
     
     const fireBtn = document.getElementById('fireBtn');
     fireBtn.onmousedown = fireBtn.ontouchstart = (e) => { if(e) e.preventDefault(); initAudio(); audioCtx.resume().then(() => { sirenG.gain.setTargetAtTime(document.getElementById('volKnob').value, audioCtx.currentTime, 0.02); }); };
