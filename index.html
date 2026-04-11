@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>General desEchos v3.9 - Master Stack</title>
+    <title>General desEchos v4.0 - RP2A03 Edition</title>
     <style>
         /* --- SYSTEM CORE --- */
         body {
@@ -50,16 +50,27 @@
         /* --- INTRO BOX --- */
         .intro-box { background: #e6be8a; border: 2px solid #8b4513; color: #221100; padding: 15px; font-size: 0.75rem; line-height: 1.4; }
 
+        /* --- RP2A03 UNIT --- */
+        .nes-unit { background: #555; border: 5px outset #888; color: #fff; padding: 15px; }
+        
+        .nes-btn { 
+            background: #a00; border: 4px outset #f44; color: #fff; 
+            font-family: sans-serif; font-weight: bold; padding: 12px; 
+            cursor: pointer; text-transform: uppercase; width: 100%;
+            box-shadow: 0 4px #400; active { transform: translateY(2px); box-shadow: 0 2px #400; }
+        }
+
         /* --- SIREN UNIT --- */
-        .seg1-unit { background: #b08d57; border: 5px outset #d4af37; color: #222; padding: 20px; }
+        .seg1-unit { background: #b08d57; border: 5px outset #d4af37; color: #222; padding: 15px; }
+        
         .fire-button {
-            width: 60px; height: 60px; background: radial-gradient(circle, #ff0000, #880000);
+            width: 50px; height: 50px; background: radial-gradient(circle, #ff0000, #880000);
             border: 4px outset #ff6666; border-radius: 50%; cursor: pointer; margin: 0 auto;
             box-shadow: 0 4px 0 #440000; touch-action: none; display: block;
         }
 
         /* --- DELAY UNIT --- */
-        .delay-unit { background: #c0c0c0; border: 5px outset #eee; color: #333; padding: 20px; }
+        .delay-unit { background: #c0c0c0; border: 5px outset #eee; color: #333; padding: 15px; }
         
         .toggle-style-container { text-align: center; }
         .win95-switch {
@@ -101,7 +112,7 @@
 
         /* --- CONTROLS --- */
         .control-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .knob-label { font-size: 9px; font-weight: bold; text-align: center; display: block; margin-bottom: 2px; text-transform: uppercase; }
+        .knob-label { font-size: 8px; font-weight: bold; text-align: center; display: block; margin-bottom: 2px; text-transform: uppercase; color: #ffcc00; }
         input[type=range] { width: 100%; cursor: pointer; accent-color: #800; }
         .vert-fader { appearance: slider-vertical; width: 18px; height: 80px; margin: 5px 0; }
 
@@ -134,7 +145,25 @@
     <section class="rack-unit intro-box">
         <div class="bolt tl"></div><div class="bolt tr"></div><div class="bolt bl"></div><div class="bolt br"></div>
         <h2 style="margin:0 0 5px 0; font-size:0.9rem; text-transform: uppercase;">System Operational Brief</h2>
-        <p style="margin:0;">The Master Stack combines a 4-channel Mixer with dedicated FX routing to a Digital Delay and high-pass Filter. <strong>Privacy Note:</strong> All track uploads are processed in real-time via the Web Audio API. Files remain entirely on your local machine; no data is transmitted to any server.</p>
+        <p style="margin:0;">Hardware simulated <strong>RP2A03 (NES) Pulse Core</strong> now active. Adjust Duty Cycle and Bit-Crush to find that nostalgic grit. All uploads are local and private.</p>
+    </section>
+
+    <section class="rack-unit nes-unit">
+        <div class="bolt tl"></div><div class="bolt tr"></div><div class="bolt bl"></div><div class="bolt br"></div>
+        <div class="unit-label">RICOH RP2A03 CORE // PULSE GEN</div>
+        <div class="control-grid">
+            <div><span class="knob-label">ROOT PITCH</span><input type="range" id="nesPitch" min="200" max="1500" value="987"></div>
+            <div><span class="knob-label">ARP SPEED</span><input type="range" id="nesSpeed" min="0.05" max="0.3" step="0.01" value="0.08"></div>
+            <div><span class="knob-label">DUTY CYCLE</span><input type="range" id="nesDuty" min="0.1" max="0.9" step="0.01" value="0.5"></div>
+            <div><span class="knob-label">BIT CRUSH</span><input type="range" id="nesCrush" min="0" max="100" step="1" value="0"></div>
+            <div style="grid-column: span 2;">
+                <span class="knob-label">COIN DECAY</span>
+                <input type="range" id="nesDecay" min="0.1" max="1.5" step="0.1" value="0.4">
+            </div>
+        </div>
+        <div style="text-align:center; margin-top:15px;">
+            <button class="nes-btn" id="nesFire">TRIGGER COIN.SYS</button>
+        </div>
     </section>
 
     <section class="rack-unit seg1-unit">
@@ -143,10 +172,8 @@
         <div class="control-grid">
             <div><span class="knob-label">PITCH</span><input type="range" id="pitchKnob" min="100" max="1500" value="440"></div>
             <div><span class="knob-label">LFO RATE</span><input type="range" id="rateKnob" min="1" max="40" value="12"></div>
-            <div><span class="knob-label">DEPTH</span><input type="range" id="depthKnob" min="0" max="1500" value="600"></div>
-            <div><span class="knob-label">SIREN VOL</span><input type="range" id="volKnob" min="0" max="1" step="0.05" value="0.5"></div>
         </div>
-        <div style="text-align:center; margin-top:15px;">
+        <div style="text-align:center; margin-top:10px;">
             <div id="fireBtn" class="fire-button"></div>
             <button id="modeToggle" style="margin-top:10px; font-size:9px; padding:5px; background:#333; color:#fff; cursor:pointer; border: 2px outset #666;">LFO: SQUARE</button>
         </div>
@@ -180,8 +207,8 @@
 
     <section class="rack-unit blog-log">
         <div class="bolt tl"></div><div class="bolt tr"></div><div class="bolt bl"></div><div class="bolt br"></div>
-        <h3 style="margin:0 0 10px 0; font-size:1rem;">LOG #412: COMMAND CENTER UPDATE</h3>
-        <p style="margin:0; font-size:0.85rem;">Channel strips expanded with <strong>Mute</strong> and <strong>Solo</strong> capability. Logic gate implemented: Solo overrides all un-soloed channels. Red toggle architecture confirmed for VU and Delay modules. Stack is stable.</p>
+        <h3 style="margin:0 0 10px 0; font-size:1rem;">LOG #414: RP2A03 ARCHITECTURE</h3>
+        <p style="margin:0; font-size:0.85rem;">Unit re-designated to its official silicon name. PWM logic for Pulse Width now variable. Bit-depth reduction (Bit-Crush) added to the master chain for authentic aliasing. Sound design capabilities maximized.</p>
     </section>
 </div>
 
@@ -206,8 +233,7 @@
 
     const mixerUI = document.getElementById('mixerUI');
     for(let i=0; i<4; i++) {
-        const strip = document.createElement('div');
-        strip.className = 'channel-strip';
+        const strip = document.createElement('div'); strip.className = 'channel-strip';
         strip.innerHTML = `
             <div id="led-${i}" class="chan-led"></div>
             <label class="upload-area" id="up-box-${i}">LOAD TRACK<input type="file" style="display:none" onchange="loadUserFile(${i}, this)"></label>
@@ -230,48 +256,96 @@
         if (audioCtx && audioCtx.state !== 'suspended') return;
         audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         analyser = audioCtx.createAnalyser(); analyser.fftSize = 256;
-        delay = audioCtx.createDelay(2.0); delay.delayTime.value = 0.4;
-        feedback = audioCtx.createGain(); feedback.gain.value = 0.5;
+        delay = audioCtx.createDelay(2.0); feedback = audioCtx.createGain();
+        delay.delayTime.value = document.getElementById('timeKnob').value;
+        feedback.gain.value = document.getElementById('echoKnob').value;
         delay.connect(feedback); feedback.connect(delay); delay.connect(analyser);
         filter1 = audioCtx.createBiquadFilter(); filter2 = audioCtx.createBiquadFilter();
         filter1.type = filter2.type = 'highpass'; filter1.connect(filter2); filter2.connect(analyser);
+        
         sirenOsc = audioCtx.createOscillator(); sirenLfo = audioCtx.createOscillator();
-        sirenLfoG = audioCtx.createGain(); sirenG = audioCtx.createGain(); 
+        sirenLfoG = audioCtx.createGain(); sirenG = audioCtx.createGain();
         sirenOsc.type = 'square'; sirenLfo.type = lfoType; sirenG.gain.value = 0;
         sirenLfo.connect(sirenLfoG); sirenLfoG.connect(sirenOsc.frequency);
         sirenOsc.connect(sirenG); sirenG.connect(analyser);
+        if(isSirenEcho) sirenG.connect(delay);
         sirenOsc.start(); sirenLfo.start();
+
         channels.forEach((ch, i) => {
             if (!ch.connected) {
-                const audEl = document.getElementById(`mix-aud-${i}`);
-                const node = audioCtx.createMediaElementSource(audEl);
+                const node = audioCtx.createMediaElementSource(document.getElementById(`mix-aud-${i}`));
                 ch.gain = audioCtx.createGain(); ch.echoG = audioCtx.createGain(); ch.fltrG = audioCtx.createGain();
                 ch.echoG.gain.value = 0; ch.fltrG.gain.value = 0;
                 node.connect(ch.gain); ch.gain.connect(analyser); 
                 ch.gain.connect(ch.echoG); ch.echoG.connect(delay);
                 ch.gain.connect(ch.fltrG); ch.fltrG.connect(filter1);
                 ch.connected = true;
-                audEl.onplay = () => document.getElementById(`led-${i}`).classList.add('active');
-                audEl.onpause = () => document.getElementById(`led-${i}`).classList.remove('active');
             }
         });
         analyser.connect(audioCtx.destination);
     }
 
+    // RP2A03 PWM & BITCRUSH LOGIC
+    function playNesCoin() {
+        initAudio(); audioCtx.resume();
+        const root = parseFloat(document.getElementById('nesPitch').value);
+        const speed = parseFloat(document.getElementById('nesSpeed').value);
+        const duty = parseFloat(document.getElementById('nesDuty').value);
+        const crush = parseFloat(document.getElementById('nesCrush').value);
+        const decay = parseFloat(document.getElementById('nesDecay').value);
+
+        const osc = audioCtx.createOscillator();
+        const inverter = audioCtx.createGain();
+        const delayPWM = audioCtx.createDelay();
+        const output = audioCtx.createGain();
+        
+        osc.type = 'sawtooth';
+        inverter.gain.value = -1;
+        delayPWM.delayTime.value = (1 / root) * duty;
+        
+        osc.connect(output);
+        osc.connect(delayPWM);
+        delayPWM.connect(inverter);
+        inverter.connect(output);
+
+        const crusher = audioCtx.createWaveShaper();
+        if(crush > 0) {
+            const samples = 44100, curve = new Float32Array(samples);
+            const bits = Math.pow(2, 16 - (crush / 6.5));
+            for (let i = 0; i < samples; i++) {
+                let x = i * 2 / samples - 1;
+                curve[i] = Math.round(x * bits) / bits;
+            }
+            crusher.curve = curve;
+        }
+
+        const masterG = audioCtx.createGain();
+        output.connect(crusher); crusher.connect(masterG);
+        masterG.connect(analyser);
+        if(isSirenEcho) masterG.connect(delay);
+
+        const now = audioCtx.currentTime;
+        osc.frequency.setValueAtTime(root, now);
+        osc.frequency.setValueAtTime(root * 1.33, now + speed);
+        
+        masterG.gain.setValueAtTime(0.3, now);
+        masterG.gain.exponentialRampToValueAtTime(0.001, now + decay);
+        
+        osc.start();
+        osc.stop(now + decay);
+    }
+
     function updateMixerGains() {
         const anySolo = channels.some(c => c.sOn);
-        channels.forEach((ch, i) => {
+        channels.forEach((ch) => {
             if (!ch.gain) return;
-            let target = ch.userVol;
-            if (ch.mOn) target = 0;
-            else if (anySolo && !ch.sOn) target = 0;
+            let target = ch.mOn ? 0 : (anySolo && !ch.sOn ? 0 : ch.userVol);
             ch.gain.gain.setTargetAtTime(target, audioCtx.currentTime, 0.05);
         });
     }
 
     function toggleFX(i, type) {
-        initAudio(); audioCtx.resume();
-        const ch = channels[i];
+        initAudio(); const ch = channels[i];
         if(type === 'e') { ch.eOn = !ch.eOn; ch.echoG.gain.value = ch.eOn ? 0.8 : 0; document.getElementById(`e-${i}`).classList.toggle('active-e'); }
         if(type === 'f') { ch.fOn = !ch.fOn; ch.fltrG.gain.value = ch.fOn ? 1 : 0; document.getElementById(`f-${i}`).classList.toggle('active-f'); }
         if(type === 'm') { ch.mOn = !ch.mOn; document.getElementById(`m-${i}`).classList.toggle('active-m'); updateMixerGains(); }
@@ -291,34 +365,28 @@
                 vol = sum / data.length;
             }
             const lit = Math.min(20, Math.floor((vol / 55) * 20)); 
-            leds.forEach((l, i) => {
-                l.className = 'led';
-                if(i < lit) {
-                    if(i < 12) l.classList.add('on-g');
-                    else if(i < 17) l.classList.add('on-y');
-                    else l.classList.add('on-r');
-                }
-            });
+            leds.forEach((l, i) => { l.className = 'led'; if(i < lit) { if(i < 12) l.classList.add('on-g'); else if(i < 17) l.classList.add('on-y'); else l.classList.add('on-r'); } });
             requestAnimationFrame(draw);
         }
         draw();
     }
 
     window.onload = startVULoop;
-    document.getElementById('vuMasterToggle').onchange = function() { if(this.checked) { initAudio(); if(audioCtx) audioCtx.resume(); } };
-    document.getElementById('delayToggle').onchange = (e) => { initAudio(); audioCtx.resume(); isSirenEcho = e.target.checked; if(isSirenEcho) sirenG.connect(delay); else try { sirenG.disconnect(delay); } catch(err){} };
+    document.getElementById('nesFire').onclick = playNesCoin;
+    document.getElementById('delayToggle').onchange = (e) => { 
+        initAudio(); isSirenEcho = e.target.checked; 
+        if(isSirenEcho) sirenG.connect(delay); else try { sirenG.disconnect(delay); } catch(err){} 
+    };
     document.getElementById('modeToggle').onclick = () => { lfoType = (lfoType === 'square') ? 'sine' : 'square'; if(sirenLfo) sirenLfo.type = lfoType; document.getElementById('modeToggle').innerText = "LFO: " + lfoType.toUpperCase(); };
-    function toggleAll() { initAudio(); audioCtx.resume(); isPlaying = !isPlaying; document.getElementById('masterBtn').innerText = isPlaying ? "STOP ENGINE" : "START ENGINE"; channels.forEach((ch, i) => { const aud = document.getElementById(`mix-aud-${i}`); isPlaying ? aud.play() : aud.pause(); }); }
-    function rotateFilter() { initAudio(); audioCtx.resume(); filterIdx = (filterIdx + 1) % freqs.length; const f = freqs[filterIdx]; document.getElementById('dialHand').style.transform = `rotate(${filterIdx * 45}deg)`; document.getElementById('freqLabel').innerText = f === 0 ? "OFF" : f + "Hz"; filter1.frequency.setTargetAtTime(f, audioCtx.currentTime, 0.05); filter2.frequency.setTargetAtTime(f, audioCtx.currentTime, 0.05); }
+    function toggleAll() { initAudio(); isPlaying = !isPlaying; document.getElementById('masterBtn').innerText = isPlaying ? "STOP ENGINE" : "START ENGINE"; channels.forEach((ch, i) => { const aud = document.getElementById(`mix-aud-${i}`); isPlaying ? aud.play() : aud.pause(); }); }
+    function rotateFilter() { initAudio(); filterIdx = (filterIdx + 1) % freqs.length; const f = freqs[filterIdx]; document.getElementById('dialHand').style.transform = `rotate(${filterIdx * 45}deg)`; document.getElementById('freqLabel').innerText = f === 0 ? "OFF" : f + "Hz"; filter1.frequency.setTargetAtTime(f, audioCtx.currentTime, 0.05); filter2.frequency.setTargetAtTime(f, audioCtx.currentTime, 0.05); }
     function loadUserFile(i, input) { const file = input.files[0]; if(file) { document.getElementById(`up-box-${i}`).innerText = file.name.substring(0,8); document.getElementById(`mix-aud-${i}`).src = URL.createObjectURL(file); } }
     function setVol(i, v) { channels[i].userVol = v; updateMixerGains(); }
     
-    const fireBtn = document.getElementById('fireBtn');
-    fireBtn.onmousedown = fireBtn.ontouchstart = (e) => { if(e) e.preventDefault(); initAudio(); audioCtx.resume().then(() => { sirenG.gain.setTargetAtTime(document.getElementById('volKnob').value, audioCtx.currentTime, 0.02); }); };
+    document.getElementById('fireBtn').onmousedown = document.getElementById('fireBtn').ontouchstart = (e) => { if(e) e.preventDefault(); initAudio(); sirenG.gain.setTargetAtTime(0.5, audioCtx.currentTime, 0.02); };
     window.onmouseup = window.ontouchend = () => { if(sirenG) sirenG.gain.setTargetAtTime(0, audioCtx.currentTime, 0.1); };
     document.getElementById('pitchKnob').oninput = (e) => { if(sirenOsc) sirenOsc.frequency.setTargetAtTime(e.target.value, audioCtx.currentTime, 0.05); };
     document.getElementById('rateKnob').oninput = (e) => { if(sirenLfo) sirenLfo.frequency.setTargetAtTime(e.target.value, audioCtx.currentTime, 0.05); };
-    document.getElementById('depthKnob').oninput = (e) => { if(sirenLfoG) sirenLfoG.gain.setTargetAtTime(e.target.value, audioCtx.currentTime, 0.05); };
     document.getElementById('echoKnob').oninput = (e) => { if(feedback) feedback.gain.value = e.target.value; };
     document.getElementById('timeKnob').oninput = (e) => { if(delay) delay.delayTime.setTargetAtTime(e.target.value, audioCtx.currentTime, 0.1); };
 </script>
