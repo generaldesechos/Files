@@ -3,13 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>General desEchos v4.8</title>
+    <title>General desEchos v4.9 - FX Restored</title>
     <style>
-        /* --- SYSTEM CORE --- */
         body { 
             background: #004488; color: #fff; font-family: "Courier New", monospace; 
-            margin: 0; padding: 10px 0 120px 0; 
-            overflow-y: auto; touch-action: pan-y; /* Scrolling Restored */
+            margin: 0; padding: 10px 0 120px 0; overflow-y: auto; touch-action: pan-y;
         }
         header { border: 4px double #fff; background: #222; padding: 10px; text-align: center; margin: 0 15px 15px; box-shadow: 4px 4px 0px #000; }
         .stack { display: flex; flex-direction: column; align-items: center; gap: 20px; width: 95%; margin: 0 auto; }
@@ -18,36 +16,40 @@
         .bolt { position: absolute; width: 8px; height: 8px; background: #666; border-radius: 50%; border: 1px solid #333; }
         .tl { top: 8px; left: 8px; } .tr { top: 8px; right: 8px; } .bl { bottom: 8px; left: 8px; } .br { bottom: 8px; right: 8px; }
 
-        /* --- LOG BOXES --- */
+        /* LOG BOXES */
         .intro-box { background: #e6be8a; border: 2px solid #8b4513; color: #221100; font-size: 0.75rem; padding: 15px; }
-        .blog-log { background: #fdf5e6; border: 1px solid #d2b48c; padding: 25px 20px 25px 45px; color: #332211; position: relative; width: 100%; box-sizing: border-box;}
-        .blog-log::before { content: ""; position: absolute; top: 0; left: 30px; width: 2px; height: 100%; background: rgba(255, 0, 0, 0.2); }
 
-        /* --- D-PAD --- */
-        .dpad-area { width: 130px; height: 130px; background: #222; margin: 10px auto; border-radius: 50%; position: relative; border: 4px inset #000; touch-action: none; }
-        .cross-v { position: absolute; left: 50px; top: 15px; width: 30px; height: 100px; background: #111; pointer-events: none; }
-        .cross-h { position: absolute; left: 15px; top: 50px; width: 100px; height: 30px; background: #111; pointer-events: none; }
-        #dot { position: absolute; width: 12px; height: 12px; background: red; border-radius: 50%; display: none; pointer-events: none; z-index: 10; }
+        /* D-PAD */
+        .dpad-area { width: 120px; height: 120px; background: #222; margin: 10px auto; border-radius: 50%; position: relative; border: 4px inset #000; touch-action: none; }
+        .cross-v { position: absolute; left: 45px; top: 15px; width: 30px; height: 90px; background: #111; }
+        .cross-h { position: absolute; left: 15px; top: 45px; width: 90px; height: 30px; background: #111; }
+        #dot { position: absolute; width: 10px; height: 10px; background: red; border-radius: 50%; display: none; z-index: 10; }
 
-        /* --- SIREN SE-G1 --- */
+        /* SIREN SE-G1 */
         .seg1 { background: #b08d57; color: #000; }
-        .fire-button { width: 60px; height: 60px; background: radial-gradient(circle, #f00, #800); border: 4px outset #f66; border-radius: 50%; cursor: pointer; margin: 10px auto; display: block; touch-action: none; }
+        .fire-button { width: 55px; height: 55px; background: radial-gradient(circle, #f00, #800); border: 4px outset #f66; border-radius: 50%; cursor: pointer; margin: 10px auto; display: block; touch-action: none; }
         .knob-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 9px; font-weight: bold; text-transform: uppercase; }
 
-        /* --- MIXER --- */
+        /* MIXER */
         .mixer-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
         .chan { background: #333; border: 2px inset #222; padding: 8px; text-align: center; }
-        .upload-area { font-size: 7px; background: #000; color: #0f0; padding: 6px; border: 1px solid #333; display: block; margin-bottom: 5px; cursor: pointer; }
-        .fader { appearance: slider-vertical; width: 18px; height: 75px; }
-        .s-btn { font-size: 8px; padding: 4px; background: #222; color: #fff; border: 2px outset #666; cursor: pointer; width: 34px; margin: 1px; }
-        .active-m { background: #f00 !important; } .active-s { background: #0080ff !important; }
+        .upload-area { font-size: 7px; background: #000; color: #0f0; padding: 5px; border: 1px solid #333; display: block; margin-bottom: 5px; cursor: pointer; height: 18px; line-height: 18px; }
+        .fader { appearance: slider-vertical; width: 16px; height: 70px; }
+        .s-btn { font-size: 8px; padding: 3px; background: #222; color: #fff; border: 2px outset #666; cursor: pointer; width: 32px; margin: 1px; }
+        .active-e { background: #0f0 !important; color: #000; }
+        .active-f { background: #fc0 !important; color: #000; }
+        .active-m { background: #f00 !important; }
+        .active-s { background: #0080ff !important; }
 
-        /* --- TOGGLE SWITCH --- */
+        /* FILTER DIAL */
+        .filter-dial { width: 60px; height: 60px; background: #222; border-radius: 50%; border: 3px solid #666; margin: 5px auto; position: relative; cursor: pointer; }
+        .hand { width: 3px; height: 20px; background: red; position: absolute; top: 10px; left: 28.5px; transform-origin: bottom; transition: 0.1s; }
+
+        /* FOOTER */
         .win95-switch { appearance: none; width: 34px; height: 18px; background: #400; border: 2px solid #808080; cursor: pointer; position: relative; vertical-align: middle; }
         .win95-switch:checked { background: #f00; }
         .win95-switch::after { content: ''; position: absolute; top: 1px; left: 1px; width: 10px; height: 10px; background: #c0c0c0; border: 2px outset #fff; transition: 0.1s; }
         .win95-switch:checked::after { left: 18px; }
-
         footer { position: fixed; bottom: 0; width: 100%; background: #c0c0c0; border-top: 2px solid #fff; height: 90px; padding: 10px; box-sizing: border-box; z-index: 1000; display: flex; align-items: center; gap: 15px; }
         #vu { height: 25px; background: #000; display: flex; gap: 2px; border: 2px inset #808080; flex-grow: 1; }
         
@@ -56,12 +58,12 @@
 </head>
 <body>
 
-<header><h1>General desEchos v4.8</h1></header>
+<header><h1>General desEchos v4.9</h1></header>
 
 <div class="stack">
     <section class="unit intro-box">
         <div class="bolt tl"></div><div class="bolt tr"></div><div class="bolt bl"></div><div class="bolt br"></div>
-        <p style="margin:0;"><strong>SYS_UPDATE:</strong> Scrolling restored. VU Switch reverted to v4.0 hardware spec. D-Pad gating logic hard-patched for immediate release.</p>
+        <p style="margin:0;"><strong>SYS_FIX:</strong> FX Bus Re-established. Every mixer channel now has independent <strong>Echo (E)</strong> and <strong>Filter (F)</strong> routing. King Tubby HPF re-engaged.</p>
     </section>
 
     <div class="unit" style="background: #555;">
@@ -85,43 +87,52 @@
             <div>LFO DEPTH <input type="range" id="sDep" min="0" max="1000" value="300"></div>
             <div>AMP DECAY <input type="range" id="sDec" min="0.1" max="2.0" step="0.1" value="0.5"></div>
         </div>
-        <div style="text-align:center; margin-top:10px;">
-            <div id="sFire" class="fire-button"></div>
-            <button id="sWave" style="font-size:8px; padding:4px; background:#333; color:#fff; cursor:pointer; margin-top:5px;">WAVE: SQUARE</button>
-        </div>
+        <div id="sFire" class="fire-button"></div>
+        <div style="text-align:center;"><button id="sWave" style="font-size:8px; padding:4px; background:#333; color:#fff; cursor:pointer;">WAVE: SQUARE</button></div>
     </div>
 
     <div class="unit">
         <div class="bolt tl"></div><div class="bolt tr"></div><div class="bolt bl"></div><div class="bolt br"></div>
-        <div class="unit-label">4-CH DUB MIXER</div>
+        <div class="unit-label">4-CH DUB MIXER + KING TUBBY HPF</div>
         <div class="mixer-grid" id="mGrid"></div>
+        
+        <div style="background:#111; padding:10px; margin-top:15px; text-align:center; border: 4px inset #444;">
+            <div class="filter-dial" onclick="rotFilter()"><div id="fHand" class="hand"></div></div>
+            <div id="fLabel" style="color:#fc0; font-size:10px; font-weight:bold;">HP-FILTER: OFF</div>
+        </div>
+        
         <button id="masterBtn" style="width:100%; padding:15px; margin-top:15px; background:#040; color:#fff; font-weight:bold; cursor:pointer;" onclick="bootSystem()">START ENGINE</button>
     </div>
-
-    <section class="unit blog-log">
-        <div class="bolt tl"></div><div class="bolt tr"></div><div class="bolt bl"></div><div class="bolt br"></div>
-        <h3 style="margin:0; font-size:0.9rem;">LOG #418: UI STABILITY</h3>
-        <p style="margin:0; font-size:0.85rem;">Restored global overflow for scrolling. Fixed gating issues on SE-G1 fire button. Coin arpeggio remains locked to initial touch event.</p>
-    </section>
 </div>
 
 <footer>
     <div id="vu"></div>
     <div style="text-align:center; min-width:50px;">
-        <span style="font-size:8px; font-weight:bold; color:#000; display:block; margin-bottom:2px;">VU PWR</span>
+        <span style="font-size:8px; font-weight:bold; color:#000; display:block;">VU PWR</span>
         <input type="checkbox" id="vuTog" class="win95-switch" checked>
     </div>
 </footer>
 
 <script>
-    let ctx, analyser, sirenO, sirenL, sirenLG, sirenG, nesO, nesG, channels = [];
-    let isBooted = false, lfoType = 'square';
+    let ctx, analyser, sirenO, sirenL, sirenLG, sirenG, nesO, nesG, delay, feed, hpf1, hpf2, channels = [];
+    let isBooted = false, lfoType = 'square', fIdx = 0, fFreqs = [0, 300, 800, 1500, 3000, 6000];
 
     function bootSystem() {
         if (isBooted) return;
         ctx = new (window.AudioContext || window.webkitAudioContext)();
         analyser = ctx.createAnalyser(); 
         
+        // FX Bus: Delay
+        delay = ctx.createDelay(2.0); feed = ctx.createGain();
+        delay.delayTime.value = 0.4; feed.gain.value = 0.5;
+        delay.connect(feed); feed.connect(delay); delay.connect(analyser);
+
+        // FX Bus: Filter
+        hpf1 = ctx.createBiquadFilter(); hpf2 = ctx.createBiquadFilter();
+        hpf1.type = hpf2.type = 'highpass'; hpf1.frequency.value = hpf2.frequency.value = 0;
+        hpf1.connect(hpf2); hpf2.connect(analyser);
+
+        // Siren
         sirenO = ctx.createOscillator(); sirenL = ctx.createOscillator();
         sirenLG = ctx.createGain(); sirenG = ctx.createGain();
         sirenO.type = 'square'; sirenG.gain.value = 0;
@@ -132,70 +143,78 @@
         const g = document.getElementById('mGrid'); g.innerHTML = '';
         for(let i=0; i<4; i++) {
             const d = document.createElement('div'); d.className='chan';
-            d.innerHTML = `<label class="upload-area">LOAD FILE<input type="file" style="display:none" onchange="loadF(${i},this)"></label>
-                <div style="display:flex; justify-content:center; gap:2px;">
-                    <button class="s-btn" id="m-${i}" onclick="tog(${i},'m')">M</button>
-                    <button class="s-btn" id="s-${i}" onclick="tog(${i},'s')">S</button>
+            d.innerHTML = `<label class="upload-area">LOAD<input type="file" style="display:none" onchange="loadF(${i},this)"></label>
+                <div style="display:flex; justify-content:center; gap:1px;">
+                    <button class="s-btn" id="e-${i}" onclick="togFX(${i},'e')">E</button>
+                    <button class="s-btn" id="f-${i}" onclick="togFX(${i},'f')">F</button>
+                </div>
+                <div style="display:flex; justify-content:center; gap:1px;">
+                    <button class="s-btn" id="m-${i}" onclick="togFX(${i},'m')">M</button>
+                    <button class="s-btn" id="s-${i}" onclick="togFX(${i},'s')">S</button>
                 </div>
                 <input type="range" class="fader" oninput="setV(${i},this.value)" min="0" max="1" step="0.01" value="0.7">
                 <audio id="a${i}" loop crossorigin="anonymous"></audio>`;
             g.appendChild(d);
             const node = ctx.createMediaElementSource(document.getElementById(`a${i}`));
-            const gn = ctx.createGain(); node.connect(gn); gn.connect(analyser);
-            channels.push({gn, aud: document.getElementById(`a${i}`), mOn:0, sOn:0, vol:0.7});
+            const gn = ctx.createGain(); const eGn = ctx.createGain(); const fGn = ctx.createGain();
+            eGn.gain.value = fGn.gain.value = 0;
+            node.connect(gn); gn.connect(analyser); gn.connect(eGn); eGn.connect(delay); gn.connect(fGn); fGn.connect(hpf1);
+            channels.push({gn, eGn, fGn, aud: document.getElementById(`a${i}`), mOn:0, sOn:0, eOn:0, fOn:0, vol:0.7});
         }
         analyser.connect(ctx.destination);
         isBooted = true; document.getElementById('masterBtn').style.background = "#333";
         startVU();
     }
 
-    // D-PAD PERFORMANCE
+    // NES
     const dp = document.getElementById('dpad'), dot = document.getElementById('dot');
     let dAct = false;
-
-    const startN = (e) => { if(!ctx) return; e.preventDefault(); dAct = true; dot.style.display='block'; trigN(); moveN(e.touches?.[0] || e); };
-    const stopN = () => { if(!dAct) return; dAct = false; dot.style.display='none'; if(nesG){ nesG.gain.cancelScheduledValues(ctx.currentTime); nesG.gain.setTargetAtTime(0, ctx.currentTime, 0.01); nesO.stop(ctx.currentTime + 0.1); }};
-
-    dp.addEventListener('mousedown', startN); dp.addEventListener('touchstart', startN);
-    window.addEventListener('mousemove', (e) => dAct && moveN(e));
-    window.addEventListener('touchmove', (e) => dAct && moveN(e.touches?.[0]), {passive:false});
-    window.addEventListener('mouseup', stopN); window.addEventListener('touchend', stopN);
+    dp.onmousedown = dp.ontouchstart = (e) => { if(!ctx) return; e.preventDefault(); dAct = true; dot.style.display='block'; trigN(); moveN(e.touches?.[0] || e); };
+    const stopN = () => { if(!dAct) return; dAct = false; dot.style.display='none'; if(nesG){ nesG.gain.setTargetAtTime(0, ctx.currentTime, 0.05); nesO.stop(ctx.currentTime+0.2); }};
+    window.onmousemove = (e) => dAct && moveN(e);
+    window.ontouchmove = (e) => { if(dAct) { e.preventDefault(); moveN(e.touches[0]); } };
+    window.onmouseup = window.ontouchend = stopN;
 
     function trigN() {
         const r = parseFloat(document.getElementById('nPit').value);
         nesO = ctx.createOscillator(); nesG = ctx.createGain();
         nesO.type = 'square'; nesO.connect(nesG); nesG.connect(analyser);
         nesO.frequency.setValueAtTime(r, ctx.currentTime);
-        nesO.frequency.setValueAtTime(r * 1.334, ctx.currentTime + 0.08); // Perfect 4th jump
+        nesO.frequency.setValueAtTime(r * 1.334, ctx.currentTime + 0.08);
         nesG.gain.setValueAtTime(0.3, ctx.currentTime);
         nesO.start();
     }
     function moveN(e) {
         const r = dp.getBoundingClientRect();
-        const x = (e.clientX - r.left) / r.width;
         const y = (e.clientY - r.top) / r.height;
-        dot.style.left = (Math.max(0, Math.min(1, x)) * 100) + '%';
-        dot.style.top = (Math.max(0, Math.min(1, y)) * 100) + '%';
+        dot.style.left = ((e.clientX - r.left)/r.width*100)+'%'; dot.style.top = (y*100)+'%';
         if(nesO) {
             const rt = parseFloat(document.getElementById('nPit').value) * 1.334;
             nesO.frequency.setTargetAtTime(rt + ((0.5 - y) * rt), ctx.currentTime, 0.05);
         }
     }
 
-    // SIREN CONTROLS
+    // SIREN
     const sf = document.getElementById('sFire');
-    sf.addEventListener('mousedown', (e) => { e.preventDefault(); if(sirenG) sirenG.gain.setTargetAtTime(0.5, ctx.currentTime, 0.02); });
-    sf.addEventListener('touchstart', (e) => { e.preventDefault(); if(sirenG) sirenG.gain.setTargetAtTime(0.5, ctx.currentTime, 0.02); });
-    const releaseSiren = () => { if(sirenG) sirenG.gain.setTargetAtTime(0, ctx.currentTime, parseFloat(document.getElementById('sDec').value)); };
-    window.addEventListener('mouseup', releaseSiren); window.addEventListener('touchend', releaseSiren);
+    sf.onmousedown = sf.ontouchstart = (e) => { e.preventDefault(); if(sirenG) sirenG.gain.setTargetAtTime(0.5, ctx.currentTime, 0.02); };
+    const relS = () => { if(sirenG) sirenG.gain.setTargetAtTime(0, ctx.currentTime, parseFloat(document.getElementById('sDec').value)); };
+    window.addEventListener('mouseup', relS); window.addEventListener('touchend', relS);
+    document.getElementById('sWave').onclick = () => { lfoType = lfoType==='square'?'sine':'square'; sirenL.type=lfoType; document.getElementById('sWave').innerText="WAVE: "+lfoType.toUpperCase(); };
+    document.getElementById('sPit').oninput=(e)=>sirenO.frequency.value=e.target.value;
+    document.getElementById('sRat').oninput=(e)=>sirenL.frequency.value=e.target.value;
+    document.getElementById('sDep').oninput=(e)=>sirenLG.gain.value=e.target.value;
 
-    document.getElementById('sWave').onclick = () => { lfoType = lfoType === 'square' ? 'sine' : 'square'; if(sirenL) sirenL.type = lfoType; document.getElementById('sWave').innerText = "WAVE: " + lfoType.toUpperCase(); };
-    document.getElementById('sPit').oninput = (e) => { if(sirenO) sirenO.frequency.value = e.target.value; };
-    document.getElementById('sRat').oninput = (e) => { if(sirenL) sirenL.frequency.value = e.target.value; };
-    document.getElementById('sDep').oninput = (e) => { if(sirenLG) sirenLG.gain.value = e.target.value; };
-
-    // MIXER
-    function tog(i, t) { channels[i][t+'On'] = !channels[i][t+'On']; document.getElementById(`${t}-${i}`).classList.toggle(`active-${t}`); updateMix(); }
+    // MIXER FX & LOGIC
+    function togFX(i, t) {
+        const c = channels[i];
+        if(t==='e') { c.eOn = !c.eOn; c.eGn.gain.value = c.eOn?0.7:0; }
+        if(t==='f') { c.fOn = !c.fOn; c.fGn.gain.value = c.fOn?1:0; }
+        if(t==='m') { c.mOn = !c.mOn; }
+        if(t==='s') { c.sOn = !c.sOn; }
+        document.getElementById(`${t}-${i}`).classList.toggle(`active-${t}`);
+        updateMix();
+    }
+    function rotFilter() { fIdx = (fIdx+1)%fFreqs.length; hpf1.frequency.value = hpf2.frequency.value = fFreqs[fIdx]; document.getElementById('fHand').style.transform=`rotate(${fIdx*45}deg)`; document.getElementById('fLabel').innerText = fFreqs[fIdx]===0?"HP-FILTER: OFF":"HP-FILTER: "+fFreqs[fIdx]+"Hz"; }
     function updateMix() { const anyS = channels.some(c => c.sOn); channels.forEach(c => { c.gn.gain.value = c.mOn ? 0 : (anyS && !c.sOn ? 0 : c.vol); }); }
     function setV(i,v) { channels[i].vol = v; updateMix(); }
     function loadF(i,inp) { if(inp.files[0]) { channels[i].aud.src = URL.createObjectURL(inp.files[0]); channels[i].aud.play(); } }
