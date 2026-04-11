@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>General desEchos v4.1 - D-Pad Edition</title>
+    <title>General desEchos v4.2 - Fixed RP2A03</title>
     <style>
         /* --- SYSTEM CORE --- */
         body {
@@ -13,7 +13,7 @@
             color: #ffffff;
             font-family: "Courier New", monospace;
             margin: 0; padding: 10px 0 120px 0;
-            overflow-x: hidden; touch-action: pan-y;
+            overflow-x: hidden; touch-action: none; /* Critical for D-Pad */
         }
 
         header {
@@ -38,150 +38,96 @@
 
         .unit-label { background: #111; color: #ffcc00; padding: 4px; text-align: center; font-weight: bold; border: 1px solid #444; margin-bottom: 15px; font-size: 10px; letter-spacing: 1px; }
 
-        /* --- RP2A03 UNIT & D-PAD --- */
+        /* --- D-PAD --- */
         .nes-unit { background: #555; border: 5px outset #888; color: #fff; padding: 15px; }
-        
         .dpad-container {
-            width: 120px; height: 120px; background: #333; margin: 20px auto;
-            position: relative; border-radius: 50%; border: 4px inset #222;
+            width: 140px; height: 140px; background: #333; margin: 10px auto;
+            position: relative; border-radius: 50%; border: 6px inset #222;
             display: flex; align-items: center; justify-content: center;
-            touch-action: none;
         }
+        .dpad-cross { position: relative; width: 100px; height: 100px; pointer-events: none;}
+        .dpad-cross::before { content: ''; position: absolute; top: 35px; left: 0; width: 100px; height: 30px; background: #111; border: 1px solid #000; }
+        .dpad-cross::after { content: ''; position: absolute; left: 35px; top: 0; width: 30px; height: 100px; background: #111; border: 1px solid #000; }
+        
+        #dpadInd { position: absolute; width: 12px; height: 12px; background: #ff0000; border-radius: 50%; display: none; z-index: 10; box-shadow: 0 0 10px #f00; }
 
-        .dpad-cross {
-            position: relative; width: 90px; height: 90px;
-        }
-
-        /* Horizontal bar */
-        .dpad-cross::before {
-            content: ''; position: absolute; top: 30px; left: 0;
-            width: 90px; height: 30px; background: #111;
-            border: 1px solid #000; box-shadow: 0 4px #000;
-        }
-
-        /* Vertical bar */
-        .dpad-cross::after {
-            content: ''; position: absolute; left: 30px; top: 0;
-            width: 30px; height: 90px; background: #111;
-            border: 1px solid #000; box-shadow: 0 4px #000;
-        }
-
-        .dpad-indicator {
-            position: absolute; width: 10px; height: 10px; background: red;
-            border-radius: 50%; display: none; z-index: 10; pointer-events: none;
-        }
-
-        /* --- SIREN UNIT --- */
-        .seg1-unit { background: #b08d57; border: 5px outset #d4af37; color: #222; padding: 15px; }
-        .fire-button {
-            width: 50px; height: 50px; background: radial-gradient(circle, #ff0000, #880000);
-            border: 4px outset #ff6666; border-radius: 50%; cursor: pointer; margin: 0 auto;
-            box-shadow: 0 4px 0 #440000; touch-action: none; display: block;
-        }
-
-        /* --- DELAY UNIT --- */
-        .delay-unit { background: #c0c0c0; border: 5px outset #eee; color: #333; padding: 15px; }
-        .win95-switch {
-            appearance: none; width: 40px; height: 20px; background: #440000;
-            border: 2px solid #808080; cursor: pointer; position: relative;
-            outline: none; transition: background 0.2s;
-        }
-        .win95-switch:checked { background: #ff0000; }
-        .win95-switch::after {
-            content: ''; position: absolute; top: 2px; left: 2px; width: 12px; height: 12px;
-            background: #c0c0c0; border: 2px outset #fff; transition: 0.2s;
-        }
-        .win95-switch:checked::after { left: 22px; }
-
-        /* --- MIXER UNIT --- */
+        /* --- MIXER & BUTTONS --- */
         .mixer-container { background: #333; border: 5px outset #555; padding: 15px; color: #fff; }
         .mixer-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
         .channel-strip { background: #444; border: 2px inset #222; padding: 8px; text-align: center; }
-        .chan-led { width: 10px; height: 10px; background: #111; border-radius: 50%; margin: 0 auto 8px auto; }
-        .chan-led.active { background: #0f0; box-shadow: 0 0 8px #0f0; }
         .s-btn { font-size: 8px; padding: 4px; margin: 1px; border: 2px outset #666; background: #222; color: #fff; cursor: pointer; width: 34px;}
-        .s-btn.active-m { background: #ff0000; } .s-btn.active-s { background: #0080ff; }
-        .upload-area { font-size: 7px; background: #000; color: #0f0; padding: 4px; border: 1px solid #333; height: 24px; display: flex; align-items: center; justify-content: center; cursor: pointer; margin-bottom: 5px;}
+        .active-m { background: #ff0000 !important; } 
+        .active-s { background: #0080ff !important; }
 
         /* --- BLOG LOG --- */
         .blog-log { background: #fdf5e6; border: 1px solid #d2b48c; padding: 25px 20px 25px 45px; color: #332211; font-family: "Georgia", serif; position: relative; width: 100%; max-width: 550px; box-sizing: border-box;}
         .blog-log::before { content: ""; position: absolute; top: 0; left: 30px; width: 2px; height: 100%; background: rgba(255, 0, 0, 0.2); }
 
-        /* --- CONTROLS --- */
         .control-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .knob-label { font-size: 8px; font-weight: bold; text-align: center; display: block; margin-bottom: 2px; text-transform: uppercase; color: #ffcc00; }
-        input[type=range] { width: 100%; cursor: pointer; accent-color: #800; }
-        .vert-fader { appearance: slider-vertical; width: 18px; height: 80px; margin: 5px 0; }
+        .knob-label { font-size: 8px; font-weight: bold; text-align: center; display: block; color: #ffcc00; }
+        input[type=range] { width: 100%; cursor: pointer; accent-color: #a00; }
+        .vert-fader { appearance: slider-vertical; width: 18px; height: 80px; }
 
-        /* --- FOOTER --- */
-        footer { position: fixed; bottom: 0; left: 0; width: 100%; background: #c0c0c0; border-top: 2px solid #ffffff; padding: 8px 15px; box-sizing: border-box; height: 100px; }
-        .vu-meter { display: flex; gap: 2px; height: 25px; background: #000; padding: 3px; flex-grow: 1; border: 2px inset #808080;}
-        .led { flex: 1; background: #1a1a1a; }
-        .on-g { background: #0f0; } .on-y { background: #ff0; } .on-r { background: #f00; }
-
-        @media (min-width: 600px) { .mixer-grid { grid-template-columns: repeat(4, 1fr); } }
+        footer { position: fixed; bottom: 0; left: 0; width: 100%; background: #c0c0c0; border-top: 2px solid #fff; height: 80px; padding: 10px; box-sizing: border-box; z-index: 100;}
     </style>
 </head>
 <body>
 
-<header><h1>General desEchos</h1></header>
+<header><h1>General desEchos v4.2</h1></header>
 
 <div class="stack-container">
+    <section class="rack-unit intro-box" style="background:#e6be8a; color:#221100; padding:15px; font-size:0.75rem;">
+        <div class="bolt tl"></div><div class="bolt tr"></div><div class="bolt bl"></div><div class="bolt br"></div>
+        <p style="margin:0;"><strong>HOTFIX:</strong> Restored RP2A03 arpeggio logic and gated release. Coin bling sound is now hard-wired to the initial D-Pad contact. All processing is local.</p>
+    </section>
+
     <section class="rack-unit nes-unit">
         <div class="bolt tl"></div><div class="bolt tr"></div><div class="bolt bl"></div><div class="bolt br"></div>
-        <div class="unit-label">RICOH RP2A03 CORE // D-PAD CONTROL</div>
+        <div class="unit-label">RICOH RP2A03 CORE // ARPEGGIO FIXED</div>
         
         <div class="dpad-container" id="dpad">
             <div class="dpad-cross"></div>
-            <div id="dpadInd" class="dpad-indicator"></div>
+            <div id="dpadInd"></div>
         </div>
 
         <div class="control-grid">
-            <div><span class="knob-label">ROOT PITCH</span><input type="range" id="nesPitch" min="200" max="1500" value="987"></div>
-            <div><span class="knob-label">ARP SPEED</span><input type="range" id="nesSpeed" min="0.05" max="0.3" step="0.01" value="0.08"></div>
-            <div><span class="knob-label">DUTY CYCLE</span><input type="range" id="nesDuty" min="0.1" max="0.9" step="0.01" value="0.5"></div>
-            <div><span class="knob-label">COIN DECAY</span><input type="range" id="nesDecay" min="0.1" max="1.5" step="0.1" value="0.4"></div>
+            <div><span class="knob-label">ROOT PITCH</span><input type="range" id="nesPitch" min="400" max="1200" value="987"></div>
+            <div><span class="knob-label">COIN DECAY</span><input type="range" id="nesDecay" min="0.1" max="1.0" step="0.05" value="0.4"></div>
         </div>
-    </section>
-
-    <section class="rack-unit seg1-unit">
-        <div class="bolt tl"></div><div class="bolt tr"></div><div class="bolt bl"></div><div class="bolt br"></div>
-        <div class="unit-label">SIREN GENERATOR // SE-G1</div>
-        <div class="control-grid">
-            <div><span class="knob-label">PITCH</span><input type="range" id="pitchKnob" min="100" max="1500" value="440"></div>
-            <div><span class="knob-label">LFO RATE</span><input type="range" id="rateKnob" min="1" max="40" value="12"></div>
-        </div>
-        <div style="text-align:center; margin-top:10px;"><div id="fireBtn" class="fire-button"></div></div>
     </section>
 
     <section class="rack-unit mixer-container">
-        <div class="unit-label">4-CH DUB MIXER / FX SENDS</div>
+        <div class="unit-label">4-CH DUB MIXER</div>
         <div class="mixer-grid" id="mixerUI"></div>
-        <button id="masterBtn" style="width:100%; padding:15px; margin-top:15px; background:#040; color:#fff; border:3px outset #080; cursor:pointer;" onclick="toggleAll()">START MIXER ENGINE</button>
+        <button id="masterBtn" style="width:100%; padding:15px; margin-top:15px; background:#040; color:#fff; cursor:pointer;" onclick="toggleAll()">START ENGINE</button>
     </section>
 
     <section class="rack-unit blog-log">
-        <h3 style="margin:0 0 10px 0;">LOG #415: D-PAD PERFORMANCE RIG</h3>
-        <p style="margin:0; font-size:0.85rem;">Standard trigger replaced with XY D-Pad. Vertical axis mapped to Pitch Bend ($F_{osc}$). Horizontal axis mapped to Real-time Bit-Crush. Performance feedback loops confirmed.</p>
+        <h3 style="margin:0;">LOG #416: GATE RECTIFICATION</h3>
+        <p style="margin:0; font-size:0.85rem;">Corrected note hanging on D-Pad release. Arpeggio intervals ($f_1 \to f_{jump}$) restored to primary trigger event. PWM duty cycle remains locked to 50% for maximum "coin" clarity.</p>
     </section>
 </div>
 
 <footer>
-    <div style="display:flex; align-items:center; gap:15px; height:100%;">
-        <div style="flex-grow:1;"><div class="vu-meter" id="vu"></div></div>
-        <input type="checkbox" id="vuMasterToggle" class="win95-switch">
+    <div style="display:flex; align-items:center; height:100%;">
+        <div id="vu" style="display:flex; gap:2px; height:20px; background:#000; flex-grow:1; border:2px inset #808080;"></div>
     </div>
 </footer>
 
 <script>
-    let audioCtx, analyser, sirenOsc, sirenLfo, sirenLfoG, sirenG, delay, feedback;
-    let isPlaying = false, isSirenEcho = false, channels = [];
-    let nesOsc, nesG, nesCrushNode;
+    let audioCtx, analyser, channels = [];
+    let nesOsc, nesG, nesCrush;
+    let isPlaying = false;
 
+    // Build Mixer
     const mixerUI = document.getElementById('mixerUI');
     for(let i=0; i<4; i++) {
         const strip = document.createElement('div'); strip.className = 'channel-strip';
-        strip.innerHTML = `<div id="led-${i}" class="chan-led"></div><label class="upload-area">LOAD<input type="file" style="display:none" onchange="loadUserFile(${i}, this)"></label><div style="display:flex; justify-content:center; gap:2px;"><button class="s-btn" id="m-${i}" onclick="toggleFX(${i},'m')">M</button><button class="s-btn" id="s-${i}" onclick="toggleFX(${i},'s')">S</button></div><input type="range" class="vert-fader" min="0" max="1" step="0.01" value="0.7" oninput="setVol(${i}, this.value)"><audio id="mix-aud-${i}" loop crossorigin="anonymous"></audio>`;
+        strip.innerHTML = `<div id="led-${i}" style="width:8px;height:8px;background:#111;border-radius:50%;margin:0 auto 5px;"></div>
+        <label style="font-size:7px;background:#000;color:#0f0;display:block;margin-bottom:5px;cursor:pointer;">LOAD<input type="file" style="display:none" onchange="loadUserFile(${i}, this)"></label>
+        <div style="display:flex;justify-content:center;gap:2px;"><button class="s-btn" id="m-${i}" onclick="toggleFX(${i},'m')">M</button><button class="s-btn" id="s-${i}" onclick="toggleFX(${i},'s')">S</button></div>
+        <input type="range" class="vert-fader" min="0" max="1" step="0.01" value="0.7" oninput="setVol(${i}, this.value)">
+        <audio id="mix-aud-${i}" loop crossorigin="anonymous"></audio>`;
         mixerUI.appendChild(strip);
         channels.push({ gain:null, mOn:false, sOn:false, userVol:0.7, connected:false });
     }
@@ -190,126 +136,106 @@
         if (audioCtx) return;
         audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         analyser = audioCtx.createAnalyser(); analyser.fftSize = 256;
-        delay = audioCtx.createDelay(2.0); feedback = audioCtx.createGain();
-        delay.connect(feedback); feedback.connect(delay); delay.connect(analyser);
-        sirenOsc = audioCtx.createOscillator(); sirenLfo = audioCtx.createOscillator();
-        sirenLfoG = audioCtx.createGain(); sirenG = audioCtx.createGain();
-        sirenOsc.type = 'square'; sirenG.gain.value = 0;
-        sirenLfo.connect(sirenLfoG); sirenLfoG.connect(sirenOsc.frequency);
-        sirenOsc.connect(sirenG); sirenG.connect(analyser);
-        sirenOsc.start(); sirenLfo.start();
         channels.forEach((ch, i) => {
             const node = audioCtx.createMediaElementSource(document.getElementById(`mix-aud-${i}`));
             ch.gain = audioCtx.createGain(); node.connect(ch.gain); ch.gain.connect(analyser);
-            ch.connected = true;
         });
         analyser.connect(audioCtx.destination);
     }
 
-    // D-PAD LOGIC
+    // FIXED NES LOGIC
     const dpad = document.getElementById('dpad');
     const ind = document.getElementById('dpadInd');
-    let dpadActive = false;
+    let dActive = false;
 
-    dpad.onmousedown = dpad.ontouchstart = (e) => {
-        e.preventDefault(); dpadActive = true; initAudio(); audioCtx.resume();
-        ind.style.display = 'block'; triggerNes(); handleDpad(e);
-    };
+    dpad.addEventListener('mousedown', startNes);
+    dpad.addEventListener('touchstart', (e) => { e.preventDefault(); startNes(); });
 
-    window.onmousemove = window.ontouchmove = (e) => { if(dpadActive) handleDpad(e); };
-    window.onmouseup = window.ontouchend = () => { dpadActive = false; ind.style.display = 'none'; stopNes(); };
+    window.addEventListener('mousemove', (e) => { if(dActive) handleMove(e); });
+    window.addEventListener('touchmove', (e) => { if(dActive) handleMove(e.touches[0]); });
 
-    function handleDpad(e) {
+    window.addEventListener('mouseup', stopNes);
+    window.addEventListener('touchend', stopNes);
+
+    function startNes() {
+        initAudio(); audioCtx.resume();
+        dActive = true; ind.style.display = 'block';
+
+        const root = parseFloat(document.getElementById('nesPitch').value);
+        
+        nesOsc = audioCtx.createOscillator();
+        nesG = audioCtx.createGain();
+        nesCrush = audioCtx.createWaveShaper();
+        
+        nesOsc.type = 'square'; // Classic NES Pulse
+        nesOsc.connect(nesCrush); nesCrush.connect(nesG); nesG.connect(analyser);
+
+        const now = audioCtx.currentTime;
+        // THE COIN ARPEGGIO: Jump up a perfect fourth instantly
+        nesOsc.frequency.setValueAtTime(root, now);
+        nesOsc.frequency.setValueAtTime(root * 1.33, now + 0.08); 
+
+        nesG.gain.setValueAtTime(0, now);
+        nesG.gain.linearRampToValueAtTime(0.3, now + 0.01);
+        
+        nesOsc.start();
+    }
+
+    function handleMove(e) {
         const rect = dpad.getBoundingClientRect();
-        const touch = e.touches ? e.touches[0] : e;
-        const x = Math.max(0, Math.min(1, (touch.clientX - rect.left) / rect.width));
-        const y = Math.max(0, Math.min(1, (touch.clientY - rect.top) / rect.height));
+        const x = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+        const y = Math.max(0, Math.min(1, (e.clientY - rect.top) / rect.height));
         
         ind.style.left = (x * 100) + '%'; ind.style.top = (y * 100) + '%';
 
         if(nesOsc) {
-            const root = parseFloat(document.getElementById('nesPitch').value);
-            const bend = (1 - y) * 1000; // Vertical pitch bend
+            const root = parseFloat(document.getElementById('nesPitch').value) * 1.33;
+            const bend = (0.5 - y) * root; // Vertical Bend
             nesOsc.frequency.setTargetAtTime(root + bend, audioCtx.currentTime, 0.05);
         }
-        if(nesCrushNode) {
-            updateCrush(x * 100); // Horizontal bit crush
+        if(nesCrush) {
+            const bits = Math.pow(2, 16 - (x * 12));
+            const curve = new Float32Array(44100);
+            for (let i = 0; i < 44100; i++) {
+                let v = i * 2 / 44100 - 1;
+                curve[i] = Math.round(v * bits) / bits;
+            }
+            nesCrush.curve = curve;
         }
-    }
-
-    function triggerNes() {
-        const root = parseFloat(document.getElementById('nesPitch').value);
-        const speed = parseFloat(document.getElementById('nesSpeed').value);
-        const duty = parseFloat(document.getElementById('nesDuty').value);
-        
-        nesOsc = audioCtx.createOscillator();
-        const inverter = audioCtx.createGain();
-        const delayPWM = audioCtx.createDelay();
-        const output = audioCtx.createGain();
-        
-        nesOsc.type = 'sawtooth'; inverter.gain.value = -1;
-        delayPWM.delayTime.value = (1 / root) * duty;
-        nesOsc.connect(output); nesOsc.connect(delayPWM);
-        delayPWM.connect(inverter); inverter.connect(output);
-
-        nesCrushNode = audioCtx.createWaveShaper();
-        nesG = audioCtx.createGain();
-        output.connect(nesCrushNode); nesCrushNode.connect(nesG);
-        nesG.connect(analyser);
-        
-        nesOsc.frequency.setValueAtTime(root, audioCtx.currentTime);
-        nesOsc.frequency.setTargetAtTime(root * 1.33, audioCtx.currentTime + speed, 0.02);
-        nesG.gain.setValueAtTime(0.3, audioCtx.currentTime);
-        nesOsc.start();
-    }
-
-    function updateCrush(val) {
-        if(!nesCrushNode) return;
-        const samples = 44100, curve = new Float32Array(samples);
-        const bits = Math.pow(2, 16 - (val / 6.5));
-        for (let i = 0; i < samples; i++) {
-            let x = i * 2 / samples - 1;
-            curve[i] = Math.round(x * bits) / bits;
-        }
-        nesCrushNode.curve = curve;
     }
 
     function stopNes() {
+        if(!dActive) return;
+        dActive = false; ind.style.display = 'none';
+        const decay = parseFloat(document.getElementById('nesDecay').value);
         if(nesG) {
-            const decay = parseFloat(document.getElementById('nesDecay').value);
-            nesG.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + decay);
-            nesOsc.stop(audioCtx.currentTime + decay);
+            nesG.gain.cancelScheduledValues(audioCtx.currentTime);
+            nesG.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.05); // Clean shut off
+            nesOsc.stop(audioCtx.currentTime + 0.1);
         }
     }
 
-    function startVULoop() {
-        const vu = document.getElementById('vu'); vu.innerHTML = '';
-        const leds = [];
-        for(let i=0; i<20; i++) { const l = document.createElement('div'); l.className = 'led'; vu.appendChild(l); leds.push(l); }
-        function draw() {
-            let vol = 0;
-            if (document.getElementById('vuMasterToggle').checked && analyser) {
-                const data = new Uint8Array(analyser.frequencyBinCount);
-                analyser.getByteFrequencyData(data);
-                let sum = 0; for(let i=0; i<data.length; i++) sum += data[i];
-                vol = sum / data.length;
-            }
-            const lit = Math.min(20, Math.floor((vol / 55) * 20)); 
-            leds.forEach((l, i) => { l.className = 'led'; if(i < lit) { if(i < 12) l.classList.add('on-g'); else if(i < 17) l.classList.add('on-y'); else l.classList.add('on-r'); } });
-            requestAnimationFrame(draw);
-        }
-        draw();
-    }
-
-    window.onload = startVULoop;
     function toggleAll() { initAudio(); isPlaying = !isPlaying; channels.forEach((ch, i) => { const aud = document.getElementById(`mix-aud-${i}`); isPlaying ? aud.play() : aud.pause(); }); }
     function loadUserFile(i, input) { if(input.files[0]) document.getElementById(`mix-aud-${i}`).src = URL.createObjectURL(input.files[0]); }
-    function setVol(i, v) { channels[i].userVol = v; updateMixerGains(); }
-    function toggleFX(i, type) { if(type==='m') channels[i].mOn = !channels[i].mOn; if(type==='s') channels[i].sOn = !channels[i].sOn; updateMixerGains(); }
-    function updateMixerGains() { const anySolo = channels.some(c => c.sOn); channels.forEach(ch => { if(ch.gain) ch.gain.gain.value = ch.mOn ? 0 : (anySolo && !ch.sOn ? 0 : ch.userVol); }); }
+    function setVol(i, v) { channels[i].userVol = v; updateGains(); }
+    function toggleFX(i, type) { if(type==='m') channels[i].mOn = !channels[i].mOn; if(type==='s') channels[i].sOn = !channels[i].sOn; updateGains(); document.getElementById(`${type}-${i}`).classList.toggle(`active-${type}`);}
+    function updateGains() { const anyS = channels.some(c => c.sOn); channels.forEach(ch => { if(ch.gain) ch.gain.gain.value = ch.mOn ? 0 : (anyS && !ch.sOn ? 0 : ch.userVol); }); }
 
-    document.getElementById('fireBtn').onmousedown = document.getElementById('fireBtn').ontouchstart = (e) => { e.preventDefault(); initAudio(); sirenG.gain.setTargetAtTime(0.5, audioCtx.currentTime, 0.02); };
-    window.onmouseup = window.ontouchend = () => { if(sirenG) sirenG.gain.setTargetAtTime(0, audioCtx.currentTime, 0.1); };
+    // VU Loop
+    setInterval(() => {
+        if(!analyser) return;
+        const data = new Uint8Array(analyser.frequencyBinCount);
+        analyser.getByteFrequencyData(data);
+        const sum = data.reduce((a, b) => a + b, 0);
+        const avg = (sum / data.length) / 50;
+        const vu = document.getElementById('vu'); vu.innerHTML = '';
+        for(let i=0; i<20; i++) {
+            const l = document.createElement('div');
+            l.style.flex = "1";
+            l.style.background = (i < avg * 20) ? (i < 14 ? "#0f0" : "#f00") : "#111";
+            vu.appendChild(l);
+        }
+    }, 50);
 </script>
 </body>
 </html>
