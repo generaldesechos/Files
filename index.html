@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>General desEchos v5.6</title>
+    <title>General desEchos v5.8 - Iron Oxide Edition</title>
     <style>
         body { 
             background: #004488; color: #fff; font-family: "Courier New", monospace; 
@@ -35,22 +35,18 @@
         .led { width: 8px; height: 8px; background: #242; border-radius: 50%; border: 1px solid #000; }
         .led.active { background: #0f0; box-shadow: 0 0 10px #0f0, 0 0 2px #fff; }
 
-        /* D-PAD & SIREN */
-        .dpad-area { width: 120px; height: 120px; background: #222; margin: 10px auto; border-radius: 50%; position: relative; border: 4px inset #000; touch-action: none; }
-        .cross-v { position: absolute; left: 45px; top: 15px; width: 30px; height: 90px; background: #111; pointer-events: none;}
-        .cross-h { position: absolute; left: 15px; top: 45px; width: 90px; height: 30px; background: #111; pointer-events: none;}
-        #dot { position: absolute; width: 10px; height: 10px; background: red; border-radius: 50%; display: none; z-index: 10; pointer-events: none;}
+        /* SIREN SE-G1 */
         .seg1 { background: #b08d57; color: #000; }
         .fire-button { width: 55px; height: 55px; background: radial-gradient(circle, #f00, #800); border: 4px outset #f66; border-radius: 50%; cursor: pointer; margin: 10px auto; display: block; touch-action: none; }
         .knob-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 8px; font-weight: bold; text-transform: uppercase; }
 
-        /* TAPE DELAY VISUAL */
-        .tape-deck-container { background: #222; border: 4px inset #666; width: 200px; height: 90px; margin: 10px auto; position: relative; display: flex; align-items: center; justify-content: space-around; padding: 5px; box-sizing: border-box; overflow: hidden; }
-        .tape-reel { width: 70px; height: 70px; background: #d0d0d0; border-radius: 50%; border: 2px solid #999; position: relative; z-index: 2; box-shadow: 0 0 5px rgba(0,0,0,0.5); }
-        .reel-hub { position: absolute; top: 25px; left: 25px; width: 20px; height: 20px; background: #333; border-radius: 50%; border: 1px solid #000; z-index: 10; }
-        .reel-spoke { position: absolute; top: 0; left: 33px; width: 4px; height: 70px; background: rgba(0,0,0,0.1); z-index: 5; transform-origin: center center; }
+        /* IRON OXIDE TAPE DELAY VISUAL */
+        .tape-deck-container { background: #1a1a1a; border: 4px inset #444; width: 220px; height: 100px; margin: 10px auto; position: relative; display: flex; align-items: center; justify-content: space-around; padding: 5px; box-sizing: border-box; overflow: hidden; }
+        .tape-reel { width: 80px; height: 80px; background: #c0c0c0; border-radius: 50%; border: 1px solid #666; position: relative; z-index: 2; box-shadow: inset 0 0 15px #000; }
+        .reel-hub { position: absolute; top: 30px; left: 30px; width: 20px; height: 20px; background: #222; border-radius: 50%; border: 1px solid #444; z-index: 10; }
+        .reel-spoke { position: absolute; top: 0; left: 38px; width: 4px; height: 80px; background: rgba(0,0,0,0.2); z-index: 5; transform-origin: center center; }
 
-        /* MIXER & FILTER */
+        /* MIXER */
         .mixer-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
         .chan { background: #333; border: 2px inset #222; padding: 8px; text-align: center; }
         .upload-area { font-size: 7px; background: #000; color: #0f0; padding: 5px; border: 1px solid #333; display: block; margin-bottom: 5px; cursor: pointer; height: 18px; line-height: 18px; text-align: center; overflow: hidden; }
@@ -60,6 +56,8 @@
         .active-f { background: #fc0 !important; color: #000; }
         .active-m { background: #f00 !important; }
         .active-s { background: #0080ff !important; }
+        
+        /* HPF DIAL */
         .filter-dial { width: 60px; height: 60px; background: #222; border-radius: 50%; border: 3px solid #666; margin: 5px auto; position: relative; cursor: pointer; }
         .hand { width: 3px; height: 20px; background: red; position: absolute; top: 10px; left: 28.5px; transform-origin: bottom; transition: 0.1s; }
 
@@ -69,7 +67,6 @@
         .win95-switch::after { content: ''; position: absolute; top: 1px; left: 1px; width: 10px; height: 10px; background: #c0c0c0; border: 2px outset #fff; transition: 0.1s; }
         .win95-switch:checked::after { left: 18px; }
         footer { position: fixed; bottom: 0; width: 100%; background: #c0c0c0; border-top: 2px solid #fff; height: 100px; padding: 10px; box-sizing: border-box; z-index: 1000; display: flex; flex-direction: column; gap: 5px; }
-        .monitor-label { font-size: 9px; font-weight: bold; color: #333; text-transform: uppercase; text-align: center; border-bottom: 1px solid #888; padding-bottom: 2px; }
         #vu { height: 25px; background: #000; display: flex; gap: 2px; border: 2px inset #808080; flex-grow: 1; }
 
         .blog-log { background: #fdf5e6; border: 1px solid #d2b48c; padding: 25px 20px 25px 45px; color: #332211; position: relative; width: 100%; box-sizing: border-box;}
@@ -80,17 +77,16 @@
 </head>
 <body>
 
-<header><h1>General desEchos v5.6</h1></header>
+<header><h1>General desEchos v5.8</h1></header>
 
 <div class="stack">
     <section class="unit intro-box">
         <div class="bolt tl"></div><div class="bolt tr"></div><div class="bolt bl"></div><div class="bolt br"></div>
         <strong>[RIG OVERVIEW]</strong><br>
-        1. <strong>PERFORMANCE:</strong> RP2A03 D-Pad.<br>
-        2. <strong>SYNTHESIS:</strong> SE-G1 Dub Siren.<br>
-        3. <strong>DELAY:</strong> E-X2 Tape visualizer.<br>
-        4. <strong>FILTER:</strong> HPF King Tubby node.<br>
-        <span style="color: #800000; font-weight: bold; display: block; margin-top: 5px; border-top: 1px solid rgba(0,0,0,0.1); padding-top: 2px;">PRIVACY: Signal processing is local.</span>
+        1. <strong>PERFORMANCE:</strong> RP2A03 Chipset.<br>
+        2. <strong>ECHO:</strong> Iron-Oxide Analog Simulator.<br>
+        3. <strong>TONE:</strong> Saturation + Flutter + Hiss enabled.<br>
+        <span style="color: #800000; font-weight: bold; display: block; margin-top: 5px;">Analog Modeling: ON.</span>
     </section>
 
     <div class="unit transport-unit">
@@ -107,41 +103,18 @@
         </div>
     </div>
 
-    <div class="unit" style="background: #555;">
+    <div class="unit" style="background: #a87d54; color: #000;">
         <div class="bolt tl"></div><div class="bolt tr"></div><div class="bolt bl"></div><div class="bolt br"></div>
-        <div class="unit-label">RICOH RP2A03 // PERFORMANCE PAD</div>
-        <div class="dpad-area" id="dpad">
-            <div class="cross-v"></div><div class="cross-h"></div><div id="dot"></div>
-        </div>
-        <div class="knob-grid">
-            <div>BASE PITCH <input type="range" id="nPit" min="400" max="1200" value="987"></div>
-            <div>COIN DECAY <input type="range" id="nDec" min="0.05" max="0.8" step="0.05" value="0.2"></div>
-        </div>
-    </div>
-
-    <div class="unit seg1">
-        <div class="bolt tl"></div><div class="bolt tr"></div><div class="bolt bl"></div><div class="bolt br"></div>
-        <div class="unit-label" style="color:#000; border-color:#000;">GENERAL DESECHOS SE-G1 // DUB SIREN</div>
-        <div class="knob-grid">
-            <div>OSC PITCH <input type="range" id="sPit" min="100" max="1500" value="440"></div>
-            <div>LFO RATE <input type="range" id="sRat" min="1" max="50" value="12"></div>
-            <div>LFO DEPTH <input type="range" id="sDep" min="0" max="1000" value="300"></div>
-            <div>AMP DECAY <input type="range" id="sDec" min="0.1" max="2.0" step="0.1" value="0.5"></div>
-        </div>
-        <div id="sFire" class="fire-button"></div>
-        <div style="text-align:center;"><button id="sWave" style="font-size:8px; padding:4px; background:#333; color:#fff; cursor:pointer; margin-top:5px; border:2px outset #555;">WAVE: SQUARE</button></div>
-    </div>
-
-    <div class="unit" style="background: #c0c0c0; color: #000;">
-        <div class="bolt tl"></div><div class="bolt tr"></div><div class="bolt bl"></div><div class="bolt br"></div>
-        <div class="unit-label" style="background:#222; color:#fff;">DIGITAL SPACE DELAY // E-X2</div>
+        <div class="unit-label" style="background:#422; color:#fff;">IRON-OXIDE // TAPE ECHO SIMULATOR</div>
         <div class="tape-deck-container">
             <div class="tape-reel" id="leftReel"><div class="reel-hub"></div><div class="reel-spoke"></div><div class="reel-spoke" style="transform:rotate(90deg)"></div></div>
             <div class="tape-reel" id="rightReel"><div class="reel-hub"></div><div class="reel-spoke"></div><div class="reel-spoke" style="transform:rotate(90deg)"></div></div>
         </div>
-        <div class="knob-grid" style="color:#000">
-            <div>FEEDBACK <input type="range" id="eFbk" min="0" max="0.9" step="0.1" value="0.5"></div>
-            <div>TIME <input type="range" id="eTim" min="0.1" max="1.0" step="0.1" value="0.4"></div>
+        <div class="knob-grid" style="color:#221100">
+            <div>REGEN <input type="range" id="eFbk" min="0" max="0.95" step="0.01" value="0.6"></div>
+            <div>IPS (SPEED) <input type="range" id="eTim" min="0.05" max="1.0" step="0.01" value="0.4"></div>
+            <div>FLUTTER <input type="range" id="eFlut" min="0" max="10" step="0.1" value="3"></div>
+            <div>HISS <input type="range" id="eHiss" min="0" max="0.05" step="0.001" value="0.01"></div>
         </div>
     </div>
 
@@ -157,13 +130,12 @@
 
     <section class="unit blog-log">
         <div class="bolt tl"></div><div class="bolt tr"></div><div class="bolt bl"></div><div class="bolt br"></div>
-        <h3 style="margin:0; font-size:0.9rem;">LOG #426: CIRCUIT REPAIR</h3>
-        <p style="margin:0; font-size:0.85rem;">Restored signal routing to King Tubby HPF unit. Debugged VU Toggle switch addressing. Hardware manifest fully operational.</p>
+        <h3 style="margin:0; font-size:0.9rem;">LOG #428: THE IRON OXIDE MOD</h3>
+        <p style="margin:0; font-size:0.85rem;">Integrated Wow/Flutter LFO, Shaper-based saturation, and noise floor. The echo now degrades realistically on high feedback loops.</p>
     </section>
 </div>
 
 <footer>
-    <div class="monitor-label">SYSTEM MONITORING // MASTER OUT</div>
     <div style="display:flex; align-items:center; gap:15px; width:100%;">
         <div id="vu"></div>
         <div style="text-align:center; min-width:50px;">
@@ -174,22 +146,75 @@
 </footer>
 
 <script>
-    let ctx, analyser, sirenO, sirenL, sirenLG, sirenG, nesO, nesG, delay, feed, hpf1, hpf2, channels = [];
-    let isBooted = false, lfoType = 'square', fIdx = 0, fFreqs = [0, 300, 800, 1500, 3000, 6000], reelRot = 0;
+    let ctx, analyser, sirenO, sirenL, sirenLG, sirenG, delay, feed, hpf1, hpf2, channels = [];
+    let flutterLFO, flutterGain, hissNode, shaper;
+    let isBooted = false, fIdx = 0, fFreqs = [0, 300, 800, 1500, 3000, 6000], reelRot = 0;
+
+    function makeDistortionCurve(amount) {
+        let k = typeof amount === 'number' ? amount : 50,
+            n_samples = 44100,
+            curve = new Float32Array(n_samples),
+            deg = Math.PI / 180, i = 0, x;
+        for ( ; i < n_samples; ++i ) {
+            x = i * 2 / n_samples - 1;
+            curve[i] = ( 3 + k ) * x * 20 * deg / ( Math.PI + k * Math.abs(x) );
+        }
+        return curve;
+    }
+
+    function createHiss(context) {
+        let bufferSize = 2 * context.sampleRate,
+            noiseBuffer = context.createBuffer(1, bufferSize, context.sampleRate),
+            output = noiseBuffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) {
+            output[i] = Math.random() * 2 - 1;
+        }
+        let whiteNoise = context.createBufferSource();
+        whiteNoise.buffer = noiseBuffer;
+        whiteNoise.loop = true;
+        let noiseGain = context.createGain();
+        noiseGain.gain.value = 0.01;
+        whiteNoise.connect(noiseGain);
+        whiteNoise.start();
+        return noiseGain;
+    }
 
     function bootSystem() {
         if (isBooted) return;
         ctx = new (window.AudioContext || window.webkitAudioContext)();
         analyser = ctx.createAnalyser(); 
-        
-        delay = ctx.createDelay(2.0); feed = ctx.createGain();
-        delay.delayTime.value = 0.4; feed.gain.value = 0.5;
-        delay.connect(feed); feed.connect(delay); delay.connect(analyser);
 
+        // TAPE ECHO CIRCUIT
+        delay = ctx.createDelay(2.0);
+        feed = ctx.createGain();
+        shaper = ctx.createWaveShaper();
+        shaper.curve = makeDistortionCurve(40);
+        
+        // Flutter (Wow)
+        flutterLFO = ctx.createOscillator();
+        flutterGain = ctx.createGain();
+        flutterLFO.frequency.value = 2.5; // slow warble
+        flutterGain.gain.value = 0.003; 
+        flutterLFO.connect(flutterGain);
+        flutterGain.connect(delay.delayTime);
+        flutterLFO.start();
+
+        // Hiss
+        hissNode = createHiss(ctx);
+        hissNode.connect(delay);
+
+        // Connections: Input -> Delay -> Shaper -> Feedback -> Delay
+        delay.connect(shaper);
+        shaper.connect(feed);
+        feed.connect(delay);
+        shaper.connect(analyser);
+
+        // Filters
         hpf1 = ctx.createBiquadFilter(); hpf2 = ctx.createBiquadFilter();
         hpf1.type = hpf2.type = 'highpass'; hpf1.frequency.value = hpf2.frequency.value = 0;
         hpf1.connect(hpf2); hpf2.connect(analyser);
 
+        // Siren
         sirenO = ctx.createOscillator(); sirenL = ctx.createOscillator();
         sirenLG = ctx.createGain(); sirenG = ctx.createGain();
         sirenO.type = 'square'; sirenG.gain.value = 0;
@@ -215,7 +240,9 @@
             const node = ctx.createMediaElementSource(document.getElementById(`a${i}`));
             const gn = ctx.createGain(); const eGn = ctx.createGain(); const fGn = ctx.createGain();
             eGn.gain.value = fGn.gain.value = 0;
-            node.connect(gn); gn.connect(analyser); gn.connect(eGn); eGn.connect(delay); gn.connect(fGn); fGn.connect(hpf1);
+            node.connect(gn); gn.connect(analyser); 
+            node.connect(eGn); eGn.connect(delay); 
+            node.connect(fGn); fGn.connect(hpf1);
             channels.push({gn, eGn, fGn, aud: document.getElementById(`a${i}`), mOn:0, sOn:0, eOn:0, fOn:0, vol:0.7});
         }
         analyser.connect(ctx.destination);
@@ -228,52 +255,24 @@
 
     function animateReels() {
         if (!isBooted) return;
-        const vel = (1.1 - parseFloat(document.getElementById('eTim').value)) * 5; 
+        const speed = parseFloat(document.getElementById('eTim').value);
+        const vel = (1.1 - speed) * 8; 
         reelRot += vel;
         document.getElementById('leftReel').style.transform = `rotate(${reelRot}deg)`;
         document.getElementById('rightReel').style.transform = `rotate(${reelRot}deg)`;
         requestAnimationFrame(animateReels);
     }
 
-    // Controls
+    // Input listeners
     document.getElementById('eFbk').oninput = (e) => feed.gain.value = e.target.value;
     document.getElementById('eTim').oninput = (e) => delay.delayTime.value = e.target.value;
-
-    const dp = document.getElementById('dpad');
-    let dAct = false;
-    dp.onmousedown = dp.ontouchstart = (e) => { if(!ctx) return; e.preventDefault(); dAct = true; document.getElementById('dot').style.display='block'; trigN(); moveN(e.touches?.[0] || e); };
-    const stopN = () => { if(!dAct) return; dAct = false; document.getElementById('dot').style.display='none'; if(nesG){ nesG.gain.setTargetAtTime(0, ctx.currentTime, 0.05); nesO.stop(ctx.currentTime+0.2); }};
-    window.onmousemove = (e) => dAct && moveN(e);
-    window.ontouchmove = (e) => { if(dAct) { e.preventDefault(); moveN(e.touches[0]); } };
-    window.onmouseup = window.ontouchend = stopN;
-
-    function trigN() {
-        nesO = ctx.createOscillator(); nesG = ctx.createGain();
-        nesO.type = 'square'; nesO.connect(nesG); nesG.connect(analyser);
-        nesO.frequency.setValueAtTime(parseFloat(document.getElementById('nPit').value), ctx.currentTime);
-        nesG.gain.setValueAtTime(0.3, ctx.currentTime);
-        nesO.start();
-    }
-    function moveN(e) {
-        const r = dp.getBoundingClientRect();
-        const y = (e.clientY - r.top) / r.height;
-        document.getElementById('dot').style.left = ((e.clientX - r.left)/r.width*100)+'%'; document.getElementById('dot').style.top = (y*100)+'%';
-        if(nesO) nesO.frequency.setTargetAtTime(parseFloat(document.getElementById('nPit').value) * (2-y), ctx.currentTime, 0.05);
-    }
-
-    const sf = document.getElementById('sFire');
-    sf.onmousedown = sf.ontouchstart = (e) => { e.preventDefault(); if(sirenG) sirenG.gain.setTargetAtTime(0.5, ctx.currentTime, 0.02); };
-    const relS = () => { if(sirenG) sirenG.gain.setTargetAtTime(0, ctx.currentTime, parseFloat(document.getElementById('sDec').value)); };
-    window.addEventListener('mouseup', relS); window.addEventListener('touchend', relS);
-    document.getElementById('sWave').onclick = () => { lfoType = lfoType==='square'?'sine':'square'; sirenL.type=lfoType; document.getElementById('sWave').innerText="WAVE: "+lfoType.toUpperCase(); };
-    document.getElementById('sPit').oninput=(e)=>sirenO.frequency.value=e.target.value;
-    document.getElementById('sRat').oninput=(e)=>sirenL.frequency.value=e.target.value;
-    document.getElementById('sDep').oninput=(e)=>sirenLG.gain.value=e.target.value;
+    document.getElementById('eFlut').oninput = (e) => flutterGain.gain.value = e.target.value / 1000;
+    document.getElementById('eHiss').oninput = (e) => hissNode.gain.value = e.target.value;
 
     function togFX(i, t) {
         const c = channels[i];
-        if(t==='e') { c.eOn = !c.eOn; c.eGn.gain.value = c.eOn?0.7:0; }
-        if(t==='f') { c.fOn = !c.fOn; c.fGn.gain.value = c.fOn?1:0; }
+        if(t==='e') { c.eOn = !c.eOn; c.eGn.gain.value = c.eOn?1.0:0; }
+        if(t==='f') { c.fOn = !c.fOn; c.fGn.gain.value = c.fOn?1.0:0; }
         if(t==='m') c.mOn = !c.mOn;
         if(t==='s') c.sOn = !c.sOn;
         document.getElementById(`${t}-${i}`).classList.toggle(`active-${t}`);
