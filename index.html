@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>General desEchos v5.4</title>
+    <title>General desEchos v5.6</title>
     <style>
         body { 
             background: #004488; color: #fff; font-family: "Courier New", monospace; 
@@ -19,7 +19,7 @@
         /* INTRO BOX */
         .intro-box { background: #e6be8a; border: 2px solid #8b4513; color: #221100; font-size: 0.7rem; padding: 15px; line-height: 1.3; }
 
-        /* SONY TCM-300 STYLE PLAY BUTTON UNIT */
+        /* TRANSPORT DECK */
         .transport-unit { background: #a0a0a0; border: 4px solid #333; padding: 20px; text-align: center; box-shadow: inset 2px 2px 5px rgba(255,255,255,0.5), 4px 4px 0px #000; }
         .play-btn { 
             width: 140px; height: 60px; background: linear-gradient(180deg, #d0d0d0 0%, #a0a0a0 100%);
@@ -29,31 +29,28 @@
         }
         .play-btn:active { transform: translateY(3px); box-shadow: 0 1px 0 #555; }
         .play-btn.engaged { background: #b0b0b0; border-color: #444; transform: translateY(2px); box-shadow: 0 2px 0 #444; }
-        
-        .play-tri-emboss { 
-            width: 0; height: 0; 
-            border-top: 12px solid transparent; border-bottom: 12px solid transparent; 
-            border-left: 18px solid #333; /* Dark gray embossing */
-            filter: drop-shadow(1px 1px 1px rgba(255,255,255,0.4));
-        }
+        .play-tri-emboss { width: 0; height: 0; border-top: 12px solid transparent; border-bottom: 12px solid transparent; border-left: 18px solid #333; filter: drop-shadow(1px 1px 1px rgba(255,255,255,0.4)); }
         .play-btn.engaged .play-tri-emboss { border-left-color: #000; filter: none; }
         .btn-text { color: #222; font-weight: 900; font-family: Arial, sans-serif; font-size: 14px; text-transform: uppercase; }
-        
-        .power-rail { margin-top: 15px; background: #222; padding: 4px; border-radius: 20px; display: inline-flex; align-items: center; gap: 8px; padding-right: 12px; border: 1px solid #555; }
         .led { width: 8px; height: 8px; background: #242; border-radius: 50%; border: 1px solid #000; }
         .led.active { background: #0f0; box-shadow: 0 0 10px #0f0, 0 0 2px #fff; }
-        .power-label { font-size: 8px; color: #888; font-weight: bold; }
 
-        /* BLOG LOG (Ledger Style) */
-        .blog-log { background: #fdf5e6; border: 1px solid #d2b48c; padding: 25px 20px 25px 45px; color: #332211; position: relative; width: 100%; box-sizing: border-box;}
-        .blog-log::before { content: ""; position: absolute; top: 0; left: 30px; width: 2px; height: 100%; background: rgba(255, 0, 0, 0.25); border-right: 1px solid rgba(255, 0, 0, 0.1); }
-
-        /* SIREN SE-G1 */
+        /* D-PAD & SIREN */
+        .dpad-area { width: 120px; height: 120px; background: #222; margin: 10px auto; border-radius: 50%; position: relative; border: 4px inset #000; touch-action: none; }
+        .cross-v { position: absolute; left: 45px; top: 15px; width: 30px; height: 90px; background: #111; pointer-events: none;}
+        .cross-h { position: absolute; left: 15px; top: 45px; width: 90px; height: 30px; background: #111; pointer-events: none;}
+        #dot { position: absolute; width: 10px; height: 10px; background: red; border-radius: 50%; display: none; z-index: 10; pointer-events: none;}
         .seg1 { background: #b08d57; color: #000; }
         .fire-button { width: 55px; height: 55px; background: radial-gradient(circle, #f00, #800); border: 4px outset #f66; border-radius: 50%; cursor: pointer; margin: 10px auto; display: block; touch-action: none; }
         .knob-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 8px; font-weight: bold; text-transform: uppercase; }
 
-        /* MIXER */
+        /* TAPE DELAY VISUAL */
+        .tape-deck-container { background: #222; border: 4px inset #666; width: 200px; height: 90px; margin: 10px auto; position: relative; display: flex; align-items: center; justify-content: space-around; padding: 5px; box-sizing: border-box; overflow: hidden; }
+        .tape-reel { width: 70px; height: 70px; background: #d0d0d0; border-radius: 50%; border: 2px solid #999; position: relative; z-index: 2; box-shadow: 0 0 5px rgba(0,0,0,0.5); }
+        .reel-hub { position: absolute; top: 25px; left: 25px; width: 20px; height: 20px; background: #333; border-radius: 50%; border: 1px solid #000; z-index: 10; }
+        .reel-spoke { position: absolute; top: 0; left: 33px; width: 4px; height: 70px; background: rgba(0,0,0,0.1); z-index: 5; transform-origin: center center; }
+
+        /* MIXER & FILTER */
         .mixer-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
         .chan { background: #333; border: 2px inset #222; padding: 8px; text-align: center; }
         .upload-area { font-size: 7px; background: #000; color: #0f0; padding: 5px; border: 1px solid #333; display: block; margin-bottom: 5px; cursor: pointer; height: 18px; line-height: 18px; text-align: center; overflow: hidden; }
@@ -63,27 +60,37 @@
         .active-f { background: #fc0 !important; color: #000; }
         .active-m { background: #f00 !important; }
         .active-s { background: #0080ff !important; }
+        .filter-dial { width: 60px; height: 60px; background: #222; border-radius: 50%; border: 3px solid #666; margin: 5px auto; position: relative; cursor: pointer; }
+        .hand { width: 3px; height: 20px; background: red; position: absolute; top: 10px; left: 28.5px; transform-origin: bottom; transition: 0.1s; }
 
         /* FOOTER */
+        .win95-switch { appearance: none; width: 34px; height: 18px; background: #400; border: 2px solid #808080; cursor: pointer; position: relative; vertical-align: middle; }
+        .win95-switch:checked { background: #f00; }
+        .win95-switch::after { content: ''; position: absolute; top: 1px; left: 1px; width: 10px; height: 10px; background: #c0c0c0; border: 2px outset #fff; transition: 0.1s; }
+        .win95-switch:checked::after { left: 18px; }
         footer { position: fixed; bottom: 0; width: 100%; background: #c0c0c0; border-top: 2px solid #fff; height: 100px; padding: 10px; box-sizing: border-box; z-index: 1000; display: flex; flex-direction: column; gap: 5px; }
         .monitor-label { font-size: 9px; font-weight: bold; color: #333; text-transform: uppercase; text-align: center; border-bottom: 1px solid #888; padding-bottom: 2px; }
         #vu { height: 25px; background: #000; display: flex; gap: 2px; border: 2px inset #808080; flex-grow: 1; }
+
+        .blog-log { background: #fdf5e6; border: 1px solid #d2b48c; padding: 25px 20px 25px 45px; color: #332211; position: relative; width: 100%; box-sizing: border-box;}
+        .blog-log::before { content: ""; position: absolute; top: 0; left: 30px; width: 2px; height: 100%; background: rgba(255, 0, 0, 0.25); border-right: 1px solid rgba(255, 0, 0, 0.1); }
         
         @media (min-width: 600px) { .mixer-grid { grid-template-columns: repeat(4, 1fr); } }
     </style>
 </head>
 <body>
 
-<header><h1>General desEchos v5.4</h1></header>
+<header><h1>General desEchos v5.6</h1></header>
 
 <div class="stack">
     <section class="unit intro-box">
         <div class="bolt tl"></div><div class="bolt tr"></div><div class="bolt bl"></div><div class="bolt br"></div>
         <strong>[RIG OVERVIEW]</strong><br>
-        1. <strong>PERFORMANCE:</strong> RP2A03 D-Pad coin-tones.<br>
-        2. <strong>SYNTHESIS:</strong> SE-G1 LFO Dub Siren.<br>
-        3. <strong>FX BUS:</strong> Global Echo + HPF routing.<br>
-        <span style="color: #800000; font-weight: bold; display: block; margin-top: 5px; border-top: 1px solid rgba(0,0,0,0.1); padding-top: 2px;">PRIVACY: All file processing is local.</span>
+        1. <strong>PERFORMANCE:</strong> RP2A03 D-Pad.<br>
+        2. <strong>SYNTHESIS:</strong> SE-G1 Dub Siren.<br>
+        3. <strong>DELAY:</strong> E-X2 Tape visualizer.<br>
+        4. <strong>FILTER:</strong> HPF King Tubby node.<br>
+        <span style="color: #800000; font-weight: bold; display: block; margin-top: 5px; border-top: 1px solid rgba(0,0,0,0.1); padding-top: 2px;">PRIVACY: Signal processing is local.</span>
     </section>
 
     <div class="unit transport-unit">
@@ -94,9 +101,9 @@
             <span class="btn-text">PLAY</span>
         </button>
         <br>
-        <div class="power-rail">
+        <div class="power-rail" style="margin-top:10px; display:inline-flex; align-items:center; gap:8px;">
             <div id="playLed" class="led"></div>
-            <span class="power-label">SYSTEM READY</span>
+            <span style="font-size:8px; color:#222; font-weight:bold;">SYSTEM READY</span>
         </div>
     </div>
 
@@ -125,11 +132,23 @@
         <div style="text-align:center;"><button id="sWave" style="font-size:8px; padding:4px; background:#333; color:#fff; cursor:pointer; margin-top:5px; border:2px outset #555;">WAVE: SQUARE</button></div>
     </div>
 
+    <div class="unit" style="background: #c0c0c0; color: #000;">
+        <div class="bolt tl"></div><div class="bolt tr"></div><div class="bolt bl"></div><div class="bolt br"></div>
+        <div class="unit-label" style="background:#222; color:#fff;">DIGITAL SPACE DELAY // E-X2</div>
+        <div class="tape-deck-container">
+            <div class="tape-reel" id="leftReel"><div class="reel-hub"></div><div class="reel-spoke"></div><div class="reel-spoke" style="transform:rotate(90deg)"></div></div>
+            <div class="tape-reel" id="rightReel"><div class="reel-hub"></div><div class="reel-spoke"></div><div class="reel-spoke" style="transform:rotate(90deg)"></div></div>
+        </div>
+        <div class="knob-grid" style="color:#000">
+            <div>FEEDBACK <input type="range" id="eFbk" min="0" max="0.9" step="0.1" value="0.5"></div>
+            <div>TIME <input type="range" id="eTim" min="0.1" max="1.0" step="0.1" value="0.4"></div>
+        </div>
+    </div>
+
     <div class="unit">
         <div class="bolt tl"></div><div class="bolt tr"></div><div class="bolt bl"></div><div class="bolt br"></div>
         <div class="unit-label">4-CH DUB MIXER // FX BUS ROUTING</div>
         <div class="mixer-grid" id="mGrid"></div>
-        
         <div style="background:#111; padding:10px; margin-top:15px; text-align:center; border: 4px inset #444;">
             <div class="filter-dial" onclick="rotFilter()"><div id="fHand" class="hand"></div></div>
             <div id="fLabel" style="color:#fc0; font-size:10px; font-weight:bold;">HPF: OFF</div>
@@ -138,25 +157,25 @@
 
     <section class="unit blog-log">
         <div class="bolt tl"></div><div class="bolt tr"></div><div class="bolt bl"></div><div class="bolt br"></div>
-        <h3 style="margin:0; font-size:0.9rem;">LOG #424: DECK CALIBRATION</h3>
-        <p style="margin:0; font-size:0.85rem;">Dedicated transport unit integrated. Sony-inspired Play mechanism with embossed embossing calibrated. Ledger styling restored to final production specs.</p>
+        <h3 style="margin:0; font-size:0.9rem;">LOG #426: CIRCUIT REPAIR</h3>
+        <p style="margin:0; font-size:0.85rem;">Restored signal routing to King Tubby HPF unit. Debugged VU Toggle switch addressing. Hardware manifest fully operational.</p>
     </section>
 </div>
 
 <footer>
     <div class="monitor-label">SYSTEM MONITORING // MASTER OUT</div>
-    <div class="footer-controls" style="display:flex; align-items:center; gap:15px;">
+    <div style="display:flex; align-items:center; gap:15px; width:100%;">
         <div id="vu"></div>
         <div style="text-align:center; min-width:50px;">
             <span style="font-size:8px; font-weight:bold; color:#000; display:block;">VU PWR</span>
-            <input type="checkbox" id="vuTog" class="win95-switch" style="appearance:none; width:34px; height:18px; background:#400; border:2px solid #808080; cursor:pointer; position:relative; vertical-align:middle;" checked>
+            <input type="checkbox" id="vuTog" class="win95-switch" checked>
         </div>
     </div>
 </footer>
 
 <script>
     let ctx, analyser, sirenO, sirenL, sirenLG, sirenG, nesO, nesG, delay, feed, hpf1, hpf2, channels = [];
-    let isBooted = false, lfoType = 'square', fIdx = 0, fFreqs = [0, 300, 800, 1500, 3000, 6000];
+    let isBooted = false, lfoType = 'square', fIdx = 0, fFreqs = [0, 300, 800, 1500, 3000, 6000], reelRot = 0;
 
     function bootSystem() {
         if (isBooted) return;
@@ -204,7 +223,21 @@
         document.getElementById('masterBtn').classList.add('engaged');
         document.getElementById('playLed').classList.add('active');
         startVU();
+        animateReels();
     }
+
+    function animateReels() {
+        if (!isBooted) return;
+        const vel = (1.1 - parseFloat(document.getElementById('eTim').value)) * 5; 
+        reelRot += vel;
+        document.getElementById('leftReel').style.transform = `rotate(${reelRot}deg)`;
+        document.getElementById('rightReel').style.transform = `rotate(${reelRot}deg)`;
+        requestAnimationFrame(animateReels);
+    }
+
+    // Controls
+    document.getElementById('eFbk').oninput = (e) => feed.gain.value = e.target.value;
+    document.getElementById('eTim').oninput = (e) => delay.delayTime.value = e.target.value;
 
     const dp = document.getElementById('dpad');
     let dAct = false;
@@ -215,11 +248,9 @@
     window.onmouseup = window.ontouchend = stopN;
 
     function trigN() {
-        const r = parseFloat(document.getElementById('nPit').value);
         nesO = ctx.createOscillator(); nesG = ctx.createGain();
         nesO.type = 'square'; nesO.connect(nesG); nesG.connect(analyser);
-        nesO.frequency.setValueAtTime(r, ctx.currentTime);
-        nesO.frequency.setValueAtTime(r * 1.334, ctx.currentTime + 0.08);
+        nesO.frequency.setValueAtTime(parseFloat(document.getElementById('nPit').value), ctx.currentTime);
         nesG.gain.setValueAtTime(0.3, ctx.currentTime);
         nesO.start();
     }
@@ -227,10 +258,7 @@
         const r = dp.getBoundingClientRect();
         const y = (e.clientY - r.top) / r.height;
         document.getElementById('dot').style.left = ((e.clientX - r.left)/r.width*100)+'%'; document.getElementById('dot').style.top = (y*100)+'%';
-        if(nesO) {
-            const rt = parseFloat(document.getElementById('nPit').value) * 1.334;
-            nesO.frequency.setTargetAtTime(rt + ((0.5 - y) * rt), ctx.currentTime, 0.05);
-        }
+        if(nesO) nesO.frequency.setTargetAtTime(parseFloat(document.getElementById('nPit').value) * (2-y), ctx.currentTime, 0.05);
     }
 
     const sf = document.getElementById('sFire');
@@ -246,8 +274,8 @@
         const c = channels[i];
         if(t==='e') { c.eOn = !c.eOn; c.eGn.gain.value = c.eOn?0.7:0; }
         if(t==='f') { c.fOn = !c.fOn; c.fGn.gain.value = c.fOn?1:0; }
-        if(t==='m') { c.mOn = !c.mOn; }
-        if(t==='s') { c.sOn = !c.sOn; }
+        if(t==='m') c.mOn = !c.mOn;
+        if(t==='s') c.sOn = !c.sOn;
         document.getElementById(`${t}-${i}`).classList.toggle(`active-${t}`);
         updateMix();
     }
