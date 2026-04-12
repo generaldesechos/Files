@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>General desEchos v6.1</title>
+    <title>General desEchos v6.2</title>
     <style>
         body { 
             background: #004488; color: #fff; font-family: "Courier New", monospace; 
@@ -16,13 +16,13 @@
         .bolt { position: absolute; width: 8px; height: 8px; background: #666; border-radius: 50%; border: 1px solid #333; }
         .tl { top: 8px; left: 8px; } .tr { top: 8px; right: 8px; } .bl { bottom: 8px; left: 8px; } .br { bottom: 8px; right: 8px; }
 
-        /* DPAD */
+        /* D-PAD */
         .dpad-area { width: 100px; height: 100px; background: #222; margin: 10px auto; border-radius: 50%; position: relative; border: 4px inset #000; touch-action: none; }
         .cross-v { position: absolute; left: 38px; top: 10px; width: 24px; height: 80px; background: #111; pointer-events: none;}
         .cross-h { position: absolute; left: 10px; top: 38px; width: 80px; height: 24px; background: #111; pointer-events: none;}
         #dot { position: absolute; width: 8px; height: 8px; background: red; border-radius: 50%; display: none; z-index: 10; pointer-events: none;}
 
-        /* SIREN STYLING */
+        /* SIRENS */
         .seg1 { background: #b08d57; color: #000; }
         .fire-button { width: 50px; height: 50px; background: radial-gradient(circle, #f00, #800); border: 4px outset #f66; border-radius: 50%; cursor: pointer; margin: 5px auto; display: block; touch-action: none; }
         .knob-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; font-size: 8px; font-weight: bold; text-transform: uppercase; }
@@ -33,7 +33,7 @@
         .active-e { background: #0f0 !important; color: #000; }
         .active-f { background: #fc0 !important; color: #000; }
 
-        /* TAPE ECHO */
+        /* TAPE */
         .tape-deck-container { background: #1a1a1a; border: 4px inset #444; width: 200px; height: 80px; margin: 10px auto; position: relative; display: flex; align-items: center; justify-content: space-around; overflow: hidden; }
         .tape-reel { width: 60px; height: 60px; background: #c0c0c0; border-radius: 50%; position: relative; }
         .reel-spoke { position: absolute; top: 0; left: 28px; width: 4px; height: 60px; background: rgba(0,0,0,0.2); transform-origin: center center; }
@@ -55,7 +55,7 @@
 </head>
 <body>
 
-<header><h1>General desEchos v6.1</h1></header>
+<header><h1>General desEchos v6.2</h1></header>
 
 <div class="stack">
     <div class="unit" style="background: #a0a0a0; text-align: center;">
@@ -63,7 +63,7 @@
     </div>
 
     <div class="unit" style="background: #555;">
-        <div class="bolt tl"></div><div class="bolt tr"></div>
+        <div class="bolt tl"></div><div class="bolt tr"></div><div class="bolt bl"></div><div class="bolt br"></div>
         <div class="unit-label">RICOH RP2A03 // COIN PAD</div>
         <div class="dpad-area" id="dpad"><div class="cross-v"></div><div class="cross-h"></div><div id="dot"></div></div>
         <div class="knob-grid">
@@ -77,7 +77,7 @@
     </div>
 
     <div class="unit seg1">
-        <div class="bolt tl"></div><div class="bolt tr"></div>
+        <div class="bolt tl"></div><div class="bolt tr"></div><div class="bolt bl"></div><div class="bolt br"></div>
         <div class="unit-label">SE-G1 // DUB SIREN</div>
         <div id="sFire" class="fire-button"></div>
         <div class="knob-grid">
@@ -91,6 +91,7 @@
     </div>
 
     <div class="unit" style="background: #a87d54; color: #000;">
+        <div class="bolt tl"></div><div class="bolt tr"></div><div class="bolt bl"></div><div class="bolt br"></div>
         <div class="unit-label" style="background:#422; color:#fff;">IRON-OXIDE TAPE</div>
         <div class="tape-deck-container">
             <div class="tape-reel" id="leftReel"><div class="reel-spoke"></div><div class="reel-spoke" style="transform:rotate(90deg)"></div></div>
@@ -103,6 +104,7 @@
     </div>
 
     <div class="unit">
+        <div class="bolt tl"></div><div class="bolt tr"></div><div class="bolt bl"></div><div class="bolt br"></div>
         <div class="unit-label">4-CH MIXER</div>
         <div class="mixer-grid" id="mGrid"></div>
         <div style="background:#111; padding:10px; margin-top:10px; text-align:center;">
@@ -112,10 +114,11 @@
     </div>
 
     <section class="unit blog-log">
-        <strong>LOG #430: BUS RE-ROUTING</strong><br>
-        - Added Echo/Filter toggles to Siren and Pad.<br>
-        - Re-balanced input gains for bus sends.<br>
-        - Finalized Tape Echo feedback loop.
+        <div class="bolt tl"></div><div class="bolt tr"></div><div class="bolt bl"></div><div class="bolt br"></div>
+        <strong>LOG #431: HARD-WIRING THE BUS</strong><br>
+        - Every siren, pad, and channel now has static bus routing.<br>
+        - Fixed script error that was dropping Siren 1 during FX updates.<br>
+        - Locked the Blog Log to the bottom of the stack.
     </section>
 </div>
 
@@ -123,7 +126,7 @@
 
 <script>
     let ctx, analyser, sirenO, sirenL, sirenLG, sirenG, delay, feed, hpf1, hpf2, channels = [], isBooted = false, fIdx = 0, fFreqs = [0, 300, 800, 1500, 3000, 6000], reelRot = 0, nesO, nesG;
-    let nesE, nesF, segE, segF; // Siren Bus Gains
+    let nesE, nesF, segE, segF; 
 
     function bootSystem() {
         if (isBooted) return;
@@ -137,11 +140,12 @@
         hpf1.type = hpf2.type = 'highpass'; hpf1.frequency.value = 0;
         hpf1.connect(hpf2); hpf2.connect(analyser);
 
-        // Global Siren Bus Gains
-        nesE = ctx.createGain(); nesF = ctx.createGain(); segE = ctx.createGain(); segF = ctx.createGain();
+        // Persistent Siren Bus
+        nesE = ctx.createGain(); nesF = ctx.createGain(); 
+        segE = ctx.createGain(); segF = ctx.createGain();
         [nesE, nesF, segE, segF].forEach(g => { g.gain.value = 0; g.connect(g === nesE || g === segE ? delay : hpf1); });
 
-        // SE-G1 Setup
+        // SE-G1 Hard-Wiring
         sirenO = ctx.createOscillator(); sirenL = ctx.createOscillator(); sirenLG = ctx.createGain(); sirenG = ctx.createGain();
         sirenO.type = 'square'; sirenG.gain.value = 0;
         sirenL.connect(sirenLG); sirenLG.connect(sirenO.frequency);
@@ -206,7 +210,7 @@
         document.getElementById(`${t}-${i}`).classList.toggle(`active-${t}`);
     }
     function rotFilter() { fIdx = (fIdx+1)%fFreqs.length; hpf1.frequency.value = hpf2.frequency.value = fFreqs[fIdx]; document.getElementById('fHand').style.transform=`rotate(${fIdx*45}deg)`; document.getElementById('fLabel').innerText = fFreqs[fIdx]===0?"HPF: OFF":"HPF: "+fFreqs[fIdx]+"Hz"; }
-    function setV(i,v) { channels[i].gn.gain.value = v; }
+    function setV(i,v) { if(channels[i]) channels[i].gn.gain.value = v; }
     function loadF(i,inp) { if(inp.files[0]) { channels[i].aud.src = URL.createObjectURL(inp.files[0]); channels[i].aud.play(); } }
     function startVU() { const v = document.getElementById('vu'); setInterval(() => { const data = new Uint8Array(analyser.frequencyBinCount); analyser.getByteFrequencyData(data); const avg = data.reduce((a,b)=>a+b)/data.length; v.innerHTML = ''; for(let i=0; i<20; i++) { const l = document.createElement('div'); l.style.flex = "1"; l.style.background = (i < avg/4) ? (i<14?"#0f0":"#f00") : "#111"; v.appendChild(l); } }, 50); }
 </script>
