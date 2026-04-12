@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>General desEchos v5.2</title>
+    <title>General desEchos v5.3</title>
     <style>
         body { 
             background: #004488; color: #fff; font-family: "Courier New", monospace; 
@@ -16,17 +16,29 @@
         .bolt { position: absolute; width: 8px; height: 8px; background: #666; border-radius: 50%; border: 1px solid #333; }
         .tl { top: 8px; left: 8px; } .tr { top: 8px; right: 8px; } .bl { bottom: 8px; left: 8px; } .br { bottom: 8px; right: 8px; }
 
-        /* INTRO BOX */
-        .intro-box { background: #e6be8a; border: 2px solid #8b4513; color: #221100; font-size: 0.7rem; padding: 15px; line-height: 1.3; }
-        .privacy-alert { color: #800000; font-weight: bold; margin-top: 8px; display: block; border-top: 1px solid rgba(0,0,0,0.1); padding-top: 5px; }
+        /* INTRO & TAPE PLAY BUTTON */
+        .intro-box { background: #e6be8a; border: 2px solid #8b4513; color: #221100; font-size: 0.7rem; padding: 15px; line-height: 1.3; margin-bottom: 10px; }
+        .play-btn { 
+            width: 100%; padding: 12px; background: #c0c0c0; border: 4px outset #fff; 
+            color: #333; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;
+            font-family: sans-serif; text-transform: uppercase; margin-top: 10px;
+        }
+        .play-btn:active { border-style: inset; }
+        .indicator { width: 10px; height: 10px; background: #242; border-radius: 50%; border: 1px solid #000; transition: 0.3s; }
+        .indicator.on { background: #0f0; box-shadow: 0 0 8px #0f0; }
+        .play-tri { width: 0; height: 0; border-top: 8px solid transparent; border-bottom: 8px solid transparent; border-left: 12px solid #555; transition: 0.3s; }
+        .play-tri.on { border-left-color: #040; }
 
-        /* D-PAD */
+        /* BLOG LOG (Ledger Style) */
+        .blog-log { background: #fdf5e6; border: 1px solid #d2b48c; padding: 25px 20px 25px 45px; color: #332211; position: relative; width: 100%; box-sizing: border-box;}
+        .blog-log::before { content: ""; position: absolute; top: 0; left: 30px; width: 2px; height: 100%; background: rgba(255, 0, 0, 0.25); border-right: 1px solid rgba(255, 0, 0, 0.1); }
+
+        /* D-PAD & SIREN SE-G1 */
         .dpad-area { width: 120px; height: 120px; background: #222; margin: 10px auto; border-radius: 50%; position: relative; border: 4px inset #000; touch-action: none; }
         .cross-v { position: absolute; left: 45px; top: 15px; width: 30px; height: 90px; background: #111; pointer-events: none;}
         .cross-h { position: absolute; left: 15px; top: 45px; width: 90px; height: 30px; background: #111; pointer-events: none;}
         #dot { position: absolute; width: 10px; height: 10px; background: red; border-radius: 50%; display: none; z-index: 10; pointer-events: none;}
-
-        /* SIREN SE-G1 */
+        
         .seg1 { background: #b08d57; color: #000; }
         .fire-button { width: 55px; height: 55px; background: radial-gradient(circle, #f00, #800); border: 4px outset #f66; border-radius: 50%; cursor: pointer; margin: 10px auto; display: block; touch-action: none; }
         .knob-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 8px; font-weight: bold; text-transform: uppercase; }
@@ -46,13 +58,13 @@
         .filter-dial { width: 60px; height: 60px; background: #222; border-radius: 50%; border: 3px solid #666; margin: 5px auto; position: relative; cursor: pointer; }
         .hand { width: 3px; height: 20px; background: red; position: absolute; top: 10px; left: 28.5px; transform-origin: bottom; transition: 0.1s; }
 
-        /* FOOTER & VU */
+        /* FOOTER */
         .win95-switch { appearance: none; width: 34px; height: 18px; background: #400; border: 2px solid #808080; cursor: pointer; position: relative; vertical-align: middle; }
         .win95-switch:checked { background: #f00; }
         .win95-switch::after { content: ''; position: absolute; top: 1px; left: 1px; width: 10px; height: 10px; background: #c0c0c0; border: 2px outset #fff; transition: 0.1s; }
         .win95-switch:checked::after { left: 18px; }
-        footer { position: fixed; bottom: 0; width: 100%; background: #c0c0c0; border-top: 2px solid #fff; height: 100px; padding: 10px; box-sizing: border-box; z-index: 1000; display: flex; flex-direction: column; gap: 5px; box-shadow: 0 -4px 10px rgba(0,0,0,0.3); }
-        .monitor-label { font-size: 9px; font-weight: bold; color: #333; text-transform: uppercase; letter-spacing: 1px; text-align: center; border-bottom: 1px solid #888; padding-bottom: 2px; }
+        footer { position: fixed; bottom: 0; width: 100%; background: #c0c0c0; border-top: 2px solid #fff; height: 100px; padding: 10px; box-sizing: border-box; z-index: 1000; display: flex; flex-direction: column; gap: 5px; }
+        .monitor-label { font-size: 9px; font-weight: bold; color: #333; text-transform: uppercase; text-align: center; border-bottom: 1px solid #888; padding-bottom: 2px; }
         .footer-controls { display: flex; align-items: center; gap: 15px; width: 100%; }
         #vu { height: 25px; background: #000; display: flex; gap: 2px; border: 2px inset #808080; flex-grow: 1; }
         
@@ -61,17 +73,22 @@
 </head>
 <body>
 
-<header><h1>General desEchos v5.2</h1></header>
+<header><h1>General desEchos v5.3</h1></header>
 
 <div class="stack">
     <section class="unit intro-box">
         <div class="bolt tl"></div><div class="bolt tr"></div><div class="bolt bl"></div><div class="bolt br"></div>
         <strong>[RIG OVERVIEW]</strong><br>
-        1. <strong>PERFORMANCE:</strong> RP2A03 D-Pad triggers arpeggiated coin-tones.<br>
-        2. <strong>SYNTHESIS:</strong> SE-G1 Siren generates LFO-modulated dub sirens.<br>
-        3. <strong>FX BUS:</strong> Global S-Echo and King Tubby HP-Filter routing.<br>
-        4. <strong>MIXER:</strong> 4-Channel strip with independent Echo/Filter toggles.<br>
-        <span class="privacy-alert">PRIVACY: Files loaded via 'LOAD' stay on your device; no audio data is sent to external servers.</span>
+        1. <strong>PERFORMANCE:</strong> RP2A03 D-Pad coin-tones.<br>
+        2. <strong>SYNTHESIS:</strong> SE-G1 LFO Dub Siren.<br>
+        3. <strong>FX BUS:</strong> Global Echo + HPF routing.<br>
+        <span style="color: #800000; font-weight: bold; display: block; margin-top: 5px; border-top: 1px solid rgba(0,0,0,0.1); padding-top: 2px;">PRIVACY: All file processing is local.</span>
+        
+        <button id="masterBtn" class="play-btn" onclick="bootSystem()">
+            <div id="playTri" class="play-tri"></div>
+            <span>Start Engine</span>
+            <div id="playInd" class="indicator"></div>
+        </button>
     </section>
 
     <div class="unit" style="background: #555;">
@@ -88,7 +105,7 @@
 
     <div class="unit seg1">
         <div class="bolt tl"></div><div class="bolt tr"></div><div class="bolt bl"></div><div class="bolt br"></div>
-        <div class="unit-label" style="color:#000; border-color:#000;">DUB SIREN GENERATOR // SE-G1</div>
+        <div class="unit-label" style="color:#000; border-color:#000;">GENERAL DESECHOS SE-G1 // DUB SIREN</div>
         <div class="knob-grid">
             <div>OSC PITCH <input type="range" id="sPit" min="100" max="1500" value="440"></div>
             <div>LFO RATE <input type="range" id="sRat" min="1" max="50" value="12"></div>
@@ -106,16 +123,14 @@
         
         <div style="background:#111; padding:10px; margin-top:15px; text-align:center; border: 4px inset #444;">
             <div class="filter-dial" onclick="rotFilter()"><div id="fHand" class="hand"></div></div>
-            <div id="fLabel" style="color:#fc0; font-size:10px; font-weight:bold;">KING TUBBY HPF: OFF</div>
+            <div id="fLabel" style="color:#fc0; font-size:10px; font-weight:bold;">HPF: OFF</div>
         </div>
-        
-        <button id="masterBtn" style="width:100%; padding:15px; margin-top:15px; background:#040; color:#fff; font-weight:bold; cursor:pointer; border:4px outset #060; text-transform:uppercase;" onclick="bootSystem()">START ENGINE</button>
     </div>
 
     <section class="unit blog-log">
         <div class="bolt tl"></div><div class="bolt tr"></div><div class="bolt bl"></div><div class="bolt br"></div>
-        <h3 style="margin:0; font-size:0.9rem;">LOG #422: FINAL MASTER</h3>
-        <p style="margin:0; font-size:0.85rem;">Restored footer monitoring labels. Validated gating logic on all input methods. Rig is now fully calibrated for performance.</p>
+        <h3 style="margin:0; font-size:0.9rem;">LOG #423: HARDWARE REFIT</h3>
+        <p style="margin:0; font-size:0.85rem;">Restored ledger styling. Relocated engine ignition to master control block. Nameplate updated for SE-G1 unit. HPF labeling simplified for fast-action dub mixing.</p>
     </section>
 </div>
 
@@ -176,7 +191,9 @@
             channels.push({gn, eGn, fGn, aud: document.getElementById(`a${i}`), mOn:0, sOn:0, eOn:0, fOn:0, vol:0.7});
         }
         analyser.connect(ctx.destination);
-        isBooted = true; document.getElementById('masterBtn').style.background = "#333";
+        isBooted = true; 
+        document.getElementById('playInd').classList.add('on');
+        document.getElementById('playTri').classList.add('on');
         startVU();
     }
 
@@ -225,7 +242,7 @@
         document.getElementById(`${t}-${i}`).classList.toggle(`active-${t}`);
         updateMix();
     }
-    function rotFilter() { fIdx = (fIdx+1)%fFreqs.length; hpf1.frequency.value = hpf2.frequency.value = fFreqs[fIdx]; document.getElementById('fHand').style.transform=`rotate(${fIdx*45}deg)`; document.getElementById('fLabel').innerText = fFreqs[fIdx]===0?"KING TUBBY HPF: OFF":"KING TUBBY HPF: "+fFreqs[fIdx]+"Hz"; }
+    function rotFilter() { fIdx = (fIdx+1)%fFreqs.length; hpf1.frequency.value = hpf2.frequency.value = fFreqs[fIdx]; document.getElementById('fHand').style.transform=`rotate(${fIdx*45}deg)`; document.getElementById('fLabel').innerText = fFreqs[fIdx]===0?"HPF: OFF":"HPF: "+fFreqs[fIdx]+"Hz"; }
     function updateMix() { const anyS = channels.some(c => c.sOn); channels.forEach(c => { c.gn.gain.value = c.mOn ? 0 : (anyS && !c.sOn ? 0 : c.vol); }); }
     function setV(i,v) { channels[i].vol = v; updateMix(); }
     function loadF(i,inp) { if(inp.files[0]) { channels[i].aud.src = URL.createObjectURL(inp.files[0]); channels[i].aud.play(); } }
