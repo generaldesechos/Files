@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>General desEchos v6.2</title>
+    <title>General desEchos v6.3 - Total Restoration</title>
     <style>
         body { 
             background: #004488; color: #fff; font-family: "Courier New", monospace; 
@@ -16,63 +16,96 @@
         .bolt { position: absolute; width: 8px; height: 8px; background: #666; border-radius: 50%; border: 1px solid #333; }
         .tl { top: 8px; left: 8px; } .tr { top: 8px; right: 8px; } .bl { bottom: 8px; left: 8px; } .br { bottom: 8px; right: 8px; }
 
-        /* D-PAD */
-        .dpad-area { width: 100px; height: 100px; background: #222; margin: 10px auto; border-radius: 50%; position: relative; border: 4px inset #000; touch-action: none; }
-        .cross-v { position: absolute; left: 38px; top: 10px; width: 24px; height: 80px; background: #111; pointer-events: none;}
-        .cross-h { position: absolute; left: 10px; top: 38px; width: 80px; height: 24px; background: #111; pointer-events: none;}
-        #dot { position: absolute; width: 8px; height: 8px; background: red; border-radius: 50%; display: none; z-index: 10; pointer-events: none;}
+        /* INTRO BOX */
+        .intro-box { background: #e6be8a; border: 2px solid #8b4513; color: #221100; font-size: 0.7rem; padding: 15px; line-height: 1.3; }
 
-        /* SIRENS */
+        /* TRANSPORT DECK */
+        .transport-unit { background: #a0a0a0; border: 4px solid #333; padding: 20px; text-align: center; box-shadow: 4px 4px 0px #000; }
+        .play-btn { 
+            width: 140px; height: 60px; background: linear-gradient(180deg, #d0d0d0 0%, #a0a0a0 100%);
+            border: 3px solid #666; border-radius: 4px; cursor: pointer; position: relative;
+            display: inline-flex; align-items: center; justify-content: center; gap: 12px;
+            box-shadow: 0 4px 0 #555, 0 6px 10px rgba(0,0,0,0.4); transition: 0.1s;
+        }
+        .play-btn:active { transform: translateY(3px); box-shadow: 0 1px 0 #555; }
+        .play-btn.engaged { background: #b0b0b0; border-color: #444; transform: translateY(2px); box-shadow: 0 2px 0 #444; }
+        .play-tri-emboss { width: 0; height: 0; border-top: 12px solid transparent; border-bottom: 12px solid transparent; border-left: 18px solid #333; }
+        .led { width: 10px; height: 10px; background: #242; border-radius: 50%; border: 1px solid #000; display: inline-block; vertical-align: middle; }
+        .led.active { background: #0f0; box-shadow: 0 0 10px #0f0, 0 0 2px #fff; }
+
+        /* COIN PAD */
+        .dpad-area { width: 120px; height: 120px; background: #222; margin: 10px auto; border-radius: 50%; position: relative; border: 4px inset #000; touch-action: none; }
+        .cross-v { position: absolute; left: 45px; top: 15px; width: 30px; height: 90px; background: #111; pointer-events: none;}
+        .cross-h { position: absolute; left: 15px; top: 45px; width: 90px; height: 30px; background: #111; pointer-events: none;}
+        #dot { position: absolute; width: 10px; height: 10px; background: red; border-radius: 50%; display: none; z-index: 10; pointer-events: none;}
+
+        /* SIREN SE-G1 */
         .seg1 { background: #b08d57; color: #000; }
-        .fire-button { width: 50px; height: 50px; background: radial-gradient(circle, #f00, #800); border: 4px outset #f66; border-radius: 50%; cursor: pointer; margin: 5px auto; display: block; touch-action: none; }
-        .knob-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; font-size: 8px; font-weight: bold; text-transform: uppercase; }
-        
-        /* BUS TOGGLES */
-        .bus-row { display: flex; justify-content: center; gap: 5px; margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(0,0,0,0.2); }
-        .s-btn { font-size: 9px; font-weight: bold; padding: 4px 8px; background: #222; color: #fff; border: 2px outset #666; cursor: pointer; }
-        .active-e { background: #0f0 !important; color: #000; }
-        .active-f { background: #fc0 !important; color: #000; }
-
-        /* TAPE */
-        .tape-deck-container { background: #1a1a1a; border: 4px inset #444; width: 200px; height: 80px; margin: 10px auto; position: relative; display: flex; align-items: center; justify-content: space-around; overflow: hidden; }
-        .tape-reel { width: 60px; height: 60px; background: #c0c0c0; border-radius: 50%; position: relative; }
-        .reel-spoke { position: absolute; top: 0; left: 28px; width: 4px; height: 60px; background: rgba(0,0,0,0.2); transform-origin: center center; }
+        .fire-button { width: 55px; height: 55px; background: radial-gradient(circle, #f00, #800); border: 4px outset #f66; border-radius: 50%; cursor: pointer; margin: 10px auto; display: block; touch-action: none; }
 
         /* MIXER */
         .mixer-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
         .chan { background: #333; border: 2px inset #222; padding: 8px; text-align: center; }
-        .fader { appearance: slider-vertical; width: 16px; height: 60px; }
-        
-        .filter-dial { width: 50px; height: 50px; background: #222; border-radius: 50%; border: 3px solid #666; margin: 5px auto; position: relative; cursor: pointer; }
-        .hand { width: 3px; height: 18px; background: red; position: absolute; top: 7px; left: 23.5px; transform-origin: bottom; }
+        .upload-label { font-size: 7px; background: #000; color: #0f0; padding: 5px; border: 1px solid #333; display: block; margin-bottom: 5px; cursor: pointer; height: 18px; line-height: 8px; overflow: hidden; }
+        .s-btn { font-size: 8px; padding: 3px; background: #222; color: #fff; border: 2px outset #666; cursor: pointer; width: 32px; margin: 1px; font-weight: bold;}
+        .active-e { background: #0f0 !important; color: #000; }
+        .active-f { background: #fc0 !important; color: #000; }
+        .active-m { background: #f00 !important; }
+        .active-s { background: #0080ff !important; }
 
-        footer { position: fixed; bottom: 0; width: 100%; background: #c0c0c0; border-top: 2px solid #fff; height: 80px; padding: 10px; box-sizing: border-box; z-index: 1000; }
-        #vu { height: 20px; background: #000; display: flex; gap: 2px; border: 2px inset #808080; }
+        /* FOOTER / VU */
+        footer { position: fixed; bottom: 0; width: 100%; background: #c0c0c0; border-top: 2px solid #fff; height: 100px; padding: 10px; box-sizing: border-box; z-index: 1000; display: flex; flex-direction: column; gap: 5px; }
+        #vu { height: 25px; background: #000; display: flex; gap: 2px; border: 2px inset #808080; flex-grow: 1; }
+        .win95-switch { appearance: none; width: 34px; height: 18px; background: #400; border: 2px solid #808080; cursor: pointer; position: relative; vertical-align: middle; }
+        .win95-switch:checked { background: #f00; }
+        .win95-switch::after { content: ''; position: absolute; top: 1px; left: 1px; width: 10px; height: 10px; background: #c0c0c0; border: 2px outset #fff; transition: 0.1s; }
+        .win95-switch:checked::after { left: 18px; }
 
-        .blog-log { background: #fdf5e6; border: 1px solid #d2b48c; padding: 15px 15px 15px 35px; color: #332211; position: relative; width: 100%; box-sizing: border-box; font-size: 0.75rem;}
-        .blog-log::before { content: ""; position: absolute; top: 0; left: 20px; width: 2px; height: 100%; background: rgba(255, 0, 0, 0.2); }
+        .blog-log { background: #fdf5e6; border: 1px solid #d2b48c; padding: 20px 20px 20px 40px; color: #332211; position: relative; width: 100%; box-sizing: border-box; font-size: 0.8rem;}
+        .blog-log::before { content: ""; position: absolute; top: 0; left: 25px; width: 2px; height: 100%; background: rgba(255, 0, 0, 0.2); }
+
+        @media (min-width: 600px) { .mixer-grid { grid-template-columns: repeat(4, 1fr); } }
     </style>
 </head>
 <body>
 
-<header><h1>General desEchos v6.2</h1></header>
+<header><h1>General desEchos v6.3</h1></header>
 
 <div class="stack">
-    <div class="unit" style="background: #a0a0a0; text-align: center;">
-        <button id="masterBtn" style="width:120px; height:40px; cursor:pointer;" onclick="bootSystem()"><b>SYSTEM BOOT</b></button>
+    <section class="unit intro-box">
+        <div class="bolt tl"></div><div class="bolt tr"></div><div class="bolt bl"></div><div class="bolt br"></div>
+        <strong>[RIG OVERVIEW]</strong><br>
+        1. <b>PERFORMANCE:</b> RP2A03 Coin Pad Active.<br>
+        2. <b>ECHO:</b> Iron-Oxide Analog Tape Sim.<br>
+        3. <b>MIXER:</b> 4-CH Dub Routing with Mute/Solo.<br>
+        <span style="color: #800000; font-weight: bold; display: block; margin-top: 5px;">STATUS: RESTORATION COMPLETE.</span>
+    </section>
+
+    <div class="unit transport-unit">
+        <div class="bolt tl"></div><div class="bolt tr"></div><div class="bolt bl"></div><div class="bolt br"></div>
+        <button id="masterBtn" class="play-btn" onclick="bootSystem()">
+            <div class="play-tri-emboss"></div>
+            <span style="color:#222; font-weight:900;">PLAY</span>
+        </button>
+        <div style="margin-top:10px;">
+            <div id="playLed" class="led"></div>
+            <span style="font-size:8px; color:#222; font-weight:bold; margin-left:5px;">SYSTEM READY</span>
+        </div>
     </div>
 
     <div class="unit" style="background: #555;">
         <div class="bolt tl"></div><div class="bolt tr"></div><div class="bolt bl"></div><div class="bolt br"></div>
         <div class="unit-label">RICOH RP2A03 // COIN PAD</div>
-        <div class="dpad-area" id="dpad"><div class="cross-v"></div><div class="cross-h"></div><div id="dot"></div></div>
+        <div class="dpad-area" id="dpad">
+            <div class="cross-v"></div><div class="cross-h"></div><div id="dot"></div>
+        </div>
         <div class="knob-grid">
-            <div>PITCH <input type="range" id="nPit" min="400" max="1200" value="987"></div>
+            <div>BASE PITCH <input type="range" id="nPit" min="400" max="1200" value="987"></div>
             <div>DECAY <input type="range" id="nDec" min="0.05" max="0.8" step="0.05" value="0.2"></div>
         </div>
-        <div class="bus-row">
-            <button class="s-btn" id="e-nes" onclick="togSirenBus('nes','e')">ECHO</button>
-            <button class="s-btn" id="f-nes" onclick="togSirenBus('nes','f')">FILTER</button>
+        <div class="bus-row" style="display:flex; justify-content:center; gap:5px; margin-top:10px;">
+            <button class="s-btn" id="e-nes" onclick="togSirenBus('nes','e')">E</button>
+            <button class="s-btn" id="f-nes" onclick="togSirenBus('nes','f')">F</button>
         </div>
     </div>
 
@@ -84,49 +117,44 @@
             <div>PITCH <input type="range" id="sPit" min="100" max="1500" value="440"></div>
             <div>SPEED <input type="range" id="sRat" min="1" max="50" value="12"></div>
         </div>
-        <div class="bus-row">
-            <button class="s-btn" id="e-seg" onclick="togSirenBus('seg','e')">ECHO</button>
-            <button class="s-btn" id="f-seg" onclick="togSirenBus('seg','f')">FILTER</button>
-        </div>
-    </div>
-
-    <div class="unit" style="background: #a87d54; color: #000;">
-        <div class="bolt tl"></div><div class="bolt tr"></div><div class="bolt bl"></div><div class="bolt br"></div>
-        <div class="unit-label" style="background:#422; color:#fff;">IRON-OXIDE TAPE</div>
-        <div class="tape-deck-container">
-            <div class="tape-reel" id="leftReel"><div class="reel-spoke"></div><div class="reel-spoke" style="transform:rotate(90deg)"></div></div>
-            <div class="tape-reel" id="rightReel"><div class="reel-spoke"></div><div class="reel-spoke" style="transform:rotate(90deg)"></div></div>
-        </div>
-        <div class="knob-grid">
-            <div>REGEN <input type="range" id="eFbk" min="0" max="0.95" step="0.01" value="0.6"></div>
-            <div>IPS <input type="range" id="eTim" min="0.05" max="1.0" step="0.01" value="0.4"></div>
+        <div class="bus-row" style="display:flex; justify-content:center; gap:5px; margin-top:10px;">
+            <button class="s-btn" id="e-seg" onclick="togSirenBus('seg','e')">E</button>
+            <button class="s-btn" id="f-seg" onclick="togSirenBus('seg','f')">F</button>
         </div>
     </div>
 
     <div class="unit">
         <div class="bolt tl"></div><div class="bolt tr"></div><div class="bolt bl"></div><div class="bolt br"></div>
-        <div class="unit-label">4-CH MIXER</div>
+        <div class="unit-label">4-CH DUB MIXER // FX BUS</div>
         <div class="mixer-grid" id="mGrid"></div>
-        <div style="background:#111; padding:10px; margin-top:10px; text-align:center;">
-            <div class="filter-dial" onclick="rotFilter()"><div id="fHand" class="hand"></div></div>
-            <div id="fLabel" style="color:#fc0; font-size:10px;">HPF: OFF</div>
+        <div style="background:#111; padding:10px; margin-top:15px; text-align:center; border: 4px inset #444;">
+            <div class="filter-dial" onclick="rotFilter()"><div id="fHand" class="hand" style="width: 3px; height: 20px; background: red; position: absolute; top: 10px; left: 28.5px; transform-origin: bottom;"></div></div>
+            <div id="fLabel" style="color:#fc0; font-size:10px; font-weight:bold;">HPF: OFF</div>
         </div>
     </div>
 
     <section class="unit blog-log">
         <div class="bolt tl"></div><div class="bolt tr"></div><div class="bolt bl"></div><div class="bolt br"></div>
-        <strong>LOG #431: HARD-WIRING THE BUS</strong><br>
-        - Every siren, pad, and channel now has static bus routing.<br>
-        - Fixed script error that was dropping Siren 1 during FX updates.<br>
-        - Locked the Blog Log to the bottom of the stack.
+        <strong>LOG #432: SYSTEM RECOVERY</strong><br>
+        - Re-mapped Coin Pad X/Y logic.<br>
+        - Restored Mute/Solo logic in the Dub Mixer.<br>
+        - Re-soldered the VU toggle and Master LED.
     </section>
 </div>
 
-<footer><div id="vu"></div></footer>
+<footer>
+    <div style="display:flex; align-items:center; gap:15px; width:100%;">
+        <div id="vu"></div>
+        <div style="text-align:center; min-width:60px;">
+            <span style="font-size:8px; font-weight:bold; color:#000; display:block; margin-bottom:2px;">VU PWR</span>
+            <input type="checkbox" id="vuTog" class="win95-switch" checked>
+        </div>
+    </div>
+</footer>
 
 <script>
-    let ctx, analyser, sirenO, sirenL, sirenLG, sirenG, delay, feed, hpf1, hpf2, channels = [], isBooted = false, fIdx = 0, fFreqs = [0, 300, 800, 1500, 3000, 6000], reelRot = 0, nesO, nesG;
-    let nesE, nesF, segE, segF; 
+    let ctx, analyser, sirenO, sirenL, sirenLG, sirenG, delay, feed, hpf1, hpf2, channels = [], isBooted = false, fIdx = 0, fFreqs = [0, 300, 800, 1500, 3000, 6000], nesO, nesG;
+    let nesE, nesF, segE, segF;
 
     function bootSystem() {
         if (isBooted) return;
@@ -140,12 +168,9 @@
         hpf1.type = hpf2.type = 'highpass'; hpf1.frequency.value = 0;
         hpf1.connect(hpf2); hpf2.connect(analyser);
 
-        // Persistent Siren Bus
-        nesE = ctx.createGain(); nesF = ctx.createGain(); 
-        segE = ctx.createGain(); segF = ctx.createGain();
+        nesE = ctx.createGain(); nesF = ctx.createGain(); segE = ctx.createGain(); segF = ctx.createGain();
         [nesE, nesF, segE, segF].forEach(g => { g.gain.value = 0; g.connect(g === nesE || g === segE ? delay : hpf1); });
 
-        // SE-G1 Hard-Wiring
         sirenO = ctx.createOscillator(); sirenL = ctx.createOscillator(); sirenLG = ctx.createGain(); sirenG = ctx.createGain();
         sirenO.type = 'square'; sirenG.gain.value = 0;
         sirenL.connect(sirenLG); sirenLG.connect(sirenO.frequency);
@@ -156,32 +181,40 @@
         const g = document.getElementById('mGrid'); g.innerHTML = '';
         for(let i=0; i<4; i++) {
             const d = document.createElement('div'); d.className='chan';
-            d.innerHTML = `<label style="font-size:7px;">CH-${i+1}<input type="file" style="display:none" onchange="loadF(${i},this)"></label>
-                <div><button class="s-btn" id="e-${i}" onclick="togFX(${i},'e')">E</button><button class="s-btn" id="f-${i}" onclick="togFX(${i},'f')">F</button></div>
-                <input type="range" class="fader" oninput="setV(${i},this.value)" min="0" max="1" step="0.01" value="0.7">
-                <audio id="a${i}" loop></audio>`;
+            d.innerHTML = `
+                <label class="upload-label">CH-${i+1} LOAD<input type="file" style="display:none" onchange="loadF(${i},this)"></label>
+                <div>
+                    <button class="s-btn" id="e-${i}" onclick="togFX(${i},'e')">E</button>
+                    <button class="s-btn" id="f-${i}" onclick="togFX(${i},'f')">F</button>
+                </div>
+                <div>
+                    <button class="s-btn" id="m-${i}" onclick="togFX(${i},'m')">M</button>
+                    <button class="s-btn" id="s-${i}" onclick="togFX(${i},'s')">S</button>
+                </div>
+                <input type="range" class="fader" style="appearance: slider-vertical; width: 16px; height: 60px;" oninput="setV(${i},this.value)" min="0" max="1" step="0.01" value="0.7">
+                <audio id="a${i}" loop crossorigin="anonymous"></audio>`;
             g.appendChild(d);
             const node = ctx.createMediaElementSource(document.getElementById(`a${i}`));
             const gn = ctx.createGain(); const eGn = ctx.createGain(); const fGn = ctx.createGain();
             eGn.gain.value = fGn.gain.value = 0;
             node.connect(gn); gn.connect(analyser); node.connect(eGn); eGn.connect(delay); node.connect(fGn); fGn.connect(hpf1);
-            channels.push({gn, eGn, fGn, aud: document.getElementById(`a${i}`), vol:0.7});
+            channels.push({gn, eGn, fGn, aud: document.getElementById(`a${i}`), mOn:0, sOn:0, vol:0.7});
         }
         analyser.connect(ctx.destination);
-        isBooted = true; startVU(); animateReels();
-    }
-
-    function togSirenBus(type, bus) {
-        if(!isBooted) return;
-        let target = (type === 'nes' ? (bus === 'e' ? nesE : nesF) : (bus === 'e' ? segE : segF));
-        target.gain.value = target.gain.value ? 0 : 1;
-        document.getElementById(`${bus}-${type}`).classList.toggle(`active-${bus}`);
+        isBooted = true; 
+        document.getElementById('masterBtn').classList.add('engaged');
+        document.getElementById('playLed').classList.add('active');
+        startVU();
     }
 
     const dp = document.getElementById('dpad');
     let dAct = false;
-    dp.onmousedown = dp.ontouchstart = (e) => { if(!isBooted) return; e.preventDefault(); dAct = true; trigN(); moveN(e.touches?.[0] || e); };
-    const stopN = () => { if(!dAct) return; dAct = false; nesG.gain.setTargetAtTime(0, ctx.currentTime, 0.05); nesO.stop(ctx.currentTime+0.2); };
+    dp.onmousedown = dp.ontouchstart = (e) => { 
+        if(!isBooted) return; e.preventDefault(); dAct = true; 
+        document.getElementById('dot').style.display='block'; 
+        trigN(); moveN(e.touches?.[0] || e); 
+    };
+    const stopN = () => { if(!dAct) return; dAct = false; document.getElementById('dot').style.display='none'; nesG.gain.setTargetAtTime(0, ctx.currentTime, 0.05); nesO.stop(ctx.currentTime+0.2); };
     window.onmousemove = (e) => dAct && moveN(e);
     window.ontouchmove = (e) => { if(dAct) { e.preventDefault(); moveN(e.touches[0]); } };
     window.onmouseup = window.ontouchend = stopN;
@@ -193,8 +226,19 @@
         nesG.gain.setValueAtTime(0.3, ctx.currentTime); nesO.start();
     }
     function moveN(e) {
-        const r = dp.getBoundingClientRect(); const y = (e.clientY - r.top) / r.height;
-        if(nesO) nesO.frequency.setTargetAtTime(parseFloat(document.getElementById('nPit').value) * (2-y), ctx.currentTime, 0.05);
+        const r = dp.getBoundingClientRect(); 
+        const xVal = (e.clientX - r.left) / r.width;
+        const yVal = (e.clientY - r.top) / r.height;
+        document.getElementById('dot').style.left = (xVal*100)+'%';
+        document.getElementById('dot').style.top = (yVal*100)+'%';
+        if(nesO) nesO.frequency.setTargetAtTime(parseFloat(document.getElementById('nPit').value) * (2-yVal), ctx.currentTime, 0.05);
+    }
+
+    function togSirenBus(type, bus) {
+        if(!isBooted) return;
+        let target = (type === 'nes' ? (bus === 'e' ? nesE : nesF) : (bus === 'e' ? segE : segF));
+        target.gain.value = target.gain.value ? 0 : 1;
+        document.getElementById(`${bus}-${type}`).classList.toggle(`active-${bus}`);
     }
 
     const sf = document.getElementById('sFire');
@@ -202,17 +246,40 @@
     const relS = () => { if(sirenG) sirenG.gain.setTargetAtTime(0, ctx.currentTime, 0.5); };
     window.addEventListener('mouseup', relS); window.addEventListener('touchend', relS);
 
-    function animateReels() { if(!isBooted) return; reelRot += (1.1 - parseFloat(document.getElementById('eTim').value)) * 8; document.getElementById('leftReel').style.transform = `rotate(${reelRot}deg)`; document.getElementById('rightReel').style.transform = `rotate(${reelRot}deg)`; requestAnimationFrame(animateReels); }
     function togFX(i, t) {
         const c = channels[i];
         if(t==='e') c.eGn.gain.value = c.eGn.gain.value ? 0 : 1;
         if(t==='f') c.fGn.gain.value = c.fGn.gain.value ? 0 : 1;
+        if(t==='m') c.mOn = !c.mOn;
+        if(t==='s') c.sOn = !c.sOn;
         document.getElementById(`${t}-${i}`).classList.toggle(`active-${t}`);
+        updateMix();
     }
+
+    function updateMix() {
+        const anyS = channels.some(c => c.sOn);
+        channels.forEach(c => { c.gn.gain.value = c.mOn ? 0 : (anyS && !c.sOn ? 0 : c.vol); });
+    }
+
+    function setV(i,v) { channels[i].vol = v; updateMix(); }
     function rotFilter() { fIdx = (fIdx+1)%fFreqs.length; hpf1.frequency.value = hpf2.frequency.value = fFreqs[fIdx]; document.getElementById('fHand').style.transform=`rotate(${fIdx*45}deg)`; document.getElementById('fLabel').innerText = fFreqs[fIdx]===0?"HPF: OFF":"HPF: "+fFreqs[fIdx]+"Hz"; }
-    function setV(i,v) { if(channels[i]) channels[i].gn.gain.value = v; }
     function loadF(i,inp) { if(inp.files[0]) { channels[i].aud.src = URL.createObjectURL(inp.files[0]); channels[i].aud.play(); } }
-    function startVU() { const v = document.getElementById('vu'); setInterval(() => { const data = new Uint8Array(analyser.frequencyBinCount); analyser.getByteFrequencyData(data); const avg = data.reduce((a,b)=>a+b)/data.length; v.innerHTML = ''; for(let i=0; i<20; i++) { const l = document.createElement('div'); l.style.flex = "1"; l.style.background = (i < avg/4) ? (i<14?"#0f0":"#f00") : "#111"; v.appendChild(l); } }, 50); }
+
+    function startVU() {
+        const v = document.getElementById('vu');
+        setInterval(() => {
+            if(!document.getElementById('vuTog').checked) { v.innerHTML = ''; return; }
+            const data = new Uint8Array(analyser.frequencyBinCount);
+            analyser.getByteFrequencyData(data);
+            const avg = data.reduce((a,b)=>a+b)/data.length;
+            v.innerHTML = '';
+            for(let i=0; i<20; i++) {
+                const l = document.createElement('div'); l.style.flex = "1";
+                l.style.background = (i < avg/4) ? (i<14?"#0f0":"#f00") : "#111";
+                v.appendChild(l);
+            }
+        }, 50);
+    }
 </script>
 </body>
 </html>
